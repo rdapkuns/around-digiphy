@@ -8,13 +8,15 @@ import { createFloor as Floor2 } from './floors/floor2.js';
 import { createFloor as Floor3 } from './floors/floor3.js';
 import { createFloor as Floor4 } from './floors/floor4.js';
 import { createFloor as Floor5 } from './floors/floor5.js';
+import { initNavigation } from './navigation.js';
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { HDRLoader } from 'three/examples/jsm/loaders/HDRLoader.js'
 
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
-gsap.registerPlugin(ScrollTrigger);
+import ScrollToPlugin from 'gsap/ScrollToPlugin'
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 
 let scene, camera, renderer;
@@ -222,3 +224,10 @@ function animate() {
 
   // renderer.render(scene, camera);
 }
+
+
+
+window.addEventListener('load', () => {
+  ScrollTrigger.refresh();
+  initNavigation(camera);
+});
