@@ -46,7 +46,7 @@ export function createFloor(scene) {
             scene.add(model);
         });
 
-        loader.load('/models/digiphy.glb', (gltf) => {
+        loader.load('/models/digiphy-hq.glb', (gltf) => {
             const model = gltf.scene
             model.position.set(0, 1, 0)
             scene.add(model)
