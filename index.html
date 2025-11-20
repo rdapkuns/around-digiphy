@@ -1,27 +1,33 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>around-digiphy</title>
-  </head>
-  <body>
-    <section class="three-section three-section">
-      <div class="canvas-wrapper">
-        <canvas class="three-canvas" id="three-canvas"></canvas>
 
-        <div class="qr-wrapper">
-          <canvas id="qrcode" style="margin: 20px;"></canvas>
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>around-digiphy</title>
+</head>
+
+<body>
+  <section class="three-section three-section">
+    <div class="canvas-wrapper">
+      <canvas class="three-canvas" id="three-canvas"></canvas>
+
+      <div class="qr-wrapper visually-hidden">
+        <canvas id="qrcode" style="margin: 20px;"></canvas>
       </div>
+    </div>
 
-      <nav>
-        <button class="nav-button" data-floor="floor1">Floor 1</button>
-        <button class="nav-button" data-floor="floor2">Floor 2</button>
-        <button class="nav-button" data-floor="floor3">Floor 3</button>
-      </nav>
-    </section>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+    <nav>
+      <button class="nav-button" data-floor="floor6">Floor 6</button>
+      <button class="nav-button" data-floor="floor5">Floor 5</button>
+      <button class="nav-button" data-floor="floor4">Floor 4</button>
+      <button class="nav-button" data-floor="floor3">Floor 3</button>
+      <button class="nav-button" data-floor="floor2">Floor 2</button>
+      <button class="nav-button" data-floor="floor1">Floor 1</button>
+    </nav>
+  </section>
+  <script type="module" src="/src/main.js"></script>
+</body>
+
 </html>

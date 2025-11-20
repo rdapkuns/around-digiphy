@@ -21,9 +21,11 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 let scene, camera, renderer;
 let floors = [];
-let currentFloor = 0;
+// let currentFloor = 0;
 const canvas = document.querySelector(".three-canvas")
-let currentCameraHeight = 4
+let currentCameraHeight = 6
+let prevFloor = 1
+
 
 
 init();
@@ -35,8 +37,8 @@ function init() {
   scene.background = new THREE.Color(0xccf2fc)
 
   camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 100)
-  camera.position.set(17, 4, -8)
-  camera.lookAt(0, 0, 0)
+  camera.position.set(17, currentCameraHeight, -8)
+  camera.lookAt(0, currentCameraHeight - 4, 0)
 
 
   renderer = new THREE.WebGLRenderer({ canvas, antialias: true })
@@ -99,14 +101,14 @@ function init() {
   const fl3 = Floor3(scene);
   const fl4 = Floor4(scene);
   const fl5 = Floor5(scene);
-  
+
 
   floors.push(fl1);
   floors.push(fl2);
   floors.push(fl3);
   floors.push(fl4);
   floors.push(fl5);
-  
+
 
 
   // Add chapter groups to the scene
@@ -115,7 +117,7 @@ function init() {
   scene.add(fl3.group);
   scene.add(fl4.group);
   scene.add(fl5.group);
-  
+
 
   setupKeyboardCameraControl(camera);
 
@@ -156,7 +158,7 @@ gsap.to('.canvas-wrapper', {
 //move camera on scroll
 gsap.to(camera.position, {
   ease: "linear",
-  y: camera.position.y + 70,
+  y: camera.position.y + 55,
   scrollTrigger: {
     trigger: '.three-section',
     start: "top top",
@@ -165,10 +167,38 @@ gsap.to(camera.position, {
     onUpdate: (self) => {
       currentCameraHeight = camera.position.y;
       camera.lookAt(0, currentCameraHeight - 4, 0)
+      checkCurrentFloor()
     }
   }
 })
+const qr = document.querySelector(".qr-wrapper")
 
+function checkCurrentFloor() {
+  //each is 11
+  const currentFloor = Math.floor(currentCameraHeight / 11) + 1
+  if (currentFloor !== prevFloor) {
+    console.log("new floor: ", currentFloor)
+    prevFloor = currentFloor
+    setActiveFloor(prevFloor)
+  }
+
+  if (currentFloor === 4) {
+    console.log("TESTESTEST")
+    qr.classList.remove("visually-hidden")
+  } else {
+    qr.classList.add("visually-hidden")
+  }
+}
+
+const navButtons = document.querySelectorAll('.nav-button');
+
+function setActiveFloor(floorNumber) {
+  navButtons.forEach(btn => btn.classList.remove('nav-active'));
+  const target = document.querySelector(`.nav-button[data-floor="floor${floorNumber}"]`);
+  if (target) {
+    target.classList.add('nav-active');
+  }
+}
 
 function setupKeyboardCameraControl(camera, model) {
   const cameraPoints = [
@@ -194,7 +224,7 @@ function setupKeyboardCameraControl(camera, model) {
   }
 
   camera.position.copy(cameraPoints[currentIndex])
-  camera.lookAt(0, 0, 0)
+  camera.lookAt(0, currentCameraHeight - 4, 0)
 
   window.addEventListener('keydown', (e) => {
     if (isAnimating) return
@@ -219,7 +249,7 @@ function animate() {
 
 
   // Update only *current* chapter or all chapters as needed
-  floors[currentFloor]?.update();
+  // floors[currentFloor]?.update();
   render()
 
   // renderer.render(scene, camera);

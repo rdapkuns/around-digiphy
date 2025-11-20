@@ -5,10 +5,11 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 // Define camera Y positions for each floor
 const floorHeights = {
     floor1: 4,
-    floor2: 18.5,
-    floor3: 33,
-    floor4: 47.5,
-    floor5: 62
+    floor2: 17,
+    floor3: 30,
+    floor4: 43,
+    floor5: 56,
+    floor6: 69
 };
 
 export function initNavigation(camera) {
@@ -19,7 +20,7 @@ export function initNavigation(camera) {
 
     // Camera animation range (from your main.js: y: 4 to y: 74)
     const startCameraY = 4;
-    const endCameraY = 74;
+    const endCameraY = 70;
 
     console.log('Floor navigation initialized:', {
         floors: Object.keys(floorHeights).length,
