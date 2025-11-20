@@ -27,11 +27,11 @@ export function createFloor(scene) {
 
     // --- build floor
     function createGeometry() {
-        loader.load("/floors/floor-4.glb", (gltf) => {
+        loader.load("/floors/floor-2.glb", (gltf) => {
             const model = gltf.scene;
 
             // Common transforms
-            model.position.set(0, 0, 0);
+            model.position.set(0, 20, 0);
             model.rotateY(Math.PI);
 
             // Enable shadows only once
@@ -48,7 +48,7 @@ export function createFloor(scene) {
 
         loader.load('/models/digiphy-hq.glb', (gltf) => {
             const model = gltf.scene
-            model.position.set(0, 1, 0)
+            model.position.set(0, 2, 0)
             scene.add(model)
 
             // Find and store references to each chair
@@ -69,7 +69,45 @@ export function createFloor(scene) {
 
             gsap.to(model.position, {
                 ease: "linear",
-                y: model.position.y + 70,
+                y: model.position.y + 55,
+                scrollTrigger: {
+                    trigger: '.three-section',
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: true,
+                }
+            })
+
+            gsap.to(model.rotation, {
+                ease: "linear",
+                y: model.rotation.y + 5,
+                scrollTrigger: {
+                    trigger: '.three-section',
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: true,
+                }
+            })
+
+            
+        })
+
+        loader.load('/models/platform.glb', (gltf) => {
+            const model = gltf.scene
+            model.position.set(0, 0, 0)
+            scene.add(model)
+
+            // Find and store references to each chair
+            // for (let i = 1; i <= 4; i++) {
+            //     const chair = model.getObjectByName(`chair-${i}`);
+            //     if (chair) objects[`chair-${i}`] = chair;
+            //     chair.defaultPos = chair.position.clone();
+
+            // }
+
+            gsap.to(model.position, {
+                ease: "linear",
+                y: model.position.y + 55,
                 scrollTrigger: {
                     trigger: '.three-section',
                     start: "top top",

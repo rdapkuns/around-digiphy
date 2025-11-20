@@ -13,11 +13,11 @@ export function createFloor(scene) {
 
     // --- build floor
     function createGeometry() {
-        loader.load("/floors/floor-3.glb", (gltf) => {
+        loader.load("/floors/floor-2.glb", (gltf) => {
             const model = gltf.scene;
 
             // Common transforms
-            model.position.set(0, 0, 0);
+            model.position.set(0, 10, 0);
             model.rotateY(Math.PI);
 
             // Enable shadows only once
