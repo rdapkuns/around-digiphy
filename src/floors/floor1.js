@@ -13,7 +13,7 @@ export function createFloor(scene) {
 
     // --- build floor
     function createGeometry() {
-        loader.load("/floors/floor-11.glb", (gltf) => {
+        loader.load("/floors/enviorment.glb", (gltf) => {
             const model = gltf.scene;
 
             // Common transforms

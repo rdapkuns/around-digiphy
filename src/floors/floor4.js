@@ -27,26 +27,26 @@ export function createFloor(scene) {
 
     // --- build floor
     function createGeometry() {
-        loader.load("/floors/floor-2.glb", (gltf) => {
-            const model = gltf.scene;
+        // loader.load("/floors/floor-2.glb", (gltf) => {
+        //     const model = gltf.scene;
 
-            // Common transforms
-            model.position.set(0, 20, 0);
-            model.rotateY(Math.PI);
+        //     // Common transforms
+        //     model.position.set(0, 20, 0);
+        //     model.rotateY(Math.PI);
 
-            // Enable shadows only once
-            model.traverse(child => {
-                if (child.isMesh) {
-                    child.castShadow = true;
-                    child.receiveShadow = true;
-                }
-            });
+        //     // Enable shadows only once
+        //     model.traverse(child => {
+        //         if (child.isMesh) {
+        //             child.castShadow = true;
+        //             child.receiveShadow = true;
+        //         }
+        //     });
 
-            // Add to scene
-            scene.add(model);
-        });
+        //     // Add to scene
+        //     scene.add(model);
+        // });
 
-        loader.load('/models/digiphy-hq.glb', (gltf) => {
+        loader.load('/models/digiphy-accessories.glb', (gltf) => {
             const model = gltf.scene
             model.position.set(0, 2, 0)
             scene.add(model)
@@ -69,7 +69,7 @@ export function createFloor(scene) {
 
             gsap.to(model.position, {
                 ease: "linear",
-                y: model.position.y + 55,
+                y: model.position.y + 63,
                 scrollTrigger: {
                     trigger: '.three-section',
                     start: "top top",
@@ -107,7 +107,7 @@ export function createFloor(scene) {
 
             gsap.to(model.position, {
                 ease: "linear",
-                y: model.position.y + 55,
+                y: model.position.y + 63,
                 scrollTrigger: {
                     trigger: '.three-section',
                     start: "top top",

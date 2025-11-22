@@ -26,6 +26,7 @@ const canvas = document.querySelector(".three-canvas")
 let currentCameraHeight = 6
 let prevFloor = 1
 
+let cameraTargetOffset = { value: 4 }
 
 
 init();
@@ -36,7 +37,7 @@ function init() {
   scene = new THREE.Scene()
   scene.background = new THREE.Color(0xccf2fc)
 
-  camera = new THREE.PerspectiveCamera(75, canvas.clientWidth / canvas.clientHeight, 0.1, 100)
+  camera = new THREE.PerspectiveCamera(65, canvas.clientWidth / canvas.clientHeight, 0.1, 100)
   camera.position.set(17, currentCameraHeight, -8)
   camera.lookAt(0, currentCameraHeight - 4, 0)
 
@@ -155,10 +156,11 @@ gsap.to('.canvas-wrapper', {
   }
 });
 
+
 //move camera on scroll
 gsap.to(camera.position, {
   ease: "linear",
-  y: camera.position.y + 55,
+  y: camera.position.y + 63,
   scrollTrigger: {
     trigger: '.three-section',
     start: "top top",
@@ -166,28 +168,92 @@ gsap.to(camera.position, {
     scrub: true,
     onUpdate: (self) => {
       currentCameraHeight = camera.position.y;
-      camera.lookAt(0, currentCameraHeight - 4, 0)
+      // if(prevFloor === 4){
+      //   camera.lookAt(0, currentCameraHeight - 1, 0)
+      // }else {
+      //   camera.lookAt(0, currentCameraHeight - 4, 0)
+
+      // }
+      camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0)
+
       checkCurrentFloor()
     }
   }
 })
 const qr = document.querySelector(".qr-wrapper")
+const overlayButton = document.querySelector(".overlay-button-container")
+const fl2 = Floor2(scene);
+let overlayOn = false
+document.querySelector('.overlay-button').addEventListener('click', fl2.toggleOverlayOpacity);
+
 
 function checkCurrentFloor() {
   //each is 11
-  const currentFloor = Math.floor(currentCameraHeight / 11) + 1
+  const currentFloor = Math.floor(currentCameraHeight / 13.3) + 1
   if (currentFloor !== prevFloor) {
     console.log("new floor: ", currentFloor)
+
+    if (currentFloor === 4) {
+      //ARRIVE FLOOR 4
+      qr.classList.remove("visually-hidden")
+      gsap.to(camera, {
+        fov: 30,
+        duration: 1,
+        ease: "power3.inOut",
+        onUpdate() {
+          camera.updateProjectionMatrix();
+        }
+      });
+
+      gsap.to(cameraTargetOffset, {
+        value: 2,
+        duration: 1,
+        ease: "power3.inOut",
+        onUpdate() {
+          camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0)
+        }
+      });
+
+    } else if (prevFloor === 4) {
+      //LEAVE FLOOR 4
+      qr.classList.add("visually-hidden")
+      gsap.to(camera, {
+        fov: 65,
+        duration: 1,
+        ease: "power3.inOut",
+        onUpdate() {
+          camera.updateProjectionMatrix();
+        }
+      });
+
+      gsap.to(cameraTargetOffset, {
+        value: 4,
+        duration: 1,
+        ease: "power3.inOut",
+        onUpdate() {
+          camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0)
+        }
+      });
+    }
+    if (currentFloor === 2 || currentFloor === 4) {
+      overlayButton.classList.remove("visually-hidden")
+
+    }
+    if (currentFloor === 1 || currentFloor === 5) {
+      overlayButton.classList.add("visually-hidden")
+
+      fl2.overlayOff();
+      // fl2.toggleOverlayOpacity()
+
+      // console.log(fl2.overlayVisible)
+    }
+
+
     prevFloor = currentFloor
     setActiveFloor(prevFloor)
+
   }
 
-  if (currentFloor === 4) {
-    console.log("TESTESTEST")
-    qr.classList.remove("visually-hidden")
-  } else {
-    qr.classList.add("visually-hidden")
-  }
 }
 
 const navButtons = document.querySelectorAll('.nav-button');
@@ -218,13 +284,16 @@ function setupKeyboardCameraControl(camera, model) {
       z: targetVec3.z,
       duration: 1.5,
       ease: 'power2.inOut',
-      onUpdate: () => camera.lookAt(0, currentCameraHeight - 4, 0),
+      onUpdate: () => {
+        camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0)
+
+      },
       onComplete: () => (isAnimating = false),
     })
   }
 
   camera.position.copy(cameraPoints[currentIndex])
-  camera.lookAt(0, currentCameraHeight - 4, 0)
+  camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0)
 
   window.addEventListener('keydown', (e) => {
     if (isAnimating) return

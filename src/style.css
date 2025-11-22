@@ -209,3 +209,26 @@ nav {
 .nav-button.nav-active {
   color: #000;
 }
+
+
+/* ////////////////////////////////////////////////////
+///////////////// OVERLAY BUTTON //////////////////////
+//////////////////////////////////////////////////// */
+
+
+.overlay-button-container {
+  position: fixed;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+}
+
+.overlay-button {
+  background-color: rgba(218, 218, 218, 0.448);
+  backdrop-filter: blur(5px);
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 100px;
+  cursor: pointer;
+}
