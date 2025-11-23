@@ -49,16 +49,58 @@ export function createFloor(scene) {
 
             scene.add(overlayModel);
 
-            gsap.to(overlayModel.position, {
-                ease: "linear",
-                y: overlayModel.position.y + 63,
+            // gsap.to(overlayModel.position, {
+            //     ease: "linear",
+            //     y: overlayModel.position.y + 63,
+            //     scrollTrigger: {
+            //         trigger: '.three-section',
+            //         start: "top top",
+            //         end: "bottom bottom",
+            //         scrub: true,
+            //     }
+            // })
+
+            // --- configuration
+            const holdY = 28;                       // 26 because camera starts at 6 and this at 0
+            const moveUpAmount = 63;                // how far up the camera moves overall
+            const ratio = { first: 3, hold: 4, last: 4.2 };
+            // first:hold:last = fraction of scroll allocated to phase1/phase2/phase3
+            // here hold will take 1/(4+1+5)=10% of the scroll distance
+
+            // compute targets
+            const startY = 2;
+            const finalY = startY + moveUpAmount;
+
+            // create timeline mapped to scroll
+            const modelTl = gsap.timeline({
                 scrollTrigger: {
                     trigger: '.three-section',
-                    start: "top top",
-                    end: "bottom bottom",
+                    start: 'top top',
+                    end: 'bottom bottom',    // or use "+=1000" to control exact scroll length
                     scrub: true,
                 }
-            })
+            });
+
+            // Phase 1: move from startY to holdY
+            modelTl.to(overlayModel.position, {
+                y: holdY,
+                ease: 'linear',
+                duration: ratio.first
+            });
+
+            // Phase 2: hold at holdY (same y target) — duration controls how much scroll is spent holding
+            modelTl.to(overlayModel.position, {
+                y: holdY,
+                ease: 'none',    // no easing for a perfectly flat hold
+                duration: ratio.hold
+            });
+
+            // Phase 3: continue to finalY
+            modelTl.to(overlayModel.position, {
+                y: finalY,
+                ease: 'linear',
+                duration: ratio.last
+            });
 
             gsap.to(overlayModel.rotation, {
                 ease: "linear",

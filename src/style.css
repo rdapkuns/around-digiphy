@@ -48,7 +48,7 @@ canvas {
   overflow: hidden;
   background: #000;
   width: 100vw;
-  height: 4000px;
+  height: 8000px;
 }
 
 .canvas-wrapper {
@@ -231,4 +231,13 @@ nav {
   padding: 0.8rem 1.5rem;
   border-radius: 100px;
   cursor: pointer;
+}
+
+
+
+.uni-button-container {
+  position: fixed;
+  bottom: 1rem;
+  top: 1rem;
+  z-index: 99;
 }

@@ -29,8 +29,14 @@ let prevFloor = 1
 let cameraTargetOffset = { value: 4 }
 
 
+let cameraScrollTrigger;
+let scrollLocked = false
+
 init();
 animate();
+
+
+
 
 function init() {
   // Basic setup
@@ -74,7 +80,7 @@ function init() {
 
   scene.add(light);
 
-
+  // setupCameraScroll();
 
   const pmrem = new THREE.PMREMGenerator(renderer)
 
@@ -157,33 +163,120 @@ gsap.to('.canvas-wrapper', {
 });
 
 
-//move camera on scroll
-gsap.to(camera.position, {
-  ease: "linear",
-  y: camera.position.y + 63,
+//move camera on scroll  
+  // gsap.to(camera.position, {
+  //   ease: "linear",
+  //   y: camera.position.y + 63,
+  //   scrollTrigger: {
+  //     trigger: '.three-section',
+  //     start: "top top",
+  //     end: "bottom bottom",
+  //     scrub: true,
+  //     onUpdate: () => {
+  //       currentCameraHeight = camera.position.y;
+  //       camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0)
+  
+  //       checkCurrentFloor()
+  //     }
+  //   }
+  // })
+
+
+function setupCameraScroll() {
+  const tween = gsap.to(camera.position, {
+    ease: "linear",
+    y: camera.position.y + 63,
+    scrollTrigger: {
+      trigger: ".three-section",
+      start: "top top",
+      end: "bottom bottom",
+      scrub: true,
+      onUpdate: () => {
+        camera.lookAt(0, camera.position.y - cameraTargetOffset.value, 0);
+        checkCurrentFloor();
+      }
+    }
+  });
+
+  cameraScrollTrigger = tween.scrollTrigger;
+}
+
+
+
+
+
+// --- configuration
+const holdY = 32;                       // Y where camera stops to "hold"
+const moveUpAmount = 63;                // how far up the camera moves overall
+const ratio = { first: 3, hold: 4, last: 4.2 };
+// first:hold:last = fraction of scroll allocated to phase1/phase2/phase3
+// here hold will take 1/(4+1+5)=10% of the scroll distance
+
+// compute targets
+const startY = camera.position.y;
+const finalY = startY + moveUpAmount;
+
+
+
+// create timeline mapped to scroll
+const cameraTL = gsap.timeline({
   scrollTrigger: {
     trigger: '.three-section',
-    start: "top top",
-    end: "bottom bottom",
+    start: 'top top',
+    end: 'bottom bottom',    // or use "+=1000" to control exact scroll length
     scrub: true,
-    onUpdate: (self) => {
+    onUpdate: () => {
+      // update derived values every frame
       currentCameraHeight = camera.position.y;
-      // if(prevFloor === 4){
-      //   camera.lookAt(0, currentCameraHeight - 1, 0)
-      // }else {
-      //   camera.lookAt(0, currentCameraHeight - 4, 0)
-
-      // }
-      camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0)
-
-      checkCurrentFloor()
+      // console.log(currentCameraHeight)
+      camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0);
+      checkCurrentFloor();
     }
   }
-})
+});
+
+// Phase 1: move from startY to holdY
+cameraTL.to(camera.position, {
+  y: holdY,
+  ease: 'linear',
+  duration: ratio.first
+});
+
+cameraTL.call(() => {
+  console.log("ENTERED HOLD");
+  // onEnterHold();
+});
+
+// Phase 2: hold at holdY (same y target) — duration controls how much scroll is spent holding
+cameraTL.to(camera.position, {
+  y: holdY,
+  ease: 'none',    // no easing for a perfectly flat hold
+  duration: ratio.hold
+});
+
+// Phase 3: continue to finalY
+cameraTL.to(camera.position, {
+  y: finalY,
+  ease: 'linear',
+  duration: ratio.last
+});
+
+
+
+
+
+
+// cameraTL.add(holdTL, "+=0");
+
+
+
+
+
 const qr = document.querySelector(".qr-wrapper")
 const overlayButton = document.querySelector(".overlay-button-container")
 const fl2 = Floor2(scene);
 let overlayOn = false
+
 document.querySelector('.overlay-button').addEventListener('click', fl2.toggleOverlayOpacity);
 
 

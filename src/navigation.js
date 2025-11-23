@@ -5,10 +5,10 @@ import ScrollTrigger from 'gsap/ScrollTrigger';
 // Define camera Y positions for each floor
 const floorHeights = {
     floor1: 6,
-    floor2: 19,
+    floor2: 15,
     floor3: 32,
-    floor4: 45,
-    floor5: 58,
+    floor4: 55,
+    floor5: 63,
     floor6: 71
 };
 
