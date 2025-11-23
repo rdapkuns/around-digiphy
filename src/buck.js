@@ -17,12 +17,22 @@ export function setupBuck(scene) {
 
     let accessoriesTimeline;
     let accessories = []; // will hold { mesh, originalPos }
+    const accessoryGroups = {
+        dashboard: { variants: [], defaultVariantIndex: 0 },
+        console: { variants: [], defaultVariantIndex: 0 },
+        frameLeft: { variants: [], defaultVariantIndex: 0 },
+        frameRight: { variants: [], defaultVariantIndex: 0 },
+        tablet: { variants: [], defaultVariantIndex: 0 },
+    };
     const accessoryOffsets = {
+        "accessory-console-1": { x: -10, y: 0, z: 0 },
         "accessory-console-2": { x: -10, y: 0, z: 0 },
+        "accessory-dashboard-1": { x: 0, y: 5, z: 0 },
         "accessory-dashboard-2": { x: 0, y: 5, z: 0 },
-        "accessory-frame-1": { x: 0, y: 0, z: -10 },
-        "accessory-frame-2": { x: 0, y: 0, z: 10 },
+        "accessory-frameLeft-1": { x: 0, y: 0, z: -10 },
+        "accessory-frameRight-1": { x: 0, y: 0, z: 10 },
         "accessory-tablet-1": { x: 0, y: 8, z: 0 },
+        "accessory-tablet-2": { x: 0, y: 8, z: 0 },
 
     };
 
@@ -37,13 +47,19 @@ export function setupBuck(scene) {
             const model = gltf.scene
             model.position.set(0, 2, 0)
             scene.add(model)
-
-            //finds all the accessories
             model.traverse(child => {
-                if (!child.isMesh) return;
-                if (!child.name.startsWith("accessory-")) return;
+                if (!child.isMesh || !child.name.startsWith("accessory-")) return;
 
-                // CLONE material so opacity changes do NOT affect other meshes
+                // Extract groupName from name: accessory-{group}-{index}
+                const match = child.name.match(/^accessory-([a-zA-Z]+)-\d+/);
+                if (!match) return;
+
+                const groupName = match[1];
+                if (!accessoryGroups[groupName]) {
+                    accessoryGroups[groupName] = { variants: [], defaultVariantIndex: 0 };
+                }
+
+                // Clone material for independent opacity
                 if (Array.isArray(child.material)) {
                     child.material = child.material.map(mat => {
                         const clone = mat.clone();
@@ -52,20 +68,16 @@ export function setupBuck(scene) {
                         return clone;
                     });
                 } else {
-                    const originalMat = child.material;
-                    const clone = originalMat.clone();
+                    const clone = child.material.clone();
                     clone.transparent = true;
                     clone.opacity = 0;
                     child.material = clone;
                 }
 
-                child.visible = false;
+                child.visible = false;            // hide initially
+                child.defaultPos = child.position.clone();  // store default position
 
-                accessories.push({
-                    name: child.name,
-                    mesh: child,
-                    originalPos: child.position.clone()
-                });
+                accessoryGroups[groupName].variants.push(child);
             });
 
             createAccessoriesTimeline();  // build AFTER loading
@@ -86,18 +98,6 @@ export function setupBuck(scene) {
                 dashboard.defaultPos = dashboard.position.clone();
                 objects.dashboard = dashboard;
             }
-
-
-            // gsap.to(model.position, {
-            //     ease: "linear",
-            //     y: model.position.y + 63,
-            //     scrollTrigger: {
-            //         trigger: '.three-section',
-            //         start: "top top",
-            //         end: "bottom bottom",
-            //         scrub: true,
-            //     }
-            // })
 
 
             // --- configuration
@@ -179,7 +179,7 @@ export function setupBuck(scene) {
                 scrollTrigger: {
                     trigger: '.three-section',
                     start: 'top top',
-                    end: 'bottom bottom',  
+                    end: 'bottom bottom',
                     scrub: true,
                 }
             });
@@ -192,7 +192,7 @@ export function setupBuck(scene) {
 
             modelTl.to(model.position, {
                 y: holdY,
-                ease: 'none',  
+                ease: 'none',
                 duration: ratio.hold
             });
 
@@ -206,47 +206,58 @@ export function setupBuck(scene) {
     }
 
     function createAccessoriesTimeline() {
+        if (accessoriesTimeline) accessoriesTimeline.kill();
         accessoriesTimeline = gsap.timeline();
 
-        accessories.forEach(({ mesh, originalPos, name }) => {
-            const offset = accessoryOffsets[name] || { x: 0, y: 0, z: 0 };
+        Object.values(accessoryGroups).forEach(group => {
+            group.variants.forEach((mesh, i) => {
+                const offset = accessoryOffsets[mesh.name] || { x: 0, y: 0, z: 0 };
+                // const isActive = i === group.defaultVariantIndex;
 
-            // START HIDDEN
-            mesh.visible = false;
+                mesh.visible = false;
+                if (Array.isArray(mesh.material)) {
+                    mesh.material.forEach(mat => mat.opacity = 0);
+                } else {
+                    mesh.material.opacity = 0;
+                }
 
-            // Build the animation
-            accessoriesTimeline
+                accessoriesTimeline.set(mesh, { visible: false });
 
-                // Make visible right before animation begins
-                .set(mesh, { visible: true })
-
-                // Position animation
-                .fromTo(mesh.position,
+                // Animate position for all variants
+                accessoriesTimeline.fromTo(
+                    mesh.position,
                     {
-                        x: originalPos.x + offset.x,
-                        y: originalPos.y + offset.y,
-                        z: originalPos.z + offset.z
+                        x: mesh.position.x + offset.x,
+                        y: mesh.position.y + offset.y,
+                        z: mesh.position.z + offset.z
                     },
                     {
-                        x: originalPos.x,
-                        y: originalPos.y,
-                        z: originalPos.z,
+                        x: mesh.position.x,
+                        y: mesh.position.y,
+                        z: mesh.position.z,
                         duration: 1,
-                        ease: "power3.out"
+                        ease: "power3.out",
+                        onStart: () => {
+                            // Only make active variant visible
+                            if (i === group.defaultVariantIndex) mesh.visible = true;
+                        }
                     },
                     "<"
-                )
+                );
 
-                // Opacity animation
-                .fromTo(mesh.material,
-                    { opacity: 0 },
-                    { opacity: 1, duration: 1, ease: "power2.out" },
-                    "<"
-                )
-
+                // Animate opacity only for active variant
+                // if (i === group.defaultVariantIndex) {
+                    accessoriesTimeline.fromTo(
+                        mesh.material,
+                        { opacity: 0 },
+                        { opacity: 1, duration: 1, ease: "power2.out" },
+                        "<"
+                    );
+                // }
+            });
         });
-
     }
+
 
 
     function createLights() {
@@ -332,8 +343,44 @@ export function setupBuck(scene) {
 
     initAnimations();
 
+    // -----------------------------------------------------------------------
+    // INSTANT VARIANT SWAP (no timeline replay, no animation triggered)
+    // -----------------------------------------------------------------------
+    function setAccessoryVariant(groupName, variantIndex) {
+        const group = accessoryGroups[groupName];
+        if (!group) return;
 
-    // document.querySelector('.uni-button').addEventListener('click', animateAccessoriesIn);
+        const oldMesh = group.variants[group.defaultVariantIndex];
+        if (oldMesh) {
+            oldMesh.visible = false;
+            if (Array.isArray(oldMesh.material)) {
+                oldMesh.material.forEach(mat => mat.opacity = 0);
+            } else {
+                oldMesh.material.opacity = 0;
+            }
+        }
+
+        const newMesh = group.variants[variantIndex];
+        if (newMesh) {
+            newMesh.visible = true;
+            if (Array.isArray(newMesh.material)) {
+                newMesh.material.forEach(mat => mat.opacity = 1);
+            } else {
+                newMesh.material.opacity = 1;
+            }
+        }
+
+        group.defaultVariantIndex = variantIndex;
+    }
+
+
+
+
+    document.querySelector('.uni-button').addEventListener('click', uni);
+    function uni() {
+        console.log("uni button works")
+        setAccessoryVariant("dashboard", 1);
+    }
 
 
     return { group, update };
