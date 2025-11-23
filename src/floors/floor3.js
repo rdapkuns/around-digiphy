@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+// import { setAccessoryVariant } from "../buck.js";
+
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger);
@@ -33,24 +35,41 @@ export function createFloor(scene) {
         // });
     }
 
-    function createLights() {
-    }
-
-    // --- animations
-    function initAnimations() {
-    }
-
-    // --- update loop
-    function update() {
-    }
-
-    // initialize floor
     createGeometry();
-    createLights();
-    initAnimations();
+
+    return { group };
+}
+
+export function createAccessoryMenu(containerSelector, accessoryGroups, setAccessoryVariant) {
+    const container = document.querySelector(containerSelector);
+    if (!container) return;
+
+    container.innerHTML = '';
+    Object.entries(accessoryGroups).forEach(([groupName, group]) => {
+        if (group.variants.length > 1) {
+
+            const title = document.createElement("h3");
+            title.textContent = groupName;
+            container.appendChild(title);
 
 
-    initAnimations();
+            group.variants.forEach((mesh, index) => {
+                const btn = document.createElement("button");
+                btn.textContent = index + 1;
+                btn.classList.add("accessory-variant-button")
 
-    return { group, update };
+                btn.addEventListener("click", () => {
+                    console.log(groupName, index)
+                    setAccessoryVariant(groupName, index);
+                });
+
+                container.appendChild(btn);
+            });
+        }
+    });
+
+}
+const $accessoryMenu = document.getElementById("accessory-menu")
+export function toggleAccessoryMenu() {
+    $accessoryMenu.classList.toggle("visually-hidden")
 }

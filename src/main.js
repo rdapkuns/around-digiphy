@@ -5,7 +5,7 @@ import './style.css'
 import * as THREE from 'three';
 import { createFloor as Floor1 } from './floors/floor1.js';
 import { createFloor as Floor2 } from './floors/floor2.js';
-import { createFloor as Floor3 } from './floors/floor3.js';
+import { createFloor as Floor3, createAccessoryMenu, toggleAccessoryMenu } from './floors/floor3.js';
 import { createFloor as Floor4 } from './floors/floor4.js';
 import { createFloor as Floor5 } from './floors/floor5.js';
 import { setupBuck } from './buck.js';
@@ -38,8 +38,14 @@ animate();
 
 
 
+document.querySelector('.uni-button').addEventListener('click', uni);
+function uni() {
+  toggleAccessoryMenu()
+}
 
-function init() {
+
+
+async function init() {
   // Basic setup
   scene = new THREE.Scene()
   scene.background = new THREE.Color(0xccf2fc)
@@ -110,8 +116,7 @@ function init() {
   const fl4 = Floor4(scene);
   const fl5 = Floor5(scene);
 
-  const buck = setupBuck(scene);
-
+  // const buck = setupBuck(scene);
 
 
   floors.push(fl1);
@@ -129,9 +134,13 @@ function init() {
   scene.add(fl4.group);
   scene.add(fl5.group);
 
+  // const { accessoryGroups } = await setupBuck(scene);
+  const { accessoryGroups, setAccessoryVariant } = await setupBuck(scene);
+  // createAccessoryMenu('#menu-container', accessoryGroups);
+
 
   setupKeyboardCameraControl(camera);
-
+  createAccessoryMenu('#accessory-menu', accessoryGroups, setAccessoryVariant);
 }
 
 function render() {
@@ -341,6 +350,10 @@ function checkCurrentFloor() {
       // fl2.toggleOverlayOpacity()
 
       // console.log(fl2.overlayVisible)
+    }
+
+    if (currentFloor === 3 || prevFloor === 3){
+      toggleAccessoryMenu()
     }
 
 

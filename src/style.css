@@ -241,3 +241,22 @@ nav {
   top: 1rem;
   z-index: 99;
 }
+
+
+/* ////////////////////////////////////////////////////
+///////////////// ACCESSORIES MENU ////////////////////
+//////////////////////////////////////////////////// */
+
+#accessory-menu{
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  background-color: rgba(218, 218, 218, 0.448);
+    backdrop-filter: blur(5px);
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+.accessory-variant-button{
+  padding: 1rem;
+}
