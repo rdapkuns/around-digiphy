@@ -8,6 +8,7 @@ import { createFloor as Floor2 } from './floors/floor2.js';
 import { createFloor as Floor3 } from './floors/floor3.js';
 import { createFloor as Floor4 } from './floors/floor4.js';
 import { createFloor as Floor5 } from './floors/floor5.js';
+import { setupBuck } from './buck.js';
 import { initNavigation } from './navigation.js';
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
@@ -109,6 +110,9 @@ function init() {
   const fl4 = Floor4(scene);
   const fl5 = Floor5(scene);
 
+  const buck = setupBuck(scene);
+
+
 
   floors.push(fl1);
   floors.push(fl2);
@@ -128,8 +132,6 @@ function init() {
 
   setupKeyboardCameraControl(camera);
 
-  // Position each chapter in world space if needed
-  // ch2.group.position.set(50, 0, 0); // e.g., next zone in the world
 }
 
 function render() {
@@ -164,22 +166,22 @@ gsap.to('.canvas-wrapper', {
 
 
 //move camera on scroll  
-  // gsap.to(camera.position, {
-  //   ease: "linear",
-  //   y: camera.position.y + 63,
-  //   scrollTrigger: {
-  //     trigger: '.three-section',
-  //     start: "top top",
-  //     end: "bottom bottom",
-  //     scrub: true,
-  //     onUpdate: () => {
-  //       currentCameraHeight = camera.position.y;
-  //       camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0)
-  
-  //       checkCurrentFloor()
-  //     }
-  //   }
-  // })
+// gsap.to(camera.position, {
+//   ease: "linear",
+//   y: camera.position.y + 63,
+//   scrollTrigger: {
+//     trigger: '.three-section',
+//     start: "top top",
+//     end: "bottom bottom",
+//     scrub: true,
+//     onUpdate: () => {
+//       currentCameraHeight = camera.position.y;
+//       camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0)
+
+//       checkCurrentFloor()
+//     }
+//   }
+// })
 
 
 function setupCameraScroll() {
