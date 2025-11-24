@@ -73,3 +73,33 @@ export function createFloor(scene) {
 
     return { group, update };
 }
+
+const qrContainer = document.querySelector(".qr-wrapper")
+const qr = document.getElementById("qrcode")
+document.querySelector('.qr-wrapper-close').addEventListener('click', smallQR);
+
+
+qr.addEventListener("click", bigQR)
+let qrBig = true
+export function smallQR () {
+    if(qrBig){
+        qrBig = false
+        qrContainer.classList.add("qr-small")
+        console.log(qrBig)
+    }
+}
+
+export function bigQR() {
+    if (qrBig) {
+        return
+    }
+    qrBig = true
+    qrContainer.classList.remove("qr-small")
+    console.log(qrBig)
+}
+
+
+document.querySelector('.uni-button').addEventListener('click', smallQR);
+function uni() {
+   
+}

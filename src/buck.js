@@ -3,6 +3,9 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { supabase } from './supabase';
 
+import { smallQR } from './floors/floor4.js';
+
+
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger);
@@ -322,8 +325,9 @@ export function setupBuck(scene) {
                 case "chair-4":
                     moveObject(objects[payload.object], payload.direction, payload.amount)
                     break;
-                case "playSound":
-                    playSound(payload.data);
+                case "connected":
+                    // console.log("remote connected!!!")
+                    smallQR()
                     break;
                 default:
                     console.warn("Unknown command type:", payload.type);

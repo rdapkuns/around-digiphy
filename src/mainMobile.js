@@ -18,7 +18,7 @@ channel.on('broadcast', { event: 'msg' }, ({ payload }) => {
 channel.subscribe((status) => {
     console.log("channel status:", status);
     setupControls()
-
+    sendMessage("connected", "x", 0)
 });
 
 // Send message

@@ -1,3 +1,4 @@
+import './reset.css'
 import './style.css'
 
 
@@ -38,10 +39,7 @@ animate();
 
 
 
-document.querySelector('.uni-button').addEventListener('click', uni);
-function uni() {
-  toggleAccessoryMenu()
-}
+
 
 
 
@@ -297,6 +295,47 @@ function checkCurrentFloor() {
   if (currentFloor !== prevFloor) {
     console.log("new floor: ", currentFloor)
 
+    if (currentFloor === 2){
+      gsap.to(camera, {
+        fov: 65,
+        duration: 1,
+        ease: "power3.inOut",
+        onUpdate() {
+          camera.updateProjectionMatrix();
+        }
+      });
+
+      gsap.to(cameraTargetOffset, {
+        value: 4,
+        duration: 1,
+        ease: "power3.inOut",
+        onUpdate() {
+          camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0)
+        }
+      });
+    }
+    if (currentFloor === 3) {
+      //ARRIVE FLOOR 4
+      qr.classList.add("visually-hidden")
+      gsap.to(camera, {
+        fov: 30,
+        duration: 1,
+        ease: "power3.inOut",
+        onUpdate() {
+          camera.updateProjectionMatrix();
+        }
+      });
+
+      gsap.to(cameraTargetOffset, {
+        value: 2,
+        duration: 1,
+        ease: "power3.inOut",
+        onUpdate() {
+          camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0)
+        }
+      });
+
+    }
     if (currentFloor === 4) {
       //ARRIVE FLOOR 4
       qr.classList.remove("visually-hidden")
@@ -318,9 +357,11 @@ function checkCurrentFloor() {
         }
       });
 
-    } else if (prevFloor === 4) {
-      //LEAVE FLOOR 4
+    }
+
+    if (currentFloor === 5) {
       qr.classList.add("visually-hidden")
+
       gsap.to(camera, {
         fov: 65,
         duration: 1,
@@ -412,6 +453,15 @@ function setupKeyboardCameraControl(camera, model) {
       currentIndex = (currentIndex - 1 + cameraPoints.length) % cameraPoints.length
       moveCameraTo(cameraPoints[currentIndex])
     }
+  })
+
+  const $buttonRight = document.querySelector(".horizontal-controls-right").addEventListener("click", () => {
+    currentIndex = (currentIndex + 1) % cameraPoints.length
+    moveCameraTo(cameraPoints[currentIndex])
+  })
+  const $buttonLeft = document.querySelector(".horizontal-controls-left").addEventListener("click", () => {
+    currentIndex = (currentIndex - 1 + cameraPoints.length) % cameraPoints.length
+    moveCameraTo(cameraPoints[currentIndex])
   })
 }
 

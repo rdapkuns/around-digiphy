@@ -13,13 +13,16 @@
     <div class="canvas-wrapper">
       <canvas class="three-canvas" id="three-canvas"></canvas>
 
-      <div class="qr-wrapper visually-hidden">
-        <canvas id="qrcode" style="margin: 20px;"></canvas>
-      </div>
+      
     </div>
 
     <div class="overlay-button-container visually-hidden">
-      <button class="overlay-button" >Toggle glasses</button>
+      <button class="overlay-button">Toggle glasses</button>
+    </div>
+
+    <div class="qr-wrapper visually-hidden">
+      <canvas id="qrcode"></canvas>
+      <button class="qr-wrapper-close">Close QR</button>
     </div>
 
     <nav>
@@ -32,6 +35,24 @@
     </nav>
 
     <div id="accessory-menu" class="visually-hidden"></div>
+
+    <div class="horizontal-controls-container">
+      <button class="horizontal-controls horizontal-controls-left">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16" viewBox="0 0 14 16" fill="none">
+          <path
+            d="M13.9403 14.2638V1.00193C13.9403 0.239519 13.1213 -0.242457 12.4548 0.127694L0.514539 6.75863C-0.171461 7.13959 -0.171462 8.12613 0.514538 8.5071L12.4548 15.138C13.1213 15.5082 13.9403 15.0262 13.9403 14.2638Z"
+            fill="white" />
+        </svg>
+      </button>
+
+      <button class="horizontal-controls horizontal-controls-right">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16" viewBox="0 0 14 16" fill="none">
+          <path
+            d="M3.91006e-05 14.2633V1.00144C3.91006e-05 0.239026 0.81901 -0.24295 1.48554 0.127201L13.4258 6.75813C14.1118 7.1391 14.1118 8.12564 13.4258 8.50661L1.48554 15.1375C0.819011 15.5077 3.91006e-05 15.0257 3.91006e-05 14.2633Z"
+            fill="white" />
+        </svg>
+      </button>
+    </div>
 
     <div class="uni-button-container">
       <button class="uni-button">Best button ever!!!</button>
