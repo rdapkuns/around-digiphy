@@ -13,6 +13,26 @@ export function createFloor(scene) {
 
     // --- build floor
     function createGeometry() {
+        loader.load("/floors/floor-1.glb", (gltf) => {
+            const model = gltf.scene;
+
+            // Common transforms
+            model.position.set(0, 0, 0);
+            model.rotateY(Math.PI);
+
+            // Enable shadows only once
+            model.traverse(child => {
+                if (child.isMesh) {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                }
+            });
+
+            // Add to scene
+            scene.add(model);
+
+        });
+
         loader.load("/floors/enviorment.glb", (gltf) => {
             const model = gltf.scene;
 
