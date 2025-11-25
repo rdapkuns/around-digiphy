@@ -276,6 +276,11 @@ nav {
   padding: 1rem;
 }
 
+#accessory-menu > h3{
+  margin-top: 1rem;
+  margin-bottom: 0.2rem;
+  color: black;
+}
 
 /* ////////////////////////////////////////////////////
 ///////////// HORIZONTAL NAVIGATION //////////////////

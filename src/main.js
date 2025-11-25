@@ -135,10 +135,11 @@ async function init() {
   // const { accessoryGroups } = await setupBuck(scene);
   const { accessoryGroups, setAccessoryVariant } = await setupBuck(scene);
   // createAccessoryMenu('#menu-container', accessoryGroups);
-
+  const primaryMaterialState = { value: 0xbfbdb4, roughness: 0.1, metalness: 0.1 };
+  const secondaryMaterialState = { value: 0xbfbdb4, roughness: 0.1, metalness: 0.1 };
 
   setupKeyboardCameraControl(camera);
-  createAccessoryMenu('#accessory-menu', accessoryGroups, setAccessoryVariant);
+  createAccessoryMenu('#accessory-menu', accessoryGroups, setAccessoryVariant, primaryMaterialState, secondaryMaterialState);
 }
 
 function render() {

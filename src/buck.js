@@ -51,10 +51,15 @@ export function setupBuck(scene) {
                 const model = gltf.scene
                 model.position.set(0, 2, 0)
                 scene.add(model)
+                
                 model.traverse(child => {
-                    if (!child.isMesh || !child.name.startsWith("accessory-")) return;
+                    // Handle both Groups (multi-material) and Meshes (single-material)
+                    const isAccessoryGroup = child.type === 'Group' && child.name.startsWith("accessory-");
+                    const isAccessoryMesh = child.isMesh && child.name.startsWith("accessory-");
 
-                    // Extract groupName from name: accessory-{group}-{index}
+                    if (!isAccessoryGroup && !isAccessoryMesh) return;
+
+                    // Extract groupName from name
                     const match = child.name.match(/^accessory-([a-zA-Z]+)-\d+/);
                     if (!match) return;
 
@@ -63,30 +68,42 @@ export function setupBuck(scene) {
                         accessoryGroups[groupName] = { variants: [], defaultVariantIndex: 0 };
                     }
 
-                    // Clone material for independent opacity
-                    if (Array.isArray(child.material)) {
-                        child.material = child.material.map(mat => {
-                            const clone = mat.clone();
-                            clone.transparent = true;
-                            clone.opacity = 0;
-                            return clone;
-                        });
-                    } else {
-                        const clone = child.material.clone();
-                        clone.transparent = true;
-                        clone.opacity = 0;
-                        child.material = clone;
+                    try {
+                        const allMaterials = [];
+
+                        if (isAccessoryGroup) {
+                            // Multi-material: traverse child meshes
+                            child.traverse(subChild => {
+                                if (subChild.isMesh) {
+                                    const mat = subChild.material.clone();
+                                    mat.transparent = true;
+                                    mat.opacity = 0;
+                                    subChild.material = mat;
+                                    allMaterials.push(mat);
+                                }
+                            });
+                        } else {
+                            // Single-material: handle the mesh directly
+                            const mat = child.material.clone();
+                            mat.transparent = true;
+                            mat.opacity = 0;
+                            child.material = mat;
+                            allMaterials.push(mat);
+                        }
+
+                        child.materials = allMaterials;
+                        child.visible = false;
+                        child.defaultPos = child.position.clone();
+
+                        accessoryGroups[groupName].variants.push(child);
+                    } catch (error) {
+                        console.error(`  - ERROR processing ${child.name}:`, error);
                     }
-
-                    child.visible = false;            // hide initially
-                    child.defaultPos = child.position.clone();  // store default position
-
-                    accessoryGroups[groupName].variants.push(child);
                 });
 
-                createAccessoriesTimeline();  // build AFTER loading
 
                 resolve({ group, update, accessoryGroups, setAccessoryVariant });
+                createAccessoriesTimeline();  // build AFTER loading
 
                 // Find and store references to each chair
                 for (let i = 1; i <= 4; i++) {
@@ -214,14 +231,14 @@ export function setupBuck(scene) {
 
             Object.values(accessoryGroups).forEach(group => {
                 group.variants.forEach((mesh, i) => {
+                   
+
                     const offset = accessoryOffsets[mesh.name] || { x: 0, y: 0, z: 0 };
-                    // const isActive = i === group.defaultVariantIndex;
 
                     mesh.visible = false;
-                    if (Array.isArray(mesh.material)) {
-                        mesh.material.forEach(mat => mat.opacity = 0);
-                    } else {
-                        mesh.material.opacity = 0;
+                    // Use stored materials reference
+                    if (mesh.materials) {
+                        mesh.materials.forEach(mat => mat.opacity = 0);
                     }
 
                     accessoriesTimeline.set(mesh, { visible: false });
@@ -242,7 +259,9 @@ export function setupBuck(scene) {
                             ease: "power3.out",
                             onStart: () => {
                                 // Only make active variant visible
-                                if (i === group.defaultVariantIndex) mesh.visible = true;
+                                if (i === group.defaultVariantIndex) {
+                                    mesh.visible = true;
+                                }
                             }
                         },
                         "<"
@@ -250,12 +269,16 @@ export function setupBuck(scene) {
 
                     // Animate opacity only for active variant
                     if (i === group.defaultVariantIndex) {
-                        accessoriesTimeline.fromTo(
-                            mesh.material,
-                            { opacity: 0 },
-                            { opacity: 1, duration: 1, ease: "power2.out" },
-                            "<"
-                        );
+                        if (mesh.materials) {
+                            mesh.materials.forEach((mat, matIndex) => {
+                                accessoriesTimeline.fromTo(
+                                    mat,
+                                    { opacity: 0 },
+                                    { opacity: 1, duration: 1, ease: "power2.out" },
+                                    "<"
+                                );
+                            });
+                        }
                     }
                 });
             });
@@ -355,21 +378,13 @@ export function setupBuck(scene) {
             const oldMesh = group.variants[group.defaultVariantIndex];
             if (oldMesh) {
                 oldMesh.visible = false;
-                if (Array.isArray(oldMesh.material)) {
-                    oldMesh.material.forEach(mat => mat.opacity = 0);
-                } else {
-                    oldMesh.material.opacity = 0;
-                }
+                oldMesh.materials.forEach(mat => mat.opacity = 0);
             }
 
             const newMesh = group.variants[variantIndex];
             if (newMesh) {
                 newMesh.visible = true;
-                if (Array.isArray(newMesh.material)) {
-                    newMesh.material.forEach(mat => mat.opacity = 1);
-                } else {
-                    newMesh.material.opacity = 1;
-                }
+                newMesh.materials.forEach(mat => mat.opacity = 1);
             }
 
             group.defaultVariantIndex = variantIndex;
