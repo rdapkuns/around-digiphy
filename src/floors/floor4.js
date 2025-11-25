@@ -15,7 +15,7 @@ export function createFloor(scene) {
 
 
 
-    const mobileUrl = `${window.location.origin}/mobile.html`;
+    const mobileUrl = `${window.location.origin}/around-digiphy/mobile.html`;
     QRCode.toCanvas(document.getElementById("qrcode"), mobileUrl, function (error) {
         if (error) console.error(error)
         console.log("QR code ready:", mobileUrl)
@@ -25,7 +25,7 @@ export function createFloor(scene) {
 
     // --- build floor
     function createGeometry() {
-        loader.load("/floors/floor-4.glb", (gltf) => {
+        loader.load("floors/floor-4.glb", (gltf) => {
             const model = gltf.scene;
 
             // Common transforms

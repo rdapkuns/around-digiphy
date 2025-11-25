@@ -47,7 +47,7 @@ export function setupBuck(scene) {
         function createGeometry() {
 
 
-            loader.load('/models/digiphy-accessories.glb', (gltf) => {
+            loader.load('models/digiphy-accessories.glb', (gltf) => {
                 const model = gltf.scene
                 model.position.set(0, 2, 0)
                 scene.add(model)
@@ -180,7 +180,7 @@ export function setupBuck(scene) {
 
             })
 
-            loader.load('/models/platform.glb', (gltf) => {
+            loader.load('models/platform.glb', (gltf) => {
                 const model = gltf.scene
                 model.position.set(0, 0, 0)
                 scene.add(model)

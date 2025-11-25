@@ -1,5 +1,4 @@
-import './reset.css'
-import './style.css'
+
 
 
 
@@ -89,7 +88,7 @@ async function init() {
 
   const pmrem = new THREE.PMREMGenerator(renderer)
 
-  new HDRLoader().load('/hdri/sunset.hdr', (hdrTexture) => {
+  new HDRLoader().load('hdri/sunset.hdr', (hdrTexture) => {
     const envMap = pmrem.fromEquirectangular(hdrTexture).texture
 
     scene.environment = envMap         // used for lighting

@@ -15,7 +15,7 @@ export function createFloor(scene) {
 
     // --- build floor
     function createGeometry() {
-        loader.load("/floors/floor-2.glb", (gltf) => {
+        loader.load("floors/floor-2.glb", (gltf) => {
             const model = gltf.scene;
 
             // Common transforms
@@ -34,7 +34,7 @@ export function createFloor(scene) {
             scene.add(model);
         });
 
-        loader.load('/models/digiphy-overlay.glb', (gltf) => {
+        loader.load('models/digiphy-overlay.glb', (gltf) => {
             overlayModel = gltf.scene;
             overlayModel.position.set(0, 2, 0);
 
