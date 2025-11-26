@@ -16,7 +16,7 @@ export function setupBuck(scene) {
         const group = new THREE.Group();
         scene.add(group);
         let box;
-        let dashboard = null
+        let dashboards = []
         const objects = {};
 
         let accessoriesTimeline;
@@ -51,15 +51,27 @@ export function setupBuck(scene) {
                 const model = gltf.scene
                 model.position.set(0, 2, 0)
                 scene.add(model)
-                
+
                 model.traverse(child => {
-                    // Handle both Groups (multi-material) and Meshes (single-material)
+                    if (
+                        child.name &&
+                        child.name.toLowerCase().includes("dashboard")
+                    ) {
+                        // Store base position but DO NOT modify mesh
+                        child.defaultPos = child.position.clone();
+
+                        dashboards.push(child);
+
+                        console.log("Found dashboard:", child.name, child);
+                    }
+                });
+
+                model.traverse(child => {
                     const isAccessoryGroup = child.type === 'Group' && child.name.startsWith("accessory-");
                     const isAccessoryMesh = child.isMesh && child.name.startsWith("accessory-");
 
                     if (!isAccessoryGroup && !isAccessoryMesh) return;
 
-                    // Extract groupName from name
                     const match = child.name.match(/^accessory-([a-zA-Z]+)-\d+/);
                     if (!match) return;
 
@@ -68,38 +80,34 @@ export function setupBuck(scene) {
                         accessoryGroups[groupName] = { variants: [], defaultVariantIndex: 0 };
                     }
 
-                    try {
-                        const allMaterials = [];
+                    const allMaterials = [];
 
-                        if (isAccessoryGroup) {
-                            // Multi-material: traverse child meshes
-                            child.traverse(subChild => {
-                                if (subChild.isMesh) {
-                                    const mat = subChild.material.clone();
-                                    mat.transparent = true;
-                                    mat.opacity = 0;
-                                    subChild.material = mat;
-                                    allMaterials.push(mat);
-                                }
-                            });
-                        } else {
-                            // Single-material: handle the mesh directly
-                            const mat = child.material.clone();
-                            mat.transparent = true;
-                            mat.opacity = 0;
-                            child.material = mat;
-                            allMaterials.push(mat);
-                        }
-
-                        child.materials = allMaterials;
-                        child.visible = false;
-                        child.defaultPos = child.position.clone();
-
-                        accessoryGroups[groupName].variants.push(child);
-                    } catch (error) {
-                        console.error(`  - ERROR processing ${child.name}:`, error);
+                    if (isAccessoryGroup) {
+                        child.traverse(sub => {
+                            if (sub.isMesh) {
+                                const mat = sub.material.clone();
+                                mat.transparent = true;
+                                mat.opacity = 0;
+                                sub.material = mat;
+                                allMaterials.push(mat);
+                            }
+                        });
+                    } else {
+                        const mat = child.material.clone();
+                        mat.transparent = true;
+                        mat.opacity = 0;
+                        child.material = mat;
+                        allMaterials.push(mat);
                     }
+
+                    child.materials = allMaterials;
+                    child.visible = false;
+
+                    child.defaultPos = child.position.clone();
+                    accessoryGroups[groupName].variants.push(child);
                 });
+
+
 
 
                 resolve({ group, update, accessoryGroups, setAccessoryVariant });
@@ -114,11 +122,9 @@ export function setupBuck(scene) {
 
                 }
 
-                dashboard = model.getObjectByName('dashboard');
-                if (dashboard) {
-                    dashboard.defaultPos = dashboard.position.clone();
-                    objects.dashboard = dashboard;
-                }
+                
+
+                // console.log("dashboards: ", dashboards)
 
 
                 // --- configuration
@@ -334,7 +340,9 @@ export function setupBuck(scene) {
 
             switch (payload.object) {
                 case "dashboard":
-                    moveObject(dashboard, payload.direction, payload.amount)
+                    dashboards.forEach((d) => {
+                        moveObject(d, payload.direction, payload.amount)
+                    })
                     break;
                 case "chair-1":
                     moveObject(objects[payload.object], payload.direction, payload.amount)
