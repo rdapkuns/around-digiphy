@@ -276,7 +276,7 @@ nav {
   padding: 1rem;
 }
 
-#accessory-menu > h3{
+#accessory-menu>h3 {
   margin-top: 1rem;
   margin-bottom: 0.2rem;
   color: black;
@@ -325,4 +325,79 @@ nav {
 .horizontal-controls:last-child {
   border-top-right-radius: 100px;
   border-bottom-right-radius: 100px;
+}
+
+
+/* ////////////////////////////////////////////////////
+//////////////////// FLOOR 1 UI //////////////////////
+//////////////////////////////////////////////////// */
+
+.ui-container {
+  position: fixed;
+  /* background-color: rgba(255, 192, 203, 0.444); */
+  right: 0rem;
+  left: 0rem;
+  top: 0rem;
+  bottom: 0rem;
+  color: #242424;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.ui-panel {
+  background-color: #ffffff5a;
+  backdrop-filter: blur(7px);
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 25rem;
+  margin: 1rem;
+}
+
+.ui-panel>h4 {
+  font-weight: 800;
+  font-size: 1.6rem;
+  margin-bottom: 1rem;
+}
+
+/* ////////////////////////////////////////////////////
+//////////////////// FLOOR 1 UI //////////////////////
+//////////////////////////////////////////////////// */
+
+#ui-panel-1 {
+  position: absolute;
+  right: 5%;
+  top: 20%;
+}
+
+#ui-panel-2 {
+  position: absolute;
+  right: 5%;
+  top: 50%;
+}
+
+#ui-panel-3 {
+  position: absolute;
+  left: 10%;
+  top: 60%;
+}
+
+#ui-panel-4 {
+  position: absolute;
+  right: 5%;
+  top: 60%;
+}
+
+#ui-panel-5 {
+  position: absolute;
+  right: 5%;
+  top: 60%;
+}
+
+#ui-panel-6 {
+  position: absolute;
+  right: 5%;
+  top: 20%;
+  border-radius: 10px;
+  height: 20rem;
 }

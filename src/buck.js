@@ -62,7 +62,7 @@ export function setupBuck(scene) {
 
                         dashboards.push(child);
 
-                        console.log("Found dashboard:", child.name, child);
+                        // console.log("Found dashboard:", child.name, child);
                     }
                 });
 

@@ -65,6 +65,77 @@ export function createFloor(scene) {
     function update() {
     }
 
+    let uiVisible = false
+    let currentStation
+
+    function checkHeight(cameraHeight, currentStationIndex) {
+        console.log("received change")
+        if (currentStationIndex !== currentStation) {
+            hideUI()
+        }
+        if (currentStationIndex === -1) {
+            return
+        }
+        currentStation = currentStationIndex
+        // console.log(currentStation)
+        if (6 <= cameraHeight && cameraHeight < 10 && uiVisible === false) {
+            showUI()
+        }
+        if (6 > cameraHeight || cameraHeight > 10 && uiVisible === true) {
+            hideUI()
+        }
+    }
+    // SHOW THE UI
+
+
+    function showUI() {
+        const activeStation = document.querySelector(`.floor1-ui-station${currentStation}`);
+        if (!activeStation) return;
+
+        const children = [...activeStation.children];
+
+        activeStation.classList.remove("visually-hidden");
+
+        gsap.fromTo(children,
+            { opacity: 0, scale: 0.8, y: 20 },
+            {
+                opacity: 1,
+                scale: 1,
+                y: 0,
+                duration: 0.4,
+                stagger: 0.08,
+                ease: "power2.out"
+            }
+        );
+
+        uiVisible = true;
+    }
+
+
+
+    function hideUI() {
+        const activeStation = document.querySelector(`.floor1-ui-station${currentStation}`);
+        if (!activeStation) return;
+
+        const children = [...activeStation.children];
+
+        gsap.to(children, {
+            opacity: 0,
+            scale: 0.8,
+            y: 20,
+            duration: 0.3,
+            stagger: 0.06,
+            ease: "power2.in",
+            onComplete: () => {
+                activeStation.classList.add("visually-hidden");
+            }
+        });
+
+        uiVisible = false;
+    }
+
+
+
     // initialize floor
     createGeometry();
     createLights();
@@ -73,5 +144,5 @@ export function createFloor(scene) {
 
     initAnimations();
 
-    return { group, update };
+    return { group, update, checkHeight };
 }

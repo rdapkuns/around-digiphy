@@ -240,6 +240,9 @@ const cameraTL = gsap.timeline({
       // console.log(currentCameraHeight)
       camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0);
       checkCurrentFloor();
+
+      fl1.checkHeight(currentCameraHeight, currentIndex);
+
     }
   }
 });
@@ -283,6 +286,7 @@ cameraTL.to(camera.position, {
 
 const qr = document.querySelector(".qr-wrapper")
 const overlayButton = document.querySelector(".overlay-button-container")
+const fl1 = Floor1(scene);
 const fl2 = Floor2(scene);
 let overlayOn = false
 
@@ -295,7 +299,7 @@ function checkCurrentFloor() {
   if (currentFloor !== prevFloor) {
     console.log("new floor: ", currentFloor)
 
-    if (currentFloor === 2){
+    if (currentFloor === 2) {
       gsap.to(camera, {
         fov: 65,
         duration: 1,
@@ -393,7 +397,7 @@ function checkCurrentFloor() {
       // console.log(fl2.overlayVisible)
     }
 
-    if (currentFloor === 3 || prevFloor === 3){
+    if (currentFloor === 3 || prevFloor === 3) {
       toggleAccessoryMenu()
     }
 
@@ -415,14 +419,16 @@ function setActiveFloor(floorNumber) {
   }
 }
 
+let currentIndex
+
 function setupKeyboardCameraControl(camera, model) {
   const cameraPoints = [
-    new THREE.Vector3(0, currentCameraHeight, 20),
-    new THREE.Vector3(17, currentCameraHeight, -8),
-    new THREE.Vector3(-17, currentCameraHeight, -8),
+    new THREE.Vector3(0, currentCameraHeight, 23),
+    new THREE.Vector3(20, currentCameraHeight, -10),
+    new THREE.Vector3(-20, currentCameraHeight, -10),
   ]
 
-  let currentIndex = 0
+  currentIndex = 0
   let isAnimating = false
 
   function moveCameraTo(targetVec3) {
@@ -433,13 +439,21 @@ function setupKeyboardCameraControl(camera, model) {
       z: targetVec3.z,
       duration: 1.5,
       ease: 'power2.inOut',
+      onStart: () => {
+        fl1.checkHeight(currentCameraHeight, -1);
+      },
       onUpdate: () => {
         camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0)
-
       },
-      onComplete: () => (isAnimating = false),
+      onComplete: () => {
+        fl1.checkHeight(currentCameraHeight, currentIndex);
+        isAnimating = false
+      },
     })
   }
+
+  fl1.checkHeight(currentCameraHeight, currentIndex);
+
 
   camera.position.copy(cameraPoints[currentIndex])
   camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0)
