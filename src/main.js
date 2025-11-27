@@ -45,14 +45,14 @@ animate();
 async function init() {
   // Basic setup
   scene = new THREE.Scene()
-  scene.background = new THREE.Color(0xccf2fc)
+  scene.background = null
 
   camera = new THREE.PerspectiveCamera(65, canvas.clientWidth / canvas.clientHeight, 0.1, 100)
   camera.position.set(17, currentCameraHeight, -8)
   camera.lookAt(0, currentCameraHeight - 4, 0)
 
 
-  renderer = new THREE.WebGLRenderer({ canvas, antialias: true })
+  renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true })
   renderer.setSize(canvas.clientWidth, canvas.clientHeight)
   renderer.setPixelRatio(window.devicePixelRatio)
 
@@ -92,7 +92,7 @@ async function init() {
     const envMap = pmrem.fromEquirectangular(hdrTexture).texture
 
     scene.environment = envMap         // used for lighting
-    scene.background = envMap          // used as background
+    // scene.background = envMap          // used as background
 
     hdrTexture.dispose()
     pmrem.dispose()

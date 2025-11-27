@@ -33,6 +33,7 @@ body {
   overflow-x: hidden;
   background: #000;
   box-sizing: border-box;
+  /* background-color: pink; */
 }
 
 canvas {
@@ -40,6 +41,9 @@ canvas {
   height: 100%;
   display: block;
   z-index: 0;
+  background-color: pink;
+  background: #ff7b00;
+    background: linear-gradient(0deg, rgba(255, 123, 0, 1) 30%, rgba(227, 0, 201, 1) 32%, rgb(11, 0, 16) 60%);
 }
 
 
@@ -51,6 +55,7 @@ canvas {
   background: #000;
   width: 100vw;
   height: 12000px;
+  /* background-color: pink; */
 }
 
 .canvas-wrapper {
