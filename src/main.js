@@ -319,7 +319,6 @@ function checkCurrentFloor() {
       });
     }
     if (currentFloor === 3) {
-      //ARRIVE FLOOR 4
       qr.classList.add("visually-hidden")
       gsap.to(camera, {
         fov: 30,
@@ -392,9 +391,6 @@ function checkCurrentFloor() {
       overlayButton.classList.add("visually-hidden")
 
       fl2.overlayOff();
-      // fl2.toggleOverlayOpacity()
-
-      // console.log(fl2.overlayVisible)
     }
 
     if (currentFloor === 3 || prevFloor === 3) {
