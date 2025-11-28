@@ -365,7 +365,26 @@ nav {
   background: linear-gradient(335deg, rgba(52, 146, 253, 0.35) 11.04%, rgba(255, 255, 255, 0.35) 58.32%);
   backdrop-filter: blur(7px);
   pointer-events: none;
+  border: 2px solid rgba(255, 255, 255, 0.195);
 }
+
+.ui-tip{
+  border-radius: 0.6875rem;
+    background: radial-gradient(204.69% 244.14% at 30.87% -49.17%, rgba(0, 106, 255, 0.67) 0%, rgba(232, 6, 130, 0.67) 100%);
+    backdrop-filter: blur(13.399999618530273px);
+    color: white;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem;
+
+    position: absolute;
+      right: 2%;
+      bottom: 3%;
+}
+
+
 
 .ui-panel h4 {
   font-weight: 800;
@@ -426,14 +445,14 @@ nav {
 
 #ui-panel-1 {
   position: absolute;
-  left: 5%;
-  top: 20%;
+  right: 5%;
+  bottom: 5%;
 }
 
 #ui-panel-2 {
   position: absolute;
   right: 5%;
-  top: 50%;
+  top: 10%;
 }
 
 #ui-panel-3 {
@@ -637,6 +656,21 @@ height: 100%; */
   position: absolute;
   right: 5%;
   top: 20%;
+  border-radius: 10px;
+  height: 20rem;
+}
+
+
+/* ////////////////////////////////////////////////////
+//////////////////// FLOOR 2 UI //////////////////////
+//////////////////////////////////////////////////// */
+
+
+
+#ui-panel-2-1 {
+  position: absolute;
+  right: 5%;
+  top: 10%;
   border-radius: 10px;
   height: 20rem;
 }

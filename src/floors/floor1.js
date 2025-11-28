@@ -6,12 +6,12 @@ import ScrollTrigger from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger);
 
 const titles = [
-    "The experience",
+    "Hey, I'm Digi",
     "What is DigiPHY?",
 ];
 
 const texts = [
-    "Each floor represents a specific detail of digiphy. Use the arrows on screen or on your keyboard to explore further. You can move to the next floor by scrolling or click on the floor you want in the navigation. ",
+    "Have you ever wondered how your ideas would look like or behave once they become real? DigiPHY turns your early concepts and sketches into full - scale, interactive experiences in seconds.Sketch → test → refine - all in one continuous loop, without interrupting your creative momentum.",
     "DigiPHY, created by Granstudio, merges a physical seating frame with a real-time digital layer. I allows me to sit in the adjustable frame, change seat positions, move displays, test visibility, and see everything update instantly wearing any AR goggles. DigiPHY lets me experience and adjust a full car interior long before a physical prototype exists - saving huge amounts of time and money.",
 ];
 
@@ -173,7 +173,7 @@ export function createFloor(scene) {
         }
     }
 
-
+    const station1Tip = document.querySelector(".floor1-ui-station1 > .ui-tip")
 
     function physical(target) {
         if (currentStation !== 1 || cameraY > 8) {
@@ -185,6 +185,18 @@ export function createFloor(scene) {
         const children = [...activeStation.children];
 
         activeStation.classList.remove("visually-hidden");
+
+        gsap.to(station1Tip, {
+            opacity: 0,
+            scale: 0.8,
+            y: 20,
+            duration: 0.3,
+            stagger: 0.06,
+            ease: "power2.in",
+            onComplete: () => {
+                station1Tip.classList.add("visually-hidden");
+            }
+        });
 
         gsap.fromTo(children,
             { opacity: 0, scale: 0.8, y: 20 },

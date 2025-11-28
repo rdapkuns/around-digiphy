@@ -19,6 +19,8 @@ export function setupBuck(scene) {
         let dashboards = []
         const objects = {};
 
+        let modelDigiphy
+
         let accessoriesTimeline;
         let accessories = [];
         const accessoryGroups = {

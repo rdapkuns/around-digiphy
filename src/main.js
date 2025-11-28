@@ -5,7 +5,7 @@
 import * as THREE from 'three';
 import { createFloor as Floor1 } from './floors/floor1.js';
 import { createFloor as Floor3 } from './floors/floor3.js';
-import { createFloor as Floor2, createAccessoryMenu, toggleAccessoryMenu } from './floors/floor2.js';
+import { createFloor as Floor2, createAccessoryMenu, toggleAccessoryMenu, toggleTextPanel } from './floors/floor2.js';
 import { createFloor as Floor4 } from './floors/floor4.js';
 import { createFloor as Floor5 } from './floors/floor5.js';
 import { setupBuck } from './buck.js';
@@ -255,6 +255,7 @@ cameraTL.to(camera.position, {
 
 cameraTL.call(() => {
   console.log("ENTERED HOLD");
+  toggleTextPanel()
   // onEnterHold();
 });
 
@@ -268,6 +269,8 @@ cameraTL.to(camera.position, {
 
 cameraTL.call(() => {
 
+  toggleTextPanel()
+
   gsap.to(camera, {
     fov: 20,
     duration: 1,
@@ -277,6 +280,7 @@ cameraTL.call(() => {
     }
   });
 
+  //hide text panel
   gsap.to(cameraTargetOffset, {
     value: 2,
     duration: 1,
@@ -289,10 +293,14 @@ cameraTL.call(() => {
 }, null, "holdStart+=" + (ratio.hold * 0.2));
 
 cameraTL.call(() => {
+  //show ui
+  // show tool tip
   toggleAccessoryMenu()
 }, null, "holdStart+=" + (ratio.hold * 0.5));
 
 cameraTL.call(() => {
+  //hide ui
+  // hide tool tip
   toggleAccessoryMenu()
 }, null, "holdStart+=" + (ratio.hold * 0.9));
 
@@ -399,6 +407,7 @@ function checkCurrentFloor() {
 
       qr.classList.add("visually-hidden")
 
+      overlayButton.classList.remove("visually-hidden")
 
       gsap.to(camera, {
         fov: 65,
@@ -470,10 +479,10 @@ function checkCurrentFloor() {
     }
 
     if (currentFloor === 2 || currentFloor === 4) {
-      overlayButton.classList.remove("visually-hidden")
+      // overlayButton.classList.remove("visually-hidden")
 
     }
-    if (currentFloor === 1 || currentFloor === 5) {
+    if (currentFloor === 2 || currentFloor === 4) {
       overlayButton.classList.add("visually-hidden")
 
       fl3.overlayOff();

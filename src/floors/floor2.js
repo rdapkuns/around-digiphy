@@ -177,9 +177,88 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
 }
 
 
+let uiHidden = true
 
+const $accessoryUI = document.querySelectorAll(".ui-accessories")
 
 const $accessoryMenu = document.getElementById("accessory-menu")
+const floor2Tip = document.querySelector(".floor2-ui-container > .ui-tip")
 export function toggleAccessoryMenu() {
-    $accessoryMenu.classList.toggle("visually-hidden")
+    if (uiHidden) {
+        uiHidden = false
+
+        // $accessoryMenu.classList.remove("visually-hidden");
+        // floor2Tip.classList.remove("visually-hidden");
+        $accessoryUI.forEach((ui) => {
+            ui.classList.remove("visually-hidden");
+        })
+
+        gsap.fromTo($accessoryUI,
+            { opacity: 0, scale: 0.8, y: 20 },
+            {
+                opacity: 1,
+                scale: 1,
+                y: 0,
+                duration: 0.4,
+                stagger: 0.06,
+                ease: "power2.out"
+            }
+        );
+
+        console.log("ui hidden: ", uiHidden)
+    } else {
+        uiHidden = true
+
+        gsap.to($accessoryUI, {
+            opacity: 0,
+            scale: 0.8,
+            y: 20,
+            duration: 0.3,
+            stagger: 0.06,
+            ease: "power2.in",
+            onComplete: () => {
+                $accessoryUI.forEach((ui) => {
+                    ui.classList.add("visually-hidden");
+                })
+            }
+        });
+        console.log("ui hidden: ", uiHidden)
+    }
+    // $accessoryMenu.classList.toggle("visually-hidden")
+}
+
+
+const $floor2Text = document.getElementById("ui-panel-2-1")
+let textHidden = true
+export function toggleTextPanel() {
+    if (textHidden) {
+        textHidden = false
+        $floor2Text.classList.remove("visually-hidden");
+
+        gsap.fromTo($floor2Text,
+            { opacity: 0, scale: 0.8, y: 20 },
+            {
+                opacity: 1,
+                scale: 1,
+                y: 0,
+                duration: 0.4,
+                ease: "power2.out"
+            }
+        );
+    } else {
+        textHidden = true
+
+        gsap.to($floor2Text, {
+            opacity: 0,
+            scale: 0.8,
+            y: 20,
+            duration: 0.3,
+            stagger: 0.06,
+            ease: "power2.in",
+            onComplete: () => {
+                $floor2Text.classList.add("visually-hidden");
+            }
+        });
+    } 
+    // $floor2Text.classList.toggle("visually-hidden")
 }
