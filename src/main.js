@@ -4,8 +4,8 @@
 
 import * as THREE from 'three';
 import { createFloor as Floor1 } from './floors/floor1.js';
-import { createFloor as Floor2 } from './floors/floor2.js';
-import { createFloor as Floor3, createAccessoryMenu, toggleAccessoryMenu } from './floors/floor3.js';
+import { createFloor as Floor3 } from './floors/floor3.js';
+import { createFloor as Floor2, createAccessoryMenu, toggleAccessoryMenu } from './floors/floor2.js';
 import { createFloor as Floor4 } from './floors/floor4.js';
 import { createFloor as Floor5 } from './floors/floor5.js';
 import { setupBuck } from './buck.js';
@@ -57,12 +57,12 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio)
 
   // Lights
-  scene.add(new THREE.AmbientLight(0xffffff, 0.8))
+  scene.add(new THREE.AmbientLight(0xffffff, 1))
   const dirLight = new THREE.DirectionalLight(0xffffff, 1)
   dirLight.position.set(15, 7, 17.5)
   dirLight.castShadow = true
   dirLight.shadow.mapSize.set(2048, 2048)
-  scene.add(dirLight)
+  // scene.add(dirLight)
 
 
   const light = new THREE.DirectionalLight(0xFFFFFF, .5);
@@ -82,7 +82,7 @@ async function init() {
 
   cam.updateProjectionMatrix();
 
-  scene.add(light);
+  // scene.add(light);
 
   // setupCameraScroll();
 
@@ -108,8 +108,8 @@ async function init() {
 
   // Load chapters
   const fl1 = Floor1(scene);
-  const fl2 = Floor2(scene);
-  const fl3 = Floor3(scene);
+  // const fl2 = Floor2(scene);
+  // const fl3 = Floor3(scene);
   const fl4 = Floor4(scene);
   const fl5 = Floor5(scene);
 
@@ -117,8 +117,8 @@ async function init() {
 
 
   floors.push(fl1);
-  floors.push(fl2);
-  floors.push(fl3);
+  // floors.push(fl2);
+  // floors.push(fl3);
   floors.push(fl4);
   floors.push(fl5);
 
@@ -126,14 +126,13 @@ async function init() {
 
   // Add chapter groups to the scene
   scene.add(fl1.group);
-  scene.add(fl2.group);
-  scene.add(fl3.group);
+  // scene.add(fl2.group);
+  // scene.add(fl3.group);
   scene.add(fl4.group);
   scene.add(fl5.group);
 
   // const { accessoryGroups } = await setupBuck(scene);
   const { accessoryGroups, setAccessoryVariant } = await setupBuck(scene);
-  // createAccessoryMenu('#menu-container', accessoryGroups);
   const primaryMaterialState = { value: 0xbfbdb4, roughness: 0.1, metalness: 0.1 };
   const secondaryMaterialState = { value: 0xbfbdb4, roughness: 0.1, metalness: 0.1 };
 
@@ -215,9 +214,9 @@ function setupCameraScroll() {
 
 
 // --- configuration
-const holdY = 32;                       // Y where camera stops to "hold"
+const holdY = 19;                       // Y where camera stops to "hold"
 const moveUpAmount = 63;                // how far up the camera moves overall
-const ratio = { first: 3, hold: 4, last: 4.2 };
+const ratio = { first: 1, hold: 6, last: 4.2 };
 // first:hold:last = fraction of scroll allocated to phase1/phase2/phase3
 // here hold will take 1/(4+1+5)=10% of the scroll distance
 
@@ -262,9 +261,41 @@ cameraTL.call(() => {
 // Phase 2: hold at holdY (same y target) — duration controls how much scroll is spent holding
 cameraTL.to(camera.position, {
   y: holdY,
-  ease: 'none',    // no easing for a perfectly flat hold
+  ease: 'none',
   duration: ratio.hold
-});
+}, "holdStart");
+
+
+cameraTL.call(() => {
+
+  gsap.to(camera, {
+    fov: 20,
+    duration: 1,
+    ease: "power3.inOut",
+    onUpdate() {
+      camera.updateProjectionMatrix();
+    }
+  });
+
+  gsap.to(cameraTargetOffset, {
+    value: 2,
+    duration: 1,
+    ease: "power3.inOut",
+    onUpdate() {
+      camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0)
+    }
+  });
+
+}, null, "holdStart+=" + (ratio.hold * 0.2));
+
+cameraTL.call(() => {
+  toggleAccessoryMenu()
+}, null, "holdStart+=" + (ratio.hold * 0.5));
+
+cameraTL.call(() => {
+  toggleAccessoryMenu()
+}, null, "holdStart+=" + (ratio.hold * 0.9));
+
 
 // Phase 3: continue to finalY
 cameraTL.to(camera.position, {
@@ -273,7 +304,9 @@ cameraTL.to(camera.position, {
   duration: ratio.last
 });
 
+cameraTL.call(() => {
 
+}, null, "holdStart+=" + ratio.hold);
 
 
 
@@ -288,9 +321,11 @@ const qr = document.querySelector(".qr-wrapper")
 const overlayButton = document.querySelector(".overlay-button-container")
 const fl1 = Floor1(scene);
 const fl2 = Floor2(scene);
+const fl3 = Floor3(scene);
+
 let overlayOn = false
 
-document.querySelector('.overlay-button').addEventListener('click', fl2.toggleOverlayOpacity);
+document.querySelector('.overlay-button').addEventListener('click', fl3.toggleOverlayOpacity);
 
 
 function checkCurrentFloor() {
@@ -299,7 +334,7 @@ function checkCurrentFloor() {
   if (currentFloor !== prevFloor) {
     console.log("new floor: ", currentFloor)
 
-    if (currentFloor === 2) {
+    if (currentFloor === 1) {
       gsap.to(camera, {
         fov: 65,
         duration: 1,
@@ -318,10 +353,21 @@ function checkCurrentFloor() {
         }
       });
     }
-    if (currentFloor === 3) {
-      qr.classList.add("visually-hidden")
+
+    if (currentFloor === 2) {
+
+      if (currentIndex === 0) {
+        fl2.rotateFloor(0)
+      }
+      if (currentIndex === 1) {
+        fl2.rotateFloor(120)
+      }
+      if (currentIndex === 2) {
+        fl2.rotateFloor(-120)
+      }
+
       gsap.to(camera, {
-        fov: 30,
+        // fov: 15,
         duration: 1,
         ease: "power3.inOut",
         onUpdate() {
@@ -330,7 +376,41 @@ function checkCurrentFloor() {
       });
 
       gsap.to(cameraTargetOffset, {
-        value: 2,
+        // value: 2,
+        duration: 1,
+        ease: "power3.inOut",
+        onUpdate() {
+          // camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0)
+        }
+      });
+
+    }
+    if (currentFloor === 3) {
+
+      if (currentIndex === 0) {
+        fl3.rotateFloor(0)
+      }
+      if (currentIndex === 1) {
+        fl3.rotateFloor(120)
+      }
+      if (currentIndex === 2) {
+        fl3.rotateFloor(-120)
+      }
+
+      qr.classList.add("visually-hidden")
+
+
+      gsap.to(camera, {
+        fov: 65,
+        duration: 1,
+        ease: "power3.inOut",
+        onUpdate() {
+          camera.updateProjectionMatrix();
+        }
+      });
+
+      gsap.to(cameraTargetOffset, {
+        value: 4,
         duration: 1,
         ease: "power3.inOut",
         onUpdate() {
@@ -383,6 +463,12 @@ function checkCurrentFloor() {
         }
       });
     }
+
+    if (currentFloor === 6) {
+
+
+    }
+
     if (currentFloor === 2 || currentFloor === 4) {
       overlayButton.classList.remove("visually-hidden")
 
@@ -390,11 +476,27 @@ function checkCurrentFloor() {
     if (currentFloor === 1 || currentFloor === 5) {
       overlayButton.classList.add("visually-hidden")
 
-      fl2.overlayOff();
+      fl3.overlayOff();
     }
 
-    if (currentFloor === 3 || prevFloor === 3) {
-      toggleAccessoryMenu()
+    if (currentFloor === 2 && prevFloor === 3) {
+      gsap.to(camera, {
+        fov: 20,
+        duration: 1,
+        ease: "power3.inOut",
+        onUpdate() {
+          camera.updateProjectionMatrix();
+        }
+      });
+
+      gsap.to(cameraTargetOffset, {
+        value: 2,
+        duration: 1,
+        ease: "power3.inOut",
+        onUpdate() {
+          camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0)
+        }
+      });
     }
 
 
@@ -475,6 +577,9 @@ function setupKeyboardCameraControl(camera, model) {
   })
 }
 
+document.querySelector('.uni-button').addEventListener('click', () => {
+  fl2.rotateFloor(120)
+});
 
 
 window.addEventListener('resize', resize);

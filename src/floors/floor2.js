@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+// import { setAccessoryVariant } from "../buck.js";
+
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger);
@@ -9,15 +11,13 @@ export function createFloor(scene) {
     const loader = new GLTFLoader()
     const group = new THREE.Group();
     scene.add(group);
-    let overlayModel;
-    let overlayVisible = false;
-
+    let floorGroup = new THREE.Group();
 
     // --- build floor
     function createGeometry() {
         loader.load("floors/floor-2.glb", (gltf) => {
             const model = gltf.scene;
-
+            floorGroup.add(model);
             // Common transforms
             model.position.set(0, 0, 0);
             model.rotateY(Math.PI);
@@ -31,166 +31,155 @@ export function createFloor(scene) {
             });
 
             // Add to scene
-            scene.add(model);
+            scene.add(floorGroup);
         });
-
-        loader.load('models/digiphy-overlay.glb', (gltf) => {
-            overlayModel = gltf.scene;
-            overlayModel.position.set(0, 2, 0);
-
-            // ensure all materials can use opacity
-            overlayModel.traverse((child) => {
-                if (child.isMesh && child.material) {
-                    child.material.transparent = true;
-                    child.material.opacity = 0; // start at 0 opacity
-                    overlayModel.visible = false;
-                }
-            });
-
-            scene.add(overlayModel);
-
-            // gsap.to(overlayModel.position, {
-            //     ease: "linear",
-            //     y: overlayModel.position.y + 63,
-            //     scrollTrigger: {
-            //         trigger: '.three-section',
-            //         start: "top top",
-            //         end: "bottom bottom",
-            //         scrub: true,
-            //     }
-            // })
-
-            // --- configuration
-            const holdY = 28;                       // 26 because camera starts at 6 and this at 0
-            const moveUpAmount = 63;                // how far up the camera moves overall
-            const ratio = { first: 3, hold: 4, last: 4.2 };
-            // first:hold:last = fraction of scroll allocated to phase1/phase2/phase3
-            // here hold will take 1/(4+1+5)=10% of the scroll distance
-
-            // compute targets
-            const startY = 2;
-            const finalY = startY + moveUpAmount;
-
-            // create timeline mapped to scroll
-            const modelTl = gsap.timeline({
-                scrollTrigger: {
-                    trigger: '.three-section',
-                    start: 'top top',
-                    end: 'bottom bottom',    // or use "+=1000" to control exact scroll length
-                    scrub: true,
-                }
-            });
-
-            // Phase 1: move from startY to holdY
-            modelTl.to(overlayModel.position, {
-                y: holdY,
-                ease: 'linear',
-                duration: ratio.first
-            });
-
-            // Phase 2: hold at holdY (same y target) — duration controls how much scroll is spent holding
-            modelTl.to(overlayModel.position, {
-                y: holdY,
-                ease: 'none',    // no easing for a perfectly flat hold
-                duration: ratio.hold
-            });
-
-            // Phase 3: continue to finalY
-            modelTl.to(overlayModel.position, {
-                y: finalY,
-                ease: 'linear',
-                duration: ratio.last
-            });
-
-            gsap.to(overlayModel.rotation, {
-                ease: "linear",
-                y: overlayModel.rotation.y + 5,
-                scrollTrigger: {
-                    trigger: '.three-section',
-                    start: "top top",
-                    end: "bottom bottom",
-                    scrub: true,
-                }
-            })
-
-
-        })
-        
     }
-    
 
-    function toggleOverlayOpacity() {
-        if (!overlayModel) return;
+    function rotateFloor(deg = 30) {
+        if (!floorGroup) {
+            console.warn("Floor model not loaded yet.");
+            return;
+        }
 
-        overlayVisible = !overlayVisible;
+        const radians = THREE.MathUtils.degToRad(deg);
 
-        if (overlayVisible) {
-            overlayModel.visible = true;
+        gsap.to(floorGroup.rotation, {
+            y: radians,
+            duration: 0,
+            ease: "power2.inOut",
+            onUpdate: () => {
+            }
+        });
+    }
 
-            overlayModel.traverse(child => {
-                if (child.isMesh) {
-                    gsap.to(child.material, {
-                        opacity: 0.5,
-                        duration: 0.6,
-                        ease: "power2.out"
-                    });
-                }
+    createGeometry();
+
+    return { group, rotateFloor };
+}
+
+export function createAccessoryMenu(containerSelector, accessoryGroups, setAccessoryVariant, primaryMaterialState, secondaryMaterialState) {
+    const container = document.querySelector(containerSelector);
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    // --- Accessory Variant Buttons ---
+    Object.entries(accessoryGroups).forEach(([groupName, group]) => {
+        if (group.variants.length > 1) {
+            const title = document.createElement("h3");
+            title.textContent = groupName;
+            container.appendChild(title);
+
+            const btn = document.createElement("button");
+            btn.textContent = "None";
+            btn.classList.add("accessory-variant-button");
+            btn.classList.add("accessory-variant-button-none");
+
+            btn.addEventListener("click", () => {
+                setAccessoryVariant(groupName, -1);
             });
 
-        } else {
-            overlayModel.traverse(child => {
-                if (child.isMesh) {
-                    gsap.to(child.material, {
-                        opacity: 0,
-                        duration: 0.5,
-                        ease: "power2.out",
-                        onComplete: () => {
-                            overlayModel.visible = false;
-                        }
-                    });
-                }
+            container.appendChild(btn);
+
+            group.variants.forEach((mesh, index) => {
+                const btn = document.createElement("button");
+                btn.textContent = index + 1;
+                btn.classList.add("accessory-variant-button");
+
+                btn.addEventListener("click", () => {
+                    setAccessoryVariant(groupName, index);
+
+                    // Apply both primary and secondary materials to the new active variant
+                    applyMaterial(mesh, primaryMaterialState, "accessory-primary");
+                    applyMaterial(mesh, secondaryMaterialState, "accessory-secondary");
+                });
+
+                container.appendChild(btn);
             });
         }
-        console.log("overlayVisible: ",overlayVisible)
-    }
+    });
 
-    function overlayOff() {
-        console.log("overlay should be off")
-        if (!overlayModel) return;
+    // --- Primary Color Section ---
+    const primaryTitle = document.createElement("h3");
+    primaryTitle.textContent = "Primary Color";
+    container.appendChild(primaryTitle);
 
-        overlayVisible = false;
+    const primaryColors = [
+        { name: "Carbon", value: 0x17181a, roughness: 0.1, metalness: 0.9 },
+        { name: "Pearl", value: 0xf7edf4, roughness: 0.3, metalness: 0.2 },
+        { name: "Matte grey", value: 0x595959, roughness: 0.8, metalness: 0.3 }
+    ];
 
-            overlayModel.traverse(child => {
-                if (child.isMesh) {
-                    gsap.to(child.material, {
-                        opacity: 0,
-                        duration: 0.5,
-                        ease: "power2.out",
-                        onComplete: () => {
-                            overlayModel.visible = false;
-                        }
-                    });
+    primaryColors.forEach(colorObj => {
+        const btn = document.createElement("button");
+        btn.textContent = colorObj.name;
+        btn.classList.add("primary-color-button");
+
+        btn.addEventListener("click", () => {
+            Object.assign(primaryMaterialState, colorObj);
+
+            // Apply to all active variants
+            Object.values(accessoryGroups).forEach(group => {
+                const activeMesh = group.variants[group.defaultVariantIndex];
+                if (!activeMesh) return;
+                applyMaterial(activeMesh, primaryMaterialState, "accessory-primary");
+            });
+        });
+
+        container.appendChild(btn);
+    });
+
+    // --- Secondary Color Section ---
+    const secondaryTitle = document.createElement("h3");
+    secondaryTitle.textContent = "Secondary Color";
+    container.appendChild(secondaryTitle);
+
+    const secondaryColors = [
+        { name: "Charcoal", value: 0x696b6e, roughness: 0.3, metalness: 0.9 },
+        { name: "Pink", value: 0xd9bfd1, roughness: 0.7, metalness: 0.3 },
+        { name: "Light grey", value: 0xc1c5c7, roughness: 0.1, metalness: 0.7 }
+    ];
+
+    secondaryColors.forEach(colorObj => {
+        const btn = document.createElement("button");
+        btn.textContent = colorObj.name;
+        btn.classList.add("secondary-color-button");
+
+        btn.addEventListener("click", () => {
+            Object.assign(secondaryMaterialState, colorObj);
+
+            // Apply to all active variants
+            Object.values(accessoryGroups).forEach(group => {
+                const activeMesh = group.variants[group.defaultVariantIndex];
+                if (!activeMesh) return;
+                applyMaterial(activeMesh, secondaryMaterialState, "accessory-secondary");
+            });
+        });
+
+        container.appendChild(btn);
+    });
+
+    // Helper function to apply a material state
+    function applyMaterial(mesh, state, materialPrefix) {
+        mesh.traverse(child => {
+            if (!child.isMesh) return;
+            const mats = Array.isArray(child.material) ? child.material : [child.material];
+
+            mats.forEach(mat => {
+                if (mat.name && mat.name.startsWith(materialPrefix)) {
+                    mat.color.set(state.value);
+                    mat.roughness = state.roughness;
+                    mat.metalness = state.metalness;
                 }
             });
-        
+        });
     }
-
-    function createLights() {
-    }
-
-    // --- animations
-    function initAnimations() {
-    }
-
-    // --- update loop
-    function update() {
-    }
-
-    // initialize floor
-    createGeometry();
-    createLights();
-    initAnimations();
+}
 
 
-    return { group, update, toggleOverlayOpacity, overlayOff };
+
+
+const $accessoryMenu = document.getElementById("accessory-menu")
+export function toggleAccessoryMenu() {
+    $accessoryMenu.classList.toggle("visually-hidden")
 }

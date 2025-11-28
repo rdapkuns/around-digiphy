@@ -99,7 +99,7 @@ export function bigQR() {
 }
 
 
-document.querySelector('.uni-button').addEventListener('click', smallQR);
-function uni() {
+// document.querySelector('.uni-button').addEventListener('click', smallQR);
+// function uni() {
    
-}
+// }

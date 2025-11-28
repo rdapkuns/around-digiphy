@@ -128,9 +128,9 @@ export function setupBuck(scene) {
 
 
                 // --- configuration
-                const holdY = 28;                       // Y where camera stops to "hold"
+                const holdY = 15;                       // Y where camera stops to "hold"
                 const moveUpAmount = 63;                // how far up the camera moves overall
-                const ratio = { first: 3, hold: 4, last: 4.2 };
+                const ratio = { first: 1, hold: 6, last: 4.2 };
 
                 const startY = 2;
                 const finalY = startY + moveUpAmount;
@@ -168,8 +168,8 @@ export function setupBuck(scene) {
                 });
 
 
-                modelTl.add(accessoriesTimeline, "phase2Start+=0.3");
-                accessoriesTimeline.duration(ratio.hold * 0.6);
+                modelTl.add(accessoriesTimeline, "phase2Start+=2");
+                accessoriesTimeline.duration(ratio.hold * 0.4);
 
 
                 gsap.to(model.rotation, {
@@ -193,9 +193,9 @@ export function setupBuck(scene) {
 
 
                 // --- configuration
-                const holdY = 26;                       // 26 because camera starts at 6 and this at 0
+                const holdY = 13;                       // 26 because camera starts at 6 and this at 0
                 const moveUpAmount = 63;                // how far up the camera moves overall
-                const ratio = { first: 3, hold: 4, last: 4.2 };
+                const ratio = { first: 1, hold: 6, last: 4.2 };
                 // first:hold:last = fraction of scroll allocated to phase1/phase2/phase3
 
                 const startY = 0;
