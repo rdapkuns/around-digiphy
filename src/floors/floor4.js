@@ -44,7 +44,7 @@ export function createFloor(scene) {
             scene.add(model);
         });
 
-          
+
     }
 
 
@@ -68,24 +68,59 @@ export function createFloor(scene) {
     initAnimations();
 
 
-    // document.querySelector('.uni-button').addEventListener('click', animateAccessoriesIn);
-
-
     return { group, update };
 }
 
 const qrContainer = document.querySelector(".qr-wrapper")
 const qr = document.getElementById("qrcode")
 document.querySelector('.qr-wrapper-close').addEventListener('click', smallQR);
+const qrContents = document.querySelectorAll(".qr-wrapper div")
+const qrSVG = document.querySelector(".qr-wrapper > svg")
 
-
-qr.addEventListener("click", bigQR)
 let qrBig = true
-export function smallQR () {
-    if(qrBig){
+export function smallQR() {
+    if (qrBig) {
         qrBig = false
-        qrContainer.classList.add("qr-small")
+        
         console.log(qrBig)
+        let tl = gsap.timeline();
+        tl.to(qrContents, {
+            opacity: 0,
+            duration: 0.2,
+        },
+            0)
+            .to(qrContainer, {
+                top: "3rem",
+                left: "3rem",
+                width: "3rem",
+                height: "3rem",
+                padding: "0.2rem",
+                duration: 1,
+                ease: "power3.out",
+            },
+                '<80%')
+            .to(qrContainer, {
+                duration: 0.1,
+                onComplete: () => {
+                    qrContainer.classList.add("qr-small")
+                    qrContents.forEach((el) => {
+                        el.classList.add("visually-hidden")
+                    })
+                    qrSVG.classList.remove("visually-hidden")
+
+                }
+            },
+                '<')
+            .to(qrSVG, {
+                opacity: 1,
+                duration: 0.4,
+                onComplete: () => {
+                    qrContainer.addEventListener("click", bigQR)
+
+
+                }
+            })
+
     }
 }
 
@@ -94,12 +129,47 @@ export function bigQR() {
         return
     }
     qrBig = true
+    console.log("dassddasndakondasopndaspd")
     qrContainer.classList.remove("qr-small")
     console.log(qrBig)
+
+
+
+    let tl = gsap.timeline();
+    tl.to(qrSVG, {
+        opacity: 0,
+        duration: 0.2,
+        onComplete: () => {
+            qrSVG.classList.add("visually-hidden")
+
+        }
+    },
+        0)
+        .to(qrContainer, {
+            top: "50%",
+            left: "50%",
+            width: "40rem",
+            height: "20rem",
+            color: "black",
+            padding: "2rem",
+            duration: 1,
+            ease: "power3.out",
+            onComplete: () => {
+                qrContents.forEach((el) => {
+                    el.classList.remove("visually-hidden")
+                })
+
+            }
+        },
+            "-=0")
+        .to(qrContents, {
+            opacity: 1,
+            duration: 1,
+            onComplete: () => {
+                qrContainer.removeEventListener("click", bigQR)
+            }
+        })
+
+
+
 }
-
-
-// document.querySelector('.uni-button').addEventListener('click', smallQR);
-// function uni() {
-   
-// }
