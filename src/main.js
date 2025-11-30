@@ -392,6 +392,12 @@ function checkCurrentFloor() {
         }
       });
 
+
+      // fl3.toggleTextPanel()
+      fl3.hideUI("#ui-panel-3-1")
+      fl3.hideUI(".floor3-ui-container .ui-tip")
+
+
     }
     if (currentFloor === 3) {
 
@@ -409,8 +415,12 @@ function checkCurrentFloor() {
 
       overlayButton.classList.remove("visually-hidden")
 
+      // fl3.toggleTextPanel()
+      fl3.showUI("#ui-panel-3-1")
+      fl3.showUI(".floor3-ui-container .ui-tip")
+
       gsap.to(camera, {
-        fov: 65,
+        fov: 30,
         duration: 1,
         ease: "power3.inOut",
         onUpdate() {
@@ -419,7 +429,7 @@ function checkCurrentFloor() {
       });
 
       gsap.to(cameraTargetOffset, {
-        value: 4,
+        value: 2,
         duration: 1,
         ease: "power3.inOut",
         onUpdate() {
@@ -431,6 +441,10 @@ function checkCurrentFloor() {
     if (currentFloor === 4) {
       //ARRIVE FLOOR 4
       qr.classList.remove("visually-hidden")
+      // fl3.toggleTextPanel()
+      fl3.hideUI("#ui-panel-3-1")
+      fl3.hideUI(".floor3-ui-container .ui-tip")
+
       gsap.to(camera, {
         fov: 30,
         duration: 1,
@@ -587,7 +601,7 @@ function setupKeyboardCameraControl(camera, model) {
 }
 
 document.querySelector('.uni-button').addEventListener('click', () => {
-  fl2.rotateFloor(120)
+  fl3.hide()
 });
 
 

@@ -5,6 +5,19 @@ import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger);
 
+let currentTextPanelIndex = 0;
+
+const titles = [
+    "Digital layer",
+    "The Headset",
+];
+
+const texts = [
+    "DigiPHY phyisical apect is important, but the digital layer is where everything comestogether. Using DigiPHY's special software on any device, I can see my car's setup and control the phisical components with a single tap. The system allows me to change and adjust the phyiscal object dimensions in a matter of seconds. ",
+    "To view the virtual layer, I use an AR headset - DigiPHY works with almost any brand. The moment I put it on, I'm inside the digital model. It lets me and other testers to study the car in real scale: viewpoints, interior flow, screen interfaces, all of it. It's the fastest way to understand how the design actually feels.",
+];
+
+
 export function createFloor(scene) {
     const loader = new GLTFLoader()
     const group = new THREE.Group();
@@ -151,7 +164,8 @@ export function createFloor(scene) {
                 }
             });
         }
-        console.log("overlayVisible: ", overlayVisible)
+        // console.log("overlayVisible: ", overlayVisible)
+        hideUI(".floor3-ui-container .ui-tip")
     }
 
     function overlayOff() {
@@ -172,6 +186,7 @@ export function createFloor(scene) {
                 });
             }
         });
+        hideUI(".floor3-ui-container .ui-tip")
 
     }
 
@@ -212,5 +227,71 @@ export function createFloor(scene) {
     initAnimations();
 
 
-    return { group, update, toggleOverlayOpacity, overlayOff, rotateFloor };
+
+
+    const textElement = document.querySelector(".ui-swaptext-3-1");
+    const titleElement = document.querySelector(".ui-swaptitle-3-1");
+    const progressDots = document.querySelectorAll("#ui-panel-3-1 .ui-panel-progress div");
+
+    function updateText() {
+        textElement.textContent = texts[currentTextPanelIndex];
+        titleElement.textContent = titles[currentTextPanelIndex];
+        progressDots.forEach((dot, i) => {
+            dot.classList.toggle("active", i === currentTextPanelIndex);
+        });
+    }
+
+    const nextBtn = document.querySelector("#ui-panel-3-1 .ui-panel-next").addEventListener("click", () => {
+        if (currentTextPanelIndex < texts.length - 1) {
+            currentTextPanelIndex++;
+
+
+            updateText();
+        }
+    });
+    const backBtn = document.querySelector("#ui-panel-3-1 .ui-panel-back").addEventListener("click", () => {
+        if (currentTextPanelIndex > 0) {
+            currentTextPanelIndex--;
+            updateText();
+        }
+    });
+
+    updateText()
+
+
+
+    function showUI(targetSelector) {
+        const target = document.querySelector(targetSelector)
+        target.classList.remove("visually-hidden");
+        gsap.fromTo(target,
+            { opacity: 0, scale: 0.8, y: 20 },
+            {
+                opacity: 1,
+                scale: 1,
+                y: 0,
+                duration: 0.4,
+                ease: "power2.out"
+            }
+        );
+    }
+
+    function hideUI(targetSelector) {
+        const target = document.querySelector(targetSelector)
+
+        gsap.to(target, {
+            opacity: 0,
+            scale: 0.8,
+            y: 20,
+            duration: 0.3,
+            stagger: 0.06,
+            ease: "power2.in",
+            onComplete: () => {
+                target.classList.add("visually-hidden");
+            }
+        });
+    }
+
+
+    return { group, update, toggleOverlayOpacity, overlayOff, rotateFloor, showUI, hideUI };
 }
+
