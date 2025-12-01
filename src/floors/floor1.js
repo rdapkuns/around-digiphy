@@ -311,18 +311,34 @@ export function createFloor(scene) {
         });
     }
 
-    const nextBtn = document.querySelector(".ui-panel-next").addEventListener("click", () => {
+    const nextBtn = document.querySelector(".ui-panel-next")
+    const backBtn = document.querySelector(".ui-panel-back")
+
+    nextBtn.addEventListener("click", () => {
         if (currentTextPanelIndex < texts.length - 1) {
             currentTextPanelIndex++;
 
-
+            // console.log("disable next")
             updateText();
         }
+
+        if (currentTextPanelIndex === texts.length - 1) {
+            nextBtn.classList.add("ui-footer-button-disabled")
+            backBtn.classList.remove("ui-footer-button-disabled")
+
+        }
+
+
     });
-    const backBtn = document.querySelector(".ui-panel-back").addEventListener("click", () => {
+    backBtn.addEventListener("click", () => {
         if (currentTextPanelIndex > 0) {
             currentTextPanelIndex--;
             updateText();
+        }
+        if (currentTextPanelIndex === 0) {
+            backBtn.classList.add("ui-footer-button-disabled")
+            nextBtn.classList.remove("ui-footer-button-disabled")
+
         }
     });
 

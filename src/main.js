@@ -4,8 +4,8 @@
 
 import * as THREE from 'three';
 import { createFloor as Floor1 } from './floors/floor1.js';
-import { createFloor as Floor3 } from './floors/floor3.js';
 import { createFloor as Floor2, createAccessoryMenu, toggleAccessoryMenu, toggleTextPanel } from './floors/floor2.js';
+import { createFloor as Floor3 } from './floors/floor3.js';
 import { createFloor as Floor4 } from './floors/floor4.js';
 import { createFloor as Floor5 } from './floors/floor5.js';
 import { setupBuck } from './buck.js';
@@ -110,7 +110,7 @@ async function init() {
   const fl1 = Floor1(scene);
   // const fl2 = Floor2(scene);
   // const fl3 = Floor3(scene);
-  const fl4 = Floor4(scene);
+  // const fl4 = Floor4(scene);
   const fl5 = Floor5(scene);
 
   // const buck = setupBuck(scene);
@@ -119,7 +119,7 @@ async function init() {
   floors.push(fl1);
   // floors.push(fl2);
   // floors.push(fl3);
-  floors.push(fl4);
+  // floors.push(fl4);
   floors.push(fl5);
 
 
@@ -128,11 +128,11 @@ async function init() {
   scene.add(fl1.group);
   // scene.add(fl2.group);
   // scene.add(fl3.group);
-  scene.add(fl4.group);
+  // scene.add(fl4.group);
   scene.add(fl5.group);
 
   // const { accessoryGroups } = await setupBuck(scene);
-  const { accessoryGroups, setAccessoryVariant } = await setupBuck(scene);
+  const { accessoryGroups, setAccessoryVariant} = await setupBuck(scene);
   const primaryMaterialState = { value: 0xbfbdb4, roughness: 0.1, metalness: 0.1 };
   const secondaryMaterialState = { value: 0xbfbdb4, roughness: 0.1, metalness: 0.1 };
 
@@ -296,13 +296,13 @@ cameraTL.call(() => {
   //show ui
   // show tool tip
   toggleAccessoryMenu()
-}, null, "holdStart+=" + (ratio.hold * 0.5));
+}, null, "holdStart+=" + (ratio.hold * 0.75));
 
 cameraTL.call(() => {
   //hide ui
   // hide tool tip
   toggleAccessoryMenu()
-}, null, "holdStart+=" + (ratio.hold * 0.9));
+}, null, "holdStart+=" + (ratio.hold * 0.95));
 
 
 // Phase 3: continue to finalY
@@ -330,6 +330,7 @@ const overlayButton = document.querySelector(".overlay-button-container")
 const fl1 = Floor1(scene);
 const fl2 = Floor2(scene);
 const fl3 = Floor3(scene);
+const fl4 = Floor4(scene);
 
 let overlayOn = false
 
@@ -411,13 +412,14 @@ function checkCurrentFloor() {
         fl3.rotateFloor(-120)
       }
 
-      qr.classList.add("visually-hidden")
 
       overlayButton.classList.remove("visually-hidden")
 
       // fl3.toggleTextPanel()
       fl3.showUI("#ui-panel-3-1")
       fl3.showUI(".floor3-ui-container .ui-tip")
+
+      fl4.hideQR()
 
       gsap.to(camera, {
         fov: 30,
@@ -441,9 +443,10 @@ function checkCurrentFloor() {
     if (currentFloor === 4) {
       //ARRIVE FLOOR 4
       qr.classList.remove("visually-hidden")
-      // fl3.toggleTextPanel()
+      
       fl3.hideUI("#ui-panel-3-1")
       fl3.hideUI(".floor3-ui-container .ui-tip")
+      fl4.showQR()
 
       gsap.to(camera, {
         fov: 30,
@@ -466,7 +469,7 @@ function checkCurrentFloor() {
     }
 
     if (currentFloor === 5) {
-      qr.classList.add("visually-hidden")
+      fl4.hideQR()
 
       gsap.to(camera, {
         fov: 65,
@@ -488,7 +491,7 @@ function checkCurrentFloor() {
     }
 
     if (currentFloor === 6) {
-
+      // spinModel()
 
     }
 

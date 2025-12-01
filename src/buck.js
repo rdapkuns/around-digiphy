@@ -21,6 +21,8 @@ export function setupBuck(scene) {
 
         let modelDigiphy
 
+       
+
         let accessoriesTimeline;
         let accessories = [];
         const accessoryGroups = {
@@ -50,11 +52,11 @@ export function setupBuck(scene) {
 
 
             loader.load('models/digiphy-accessories.glb', (gltf) => {
-                const model = gltf.scene
-                model.position.set(0, 2, 0)
-                scene.add(model)
+                modelDigiphy = gltf.scene
+                modelDigiphy.position.set(0, 2, 0)
+                scene.add(modelDigiphy)
 
-                model.traverse(child => {
+                modelDigiphy.traverse(child => {
                     if (
                         child.name &&
                         child.name.toLowerCase().includes("dashboard")
@@ -68,7 +70,8 @@ export function setupBuck(scene) {
                     }
                 });
 
-                model.traverse(child => {
+
+                modelDigiphy.traverse(child => {
                     const isAccessoryGroup = child.type === 'Group' && child.name.startsWith("accessory-");
                     const isAccessoryMesh = child.isMesh && child.name.startsWith("accessory-");
 
@@ -117,14 +120,14 @@ export function setupBuck(scene) {
 
                 // Find and store references to each chair
                 for (let i = 1; i <= 4; i++) {
-                    const chair = model.getObjectByName(`chair-${i}`);
+                    const chair = modelDigiphy.getObjectByName(`chair-${i}`);
                     if (chair) objects[`chair-${i}`] = chair;
                     // chair.defaultPos = chair.position
                     chair.defaultPos = chair.position.clone();
 
                 }
 
-                
+
 
                 // console.log("dashboards: ", dashboards)
 
@@ -143,11 +146,11 @@ export function setupBuck(scene) {
                         start: 'top top',
                         end: 'bottom bottom',
                         scrub: true,
-                    }
+                    },
                 });
 
                 // Phase 1: move from startY to holdY
-                modelTl.to(model.position, {
+                modelTl.to(modelDigiphy.position, {
                     y: holdY,
                     ease: 'linear',
                     duration: ratio.first
@@ -155,7 +158,7 @@ export function setupBuck(scene) {
 
 
                 modelTl.addLabel("phase2Start")
-                    .to(model.position, {
+                    .to(modelDigiphy.position, {
                         y: holdY,
                         duration: ratio.hold,
                         ease: "none"
@@ -163,7 +166,7 @@ export function setupBuck(scene) {
                     .addLabel("phase2End");
 
                 // Phase 3: continue to finalY
-                modelTl.to(model.position, {
+                modelTl.to(modelDigiphy.position, {
                     y: finalY,
                     ease: 'linear',
                     duration: ratio.last
@@ -174,9 +177,9 @@ export function setupBuck(scene) {
                 accessoriesTimeline.duration(ratio.hold * 0.4);
 
 
-                gsap.to(model.rotation, {
+                gsap.to(modelDigiphy.rotation, {
                     ease: "linear",
-                    y: model.rotation.y + 5,
+                    y: modelDigiphy.rotation.y + 5,
                     scrollTrigger: {
                         trigger: '.three-section',
                         start: "top top",
@@ -239,7 +242,7 @@ export function setupBuck(scene) {
 
             Object.values(accessoryGroups).forEach(group => {
                 group.variants.forEach((mesh, i) => {
-                   
+
 
                     const offset = accessoryOffsets[mesh.name] || { x: 0, y: 0, z: 0 };
 
@@ -399,9 +402,6 @@ export function setupBuck(scene) {
 
             group.defaultVariantIndex = variantIndex;
         }
-
-
-
 
         return { group, update };
     })

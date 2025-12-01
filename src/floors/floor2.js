@@ -7,6 +7,9 @@ import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger);
 
+
+
+
 export function createFloor(scene) {
     const loader = new GLTFLoader()
     const group = new THREE.Group();
@@ -32,6 +35,11 @@ export function createFloor(scene) {
 
             // Add to scene
             scene.add(floorGroup);
+
+            console.log(model)
+            //select all children that start with "custom_"
+            //put them in a array?
+            //create a function that fades them in/out
         });
     }
 
@@ -63,6 +71,10 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
 
     container.innerHTML = '';
 
+    const title = document.createElement("h2");
+    title.textContent = "Accessories";
+    container.appendChild(title);
+
     // --- Accessory Variant Buttons ---
     Object.entries(accessoryGroups).forEach(([groupName, group]) => {
         if (group.variants.length > 1) {
@@ -71,23 +83,41 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
             container.appendChild(title);
 
             const btn = document.createElement("button");
-            btn.textContent = "None";
+            // btn.textContent = "None";
             btn.classList.add("accessory-variant-button");
             btn.classList.add("accessory-variant-button-none");
+            btn.classList.add(`${groupName}-button`);
+
 
             btn.addEventListener("click", () => {
                 setAccessoryVariant(groupName, -1);
+
+                document.querySelectorAll(`.${groupName}-button`)
+                    .forEach(b => b.classList.remove("primary-active"));
+                btn.classList.add("primary-active");
             });
 
             container.appendChild(btn);
 
             group.variants.forEach((mesh, index) => {
                 const btn = document.createElement("button");
-                btn.textContent = index + 1;
+                // btn.textContent = index + 1;
                 btn.classList.add("accessory-variant-button");
+                btn.classList.add(`${groupName}-button`);
+
+
+                const thumbnail = document.createElement("img");
+                thumbnail.src = `./public/img/accessory-${groupName}-${index}.png`
+                // console.log(thumbnail.src)
+                btn.appendChild(thumbnail);
+
 
                 btn.addEventListener("click", () => {
                     setAccessoryVariant(groupName, index);
+
+                    document.querySelectorAll(`.${groupName}-button`)
+                        .forEach(b => b.classList.remove("primary-active"));
+                    btn.classList.add("primary-active");
 
                     // Apply both primary and secondary materials to the new active variant
                     applyMaterial(mesh, primaryMaterialState, "accessory-primary");
@@ -100,9 +130,17 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
     });
 
     // --- Primary Color Section ---
+    const sectionHeader = document.createElement("div");
+    sectionHeader.classList.add("primary-header");
+    container.appendChild(sectionHeader);
+
     const primaryTitle = document.createElement("h3");
-    primaryTitle.textContent = "Primary Color";
-    container.appendChild(primaryTitle);
+    primaryTitle.textContent = "Primary Color:";
+    sectionHeader.appendChild(primaryTitle);
+
+    const primarySelected = document.createElement("span");
+    primarySelected.classList.add("primary-selected");
+    sectionHeader.appendChild(primarySelected);
 
     const primaryColors = [
         { name: "Carbon", value: 0x17181a, roughness: 0.1, metalness: 0.9 },
@@ -110,15 +148,22 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
         { name: "Matte grey", value: 0x595959, roughness: 0.8, metalness: 0.3 }
     ];
 
-    primaryColors.forEach(colorObj => {
+    primaryColors.forEach((colorObj, index) => {
         const btn = document.createElement("button");
-        btn.textContent = colorObj.name;
+        // btn.textContent = colorObj.name;
+        btn.classList.add("color-button");
         btn.classList.add("primary-color-button");
+        btn.classList.add(`primary-${index}`);
 
         btn.addEventListener("click", () => {
+            document.querySelectorAll(".primary-color-button")
+                .forEach(b => b.classList.remove("primary-active"));
+            btn.classList.add("primary-active");
+
+            document.querySelector(".primary-selected").textContent = colorObj.name
+
             Object.assign(primaryMaterialState, colorObj);
 
-            // Apply to all active variants
             Object.values(accessoryGroups).forEach(group => {
                 const activeMesh = group.variants[group.defaultVariantIndex];
                 if (!activeMesh) return;
@@ -130,9 +175,17 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
     });
 
     // --- Secondary Color Section ---
+    const sectionHeaderSecondary = document.createElement("div");
+    sectionHeaderSecondary.classList.add("primary-header");
+    container.appendChild(sectionHeaderSecondary);
+
     const secondaryTitle = document.createElement("h3");
-    secondaryTitle.textContent = "Secondary Color";
-    container.appendChild(secondaryTitle);
+    secondaryTitle.textContent = "Secondary Color:";
+    sectionHeaderSecondary.appendChild(secondaryTitle);
+
+    const secondarySelected = document.createElement("span");
+    secondarySelected.classList.add("secondary-selected");
+    sectionHeaderSecondary.appendChild(secondarySelected);
 
     const secondaryColors = [
         { name: "Charcoal", value: 0x696b6e, roughness: 0.3, metalness: 0.9 },
@@ -140,12 +193,21 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
         { name: "Light grey", value: 0xc1c5c7, roughness: 0.1, metalness: 0.7 }
     ];
 
-    secondaryColors.forEach(colorObj => {
+    secondaryColors.forEach((colorObj, index) => {
         const btn = document.createElement("button");
-        btn.textContent = colorObj.name;
+        // btn.textContent = colorObj.name;
+        btn.classList.add("color-button");
         btn.classList.add("secondary-color-button");
+        btn.classList.add(`secondary-${index}`);
+
 
         btn.addEventListener("click", () => {
+            document.querySelectorAll(".secondary-color-button")
+                .forEach(b => b.classList.remove("primary-active"));
+            btn.classList.add("primary-active");
+
+            document.querySelector(".secondary-selected").textContent = colorObj.name
+
             Object.assign(secondaryMaterialState, colorObj);
 
             // Apply to all active variants
@@ -259,6 +321,6 @@ export function toggleTextPanel() {
                 $floor2Text.classList.add("visually-hidden");
             }
         });
-    } 
+    }
     // $floor2Text.classList.toggle("visually-hidden")
 }

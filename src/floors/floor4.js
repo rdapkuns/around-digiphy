@@ -67,8 +67,38 @@ export function createFloor(scene) {
 
     initAnimations();
 
+    const $qrWrapper = document.querySelector(".qr-wrapper")
+    
+    function showQR() {
+        $qrWrapper.classList.remove("visually-hidden");
+        gsap.fromTo($qrWrapper,
+            { opacity: 0, scale: 0.8, y: 20 },
+            {
+                opacity: 1,
+                scale: 1,
+                y: 0,
+                duration: 0.4,
+                ease: "power2.out"
+            }
+        );
+    }
 
-    return { group, update };
+    function hideQR() {
+        gsap.to($qrWrapper, {
+            opacity: 0,
+            scale: 0.8,
+            y: 20,
+            duration: 0.3,
+            stagger: 0.06,
+            ease: "power2.in",
+            onComplete: () => {
+                $qrWrapper.classList.add("visually-hidden");
+            }
+        });
+    }
+
+
+    return { group, update, showQR, hideQR };
 }
 
 const qrContainer = document.querySelector(".qr-wrapper")
@@ -81,7 +111,7 @@ let qrBig = true
 export function smallQR() {
     if (qrBig) {
         qrBig = false
-        
+
         console.log(qrBig)
         let tl = gsap.timeline();
         tl.to(qrContents, {
@@ -164,7 +194,7 @@ export function bigQR() {
             "-=0")
         .to(qrContents, {
             opacity: 1,
-            duration: 1,
+            duration: 0.5,
             onComplete: () => {
                 qrContainer.removeEventListener("click", bigQR)
             }
