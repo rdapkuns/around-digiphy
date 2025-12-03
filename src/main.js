@@ -57,7 +57,7 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio)
 
   // Lights
-  scene.add(new THREE.AmbientLight(0xffffff, 1))
+  // scene.add(new THREE.AmbientLight(0xffffff, 1))
   const dirLight = new THREE.DirectionalLight(0xffffff, 1)
   dirLight.position.set(15, 7, 17.5)
   dirLight.castShadow = true
@@ -142,7 +142,8 @@ async function init() {
 
 function render() {
   renderer.outputColorSpace = THREE.SRGBColorSpace
-  renderer.toneMapping = THREE.ACESFilmicToneMapping
+  // renderer.toneMapping = THREE.ACESFilmicToneMapping
+  renderer.toneMapping = THREE.NoToneMapping;
   renderer.toneMappingExposure = 1.0
   renderer.shadowMap.enabled = true
   renderer.shadowMap.type = THREE.PCFSoftShadowMap

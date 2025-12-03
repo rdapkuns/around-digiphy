@@ -105,7 +105,7 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
 
 
                 const thumbnail = document.createElement("img");
-                thumbnail.src = `./public/img/accessory-${groupName}-${index}.png`
+                thumbnail.src = `${import.meta.env.BASE_URL}img/accessory-${groupName}-${index}.png`
                 btn.appendChild(thumbnail);
 
 

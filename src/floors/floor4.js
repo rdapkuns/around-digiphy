@@ -18,7 +18,6 @@ export function createFloor(scene) {
     const mobileUrl = `${window.location.origin}/around-digiphy/mobile.html`;
     QRCode.toCanvas(document.getElementById("qrcode"), mobileUrl, function (error) {
         if (error) console.error(error)
-        console.log("QR code ready:", mobileUrl)
     });
 
 

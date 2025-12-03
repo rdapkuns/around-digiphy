@@ -59,7 +59,6 @@ function setupControls() {
             sendMessage(chair, "x", value * .7)
         })
     }
-    // alert("setting up controls")
 }
 
 
@@ -68,7 +67,6 @@ function setupControls() {
 
 const dashboardSlider = document.getElementById('dashboard-slider')
 
-// Listen for slider changes
 dashboardSlider.addEventListener('input', (e) => {
     let value = parseFloat(e.target.value) // 0 to 1
     sendMessage("dashboard", "y", value * 1)

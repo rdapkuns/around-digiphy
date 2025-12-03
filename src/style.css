@@ -332,6 +332,7 @@ nav {
   font-weight: 600;
   font-size: 2rem;
   text-align: center;
+  
 }
 
 #accessory-menu h3 {
@@ -341,6 +342,7 @@ nav {
   font-size: 1.2rem;
   text-align: left;
   text-transform: capitalize;
+    font-size: 1rem;
 }
 
 #accessory-menu span {
@@ -399,7 +401,8 @@ nav {
 #accessory-menu>h3 {
   margin-top: 1rem;
   margin-bottom: 0.2rem;
-  color: black;
+  color: rgb(43, 40, 53);
+  font-size: 1rem;
 }
 
 .color-button {
@@ -426,6 +429,12 @@ nav {
   gap: 0.5rem;
   margin-top: 1rem;
   margin-bottom: 0.2rem;
+
+}
+
+.primary-header:first-of-type{
+  padding-top: 1rem;
+  border-top: 2px solid rgba(255, 255, 255, 0.639);
 }
 
 .primary-active {

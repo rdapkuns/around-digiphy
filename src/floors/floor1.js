@@ -27,6 +27,12 @@ export function createFloor(scene) {
 
     // --- build floor
     function createGeometry() {
+
+        const texture = new THREE.TextureLoader().load("baked/baked.jpg")
+        texture.flipY = false
+        texture.colorSpace = THREE.SRGBColorSpace;
+        const material = new THREE.MeshBasicMaterial({map: texture})
+
         loader.load("floors/floor-1.glb", (gltf) => {
             const model = gltf.scene;
 
@@ -37,10 +43,32 @@ export function createFloor(scene) {
             // Enable shadows only once
             model.traverse(child => {
                 if (child.isMesh) {
+                    child.material = material
                     child.castShadow = true;
                     child.receiveShadow = true;
                 }
             });
+
+            // Add to scene
+            scene.add(model);
+
+        });
+
+        loader.load("floors/floor-1-nb.glb", (gltf) => {
+            const model = gltf.scene;
+
+            // Common transforms
+            model.position.set(0, 0, 0);
+            model.rotateY(Math.PI);
+
+            // Enable shadows only once
+            // model.traverse(child => {
+            //     if (child.isMesh) {
+            //         child.material = material
+            //         child.castShadow = true;
+            //         child.receiveShadow = true;
+            //     }
+            // });
 
             // Add to scene
             scene.add(model);
@@ -344,6 +372,23 @@ export function createFloor(scene) {
 
     updateText()
 
+    function rotateFloor(deg = 30) {
+        if (!floorGroup) {
+            console.warn("Floor model not loaded yet.");
+            return;
+        }
 
-    return { group, update, checkHeight };
+        const radians = THREE.MathUtils.degToRad(deg);
+
+        gsap.to(floorGroup.rotation, {
+            y: radians,
+            duration: 0,
+            ease: "power2.inOut",
+            onUpdate: () => {
+            }
+        });
+    }
+
+
+    return { group, update, checkHeight, rotateFloor };
 }

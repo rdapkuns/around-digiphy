@@ -21,7 +21,7 @@ export function setupBuck(scene) {
 
         let modelDigiphy
 
-       
+
 
         let accessoriesTimeline;
         let accessories = [];
@@ -191,10 +191,34 @@ export function setupBuck(scene) {
 
             })
 
+            const texture = new THREE.TextureLoader().load("baked/baked.jpg")
+            texture.flipY = false
+            texture.colorSpace = THREE.SRGBColorSpace;
+            const material = new THREE.MeshBasicMaterial({ map: texture })
+
             loader.load('models/platform.glb', (gltf) => {
                 const model = gltf.scene
+                model.rotation.set(0,2.5,0)
                 model.position.set(0, 0, 0)
+
+                model.traverse(child => {
+                    if (child.isMesh) {
+                        child.material = material
+                    }
+                });
+
                 scene.add(model)
+
+                gsap.to(model.rotation, {
+                    ease: "linear",
+                    y: model.rotation.y + 5,
+                    scrollTrigger: {
+                        trigger: '.three-section',
+                        start: "top top",
+                        end: "bottom bottom",
+                        scrub: true,
+                    }
+                })
 
 
                 // --- configuration
@@ -344,6 +368,7 @@ export function setupBuck(scene) {
             console.log("Received command:", payload);
 
             switch (payload.object) {
+                
                 case "dashboard":
                     dashboards.forEach((d) => {
                         moveObject(d, payload.direction, payload.amount)

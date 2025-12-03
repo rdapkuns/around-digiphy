@@ -130,7 +130,6 @@ export function createFloor(scene) {
 
 
 
-
     function initSwapPanel(panelId, texts) {
 
         let currentIndex = 0;
