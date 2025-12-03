@@ -535,7 +535,7 @@ nav {
 }
 
 /* .horizontal-controls:hover { */
-  /* background-color: rgba(255, 255, 255, 0.4); */
+/* background-color: rgba(255, 255, 255, 0.4); */
 /* } */
 
 .horizontal-controls:first-child {
@@ -953,4 +953,35 @@ height: 100%; */
   top: 5%;
   border-radius: 10px;
 
+}
+
+
+
+
+/* ////////////////////////////////////////////////////
+//////////////////// FLOOR 5 UI //////////////////////
+//////////////////////////////////////////////////// */
+
+#ui-panel-5-0, #ui-panel-5-1, #ui-panel-5-2 {
+  position: absolute;
+  right: 2%;
+  top: 5%;
+  border-radius: 10px;
+
+}
+
+#ui-panel-5-0 .img-wrapper, #ui-panel-5-1 .img-wrapper, #ui-panel-5-2 .img-wrapper {
+  width: 100%;
+  display: grid;
+  place-content: center;
+  margin-bottom: 1rem;
+}
+
+#ui-panel-5-0 img, #ui-panel-5-1 img, #ui-panel-5-2 img {
+  max-width: 100%;
+  height: 10rem;
+}
+
+.client-title {
+  text-align: center;
 }

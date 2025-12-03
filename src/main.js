@@ -235,6 +235,9 @@ const cameraTL = gsap.timeline({
       checkCurrentFloor();
 
       fl1.checkHeight(currentCameraHeight, currentIndex);
+      fl5.checkHeight(currentCameraHeight, currentIndex);
+
+      console.log(currentCameraHeight)
 
     }
   }
@@ -319,6 +322,8 @@ const fl1 = Floor1(scene);
 const fl2 = Floor2(scene);
 const fl3 = Floor3(scene);
 const fl4 = Floor4(scene);
+const fl5 = Floor5(scene);
+
 
 let overlayOn = false
 
@@ -536,18 +541,24 @@ function setupKeyboardCameraControl(camera, model) {
       ease: 'power2.inOut',
       onStart: () => {
         fl1.checkHeight(currentCameraHeight, -1);
+        fl5.checkHeight(currentCameraHeight, -1);
+
       },
       onUpdate: () => {
         camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0)
       },
       onComplete: () => {
         fl1.checkHeight(currentCameraHeight, currentIndex);
+        fl5.checkHeight(currentCameraHeight, currentIndex);
+
         isAnimating = false
       },
     })
   }
 
   fl1.checkHeight(currentCameraHeight, currentIndex);
+  fl5.checkHeight(currentCameraHeight, currentIndex);
+
 
 
   camera.position.copy(cameraPoints[currentIndex])
