@@ -4,7 +4,7 @@
 
 import * as THREE from 'three';
 import { createFloor as Floor1 } from './floors/floor1.js';
-import { createFloor as Floor2, createAccessoryMenu, toggleAccessoryMenu, toggleTextPanel } from './floors/floor2.js';
+import { createFloor as Floor2, createAccessoryMenu, toggleAccessoryMenu, toggleTextPanel, toggleFloor2Desk } from './floors/floor2.js';
 import { createFloor as Floor3 } from './floors/floor3.js';
 import { createFloor as Floor4 } from './floors/floor4.js';
 import { createFloor as Floor5 } from './floors/floor5.js';
@@ -132,7 +132,7 @@ async function init() {
   scene.add(fl5.group);
 
   // const { accessoryGroups } = await setupBuck(scene);
-  const { accessoryGroups, setAccessoryVariant} = await setupBuck(scene);
+  const { accessoryGroups, setAccessoryVariant } = await setupBuck(scene);
   const primaryMaterialState = { value: 0xbfbdb4, roughness: 0.1, metalness: 0.1 };
   const secondaryMaterialState = { value: 0xbfbdb4, roughness: 0.1, metalness: 0.1 };
 
@@ -214,29 +214,23 @@ function setupCameraScroll() {
 
 
 // --- configuration
-const holdY = 19;                       // Y where camera stops to "hold"
-const moveUpAmount = 63;                // how far up the camera moves overall
+const holdY = 19;
+const moveUpAmount = 63;
 const ratio = { first: 1, hold: 6, last: 4.2 };
-// first:hold:last = fraction of scroll allocated to phase1/phase2/phase3
-// here hold will take 1/(4+1+5)=10% of the scroll distance
 
-// compute targets
 const startY = camera.position.y;
 const finalY = startY + moveUpAmount;
 
 
 
-// create timeline mapped to scroll
 const cameraTL = gsap.timeline({
   scrollTrigger: {
     trigger: '.three-section',
     start: 'top top',
-    end: 'bottom bottom',    // or use "+=1000" to control exact scroll length
+    end: 'bottom bottom',
     scrub: true,
     onUpdate: () => {
-      // update derived values every frame
       currentCameraHeight = camera.position.y;
-      // console.log(currentCameraHeight)
       camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0);
       checkCurrentFloor();
 
@@ -246,7 +240,6 @@ const cameraTL = gsap.timeline({
   }
 });
 
-// Phase 1: move from startY to holdY
 cameraTL.to(camera.position, {
   y: holdY,
   ease: 'linear',
@@ -256,10 +249,9 @@ cameraTL.to(camera.position, {
 cameraTL.call(() => {
   console.log("ENTERED HOLD");
   toggleTextPanel()
-  // onEnterHold();
+
 });
 
-// Phase 2: hold at holdY (same y target) — duration controls how much scroll is spent holding
 cameraTL.to(camera.position, {
   y: holdY,
   ease: 'none',
@@ -280,7 +272,6 @@ cameraTL.call(() => {
     }
   });
 
-  //hide text panel
   gsap.to(cameraTargetOffset, {
     value: 2,
     duration: 1,
@@ -290,22 +281,19 @@ cameraTL.call(() => {
     }
   });
 
+  toggleFloor2Desk()
+
 }, null, "holdStart+=" + (ratio.hold * 0.2));
 
 cameraTL.call(() => {
-  //show ui
-  // show tool tip
   toggleAccessoryMenu()
 }, null, "holdStart+=" + (ratio.hold * 0.75));
 
 cameraTL.call(() => {
-  //hide ui
-  // hide tool tip
   toggleAccessoryMenu()
 }, null, "holdStart+=" + (ratio.hold * 0.95));
 
 
-// Phase 3: continue to finalY
 cameraTL.to(camera.position, {
   y: finalY,
   ease: 'linear',
@@ -375,23 +363,6 @@ function checkCurrentFloor() {
         fl2.rotateFloor(-120)
       }
 
-      gsap.to(camera, {
-        // fov: 15,
-        duration: 1,
-        ease: "power3.inOut",
-        onUpdate() {
-          camera.updateProjectionMatrix();
-        }
-      });
-
-      gsap.to(cameraTargetOffset, {
-        // value: 2,
-        duration: 1,
-        ease: "power3.inOut",
-        onUpdate() {
-          // camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0)
-        }
-      });
 
 
       // fl3.toggleTextPanel()
@@ -443,7 +414,7 @@ function checkCurrentFloor() {
     if (currentFloor === 4) {
       //ARRIVE FLOOR 4
       qr.classList.remove("visually-hidden")
-      
+
       fl3.hideUI("#ui-panel-3-1")
       fl3.hideUI(".floor3-ui-container .ui-tip")
       fl4.showQR()
@@ -603,9 +574,6 @@ function setupKeyboardCameraControl(camera, model) {
   })
 }
 
-document.querySelector('.uni-button').addEventListener('click', () => {
-  fl3.hide()
-});
 
 
 window.addEventListener('resize', resize);

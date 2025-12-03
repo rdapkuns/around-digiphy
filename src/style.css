@@ -281,7 +281,7 @@ nav {
 
 .overlay-button-container {
   position: fixed;
-  bottom: 5rem;
+  bottom: 8rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 100;
@@ -292,7 +292,7 @@ nav {
   backdrop-filter: blur(5px);
   border: none;
   padding: 0.8rem 1.5rem;
-  border-radius: 100px;
+  border-radius: 11px;
   cursor: pointer;
 }
 
@@ -362,12 +362,20 @@ nav {
   padding: 0;
 
   border-radius: 5px;
-  margin-right: 0.2rem;
+  /* margin-right: 0.2rem; */
   background-color: #ffffffc1;
   cursor: pointer;
 
   outline: 2px solid rgba(255, 255, 255, 0.45);
   outline-offset: -2px;
+
+  transform: scale(0.95);
+  transition: all 0.2s ease-out;
+}
+
+.accessory-variant-button:hover {
+  transform: scale(1);
+  filter: brightness(1.2);
 }
 
 .accessory-variant-button img {
@@ -404,6 +412,13 @@ nav {
   margin: 0.2rem;
   cursor: pointer;
   box-shadow: 3px 3px 6px 2px rgba(12, 19, 84, 0.1);
+  transform: scale(1);
+
+  transition: all 0.1s ease-out;
+}
+
+.color-button:hover {
+  transform: scale(1.1);
 }
 
 .primary-header {
@@ -449,6 +464,18 @@ nav {
   background-color: #595959;
 }
 
+.primary-3 {
+  background-color: #64723f;
+}
+
+.primary-4 {
+  background-color: #BFA48F;
+}
+
+.primary-5 {
+  background-color: #3f529f;
+}
+
 
 .secondary-0 {
   background-color: #696b6e;
@@ -462,6 +489,18 @@ nav {
   background-color: #c1c5c7;
 }
 
+.secondary-3 {
+  background-color: #57b0a7;
+}
+
+.secondary-4 {
+  background-color: #FF6E5A;
+}
+
+.secondary-5 {
+  background-color: #576856;
+}
+
 /* ////////////////////////////////////////////////////
 ///////////// HORIZONTAL NAVIGATION //////////////////
 //////////////////////////////////////////////////// */
@@ -472,8 +511,8 @@ nav {
   left: 50%;
   transform: translateX(-50%);
   /* z-index: 100; */
-  background-color: rgba(218, 218, 218, 0.448);
-  backdrop-filter: blur(5px);
+  /* background-color: rgba(218, 218, 218, 0.448);
+  backdrop-filter: blur(5px); */
   border: none;
   padding: 0.2rem;
   border-radius: 100px;
@@ -489,13 +528,15 @@ nav {
   width: 3.5rem;
   height: 2rem;
   /* border-radius: 100px; */
-  background-color: rgba(255, 255, 255, 0.264);
+  /* background-color: rgba(255, 255, 255, 0.264); */
+  background-color: transparent;
+  color: blue;
   border: none;
 }
 
-.horizontal-controls:hover {
-  background-color: rgba(255, 255, 255, 0.4);
-}
+/* .horizontal-controls:hover { */
+  /* background-color: rgba(255, 255, 255, 0.4); */
+/* } */
 
 .horizontal-controls:first-child {
   border-top-left-radius: 100px;
@@ -705,10 +746,10 @@ nav {
 }
 
 .physical-chair {
-  left: 35%;
-  top: 52%;
-  width: 10rem;
-  height: 15rem;
+  left: 36%;
+  top: 54%;
+  width: 8rem;
+  height: 10rem;
 }
 
 .physical-steer {

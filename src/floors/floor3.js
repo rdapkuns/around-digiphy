@@ -190,7 +190,7 @@ export function createFloor(scene) {
 
     }
 
-    function rotateFloor(deg = 30) {
+    function rotateFloor(deg) {
         if (!floorGroup) {
             console.warn("Floor model not loaded yet.");
             return;
@@ -241,20 +241,7 @@ export function createFloor(scene) {
         });
     }
 
-    // const nextBtn = document.querySelector("#ui-panel-3-1 .ui-panel-next").addEventListener("click", () => {
-    //     if (currentTextPanelIndex < texts.length - 1) {
-    //         currentTextPanelIndex++;
 
-
-    //         updateText();
-    //     }
-    // });
-    // const backBtn = document.querySelector("#ui-panel-3-1 .ui-panel-back").addEventListener("click", () => {
-    //     if (currentTextPanelIndex > 0) {
-    //         currentTextPanelIndex--;
-    //         updateText();
-    //     }
-    // });
 
     const nextBtn = document.querySelector("#ui-panel-3-1 .ui-panel-next")
     const backBtn = document.querySelector("#ui-panel-3-1 .ui-panel-back")

@@ -1,14 +1,14 @@
 import * as THREE from 'three';
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-// import { setAccessoryVariant } from "../buck.js";
 
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger);
 
 
-
+const customTableChildren = [];
+let customTableVisible = true;
 
 export function createFloor(scene) {
     const loader = new GLTFLoader()
@@ -16,16 +16,13 @@ export function createFloor(scene) {
     scene.add(group);
     let floorGroup = new THREE.Group();
 
-    // --- build floor
     function createGeometry() {
         loader.load("floors/floor-2.glb", (gltf) => {
             const model = gltf.scene;
             floorGroup.add(model);
-            // Common transforms
             model.position.set(0, 0, 0);
             model.rotateY(Math.PI);
 
-            // Enable shadows only once
             model.traverse(child => {
                 if (child.isMesh) {
                     child.castShadow = true;
@@ -33,13 +30,17 @@ export function createFloor(scene) {
                 }
             });
 
-            // Add to scene
             scene.add(floorGroup);
 
-            console.log(model)
-            //select all children that start with "custom_"
-            //put them in a array?
-            //create a function that fades them in/out
+            const customTable = model.getObjectByName("custom_table");
+
+            if (customTable) {
+                customTableChildren.push(customTable);
+                customTable.traverse(obj => {
+                    customTableChildren.push(obj);
+                });
+
+            }
         });
     }
 
@@ -75,7 +76,6 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
     title.textContent = "Accessories";
     container.appendChild(title);
 
-    // --- Accessory Variant Buttons ---
     Object.entries(accessoryGroups).forEach(([groupName, group]) => {
         if (group.variants.length > 1) {
             const title = document.createElement("h3");
@@ -83,7 +83,6 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
             container.appendChild(title);
 
             const btn = document.createElement("button");
-            // btn.textContent = "None";
             btn.classList.add("accessory-variant-button");
             btn.classList.add("accessory-variant-button-none");
             btn.classList.add(`${groupName}-button`);
@@ -101,14 +100,12 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
 
             group.variants.forEach((mesh, index) => {
                 const btn = document.createElement("button");
-                // btn.textContent = index + 1;
                 btn.classList.add("accessory-variant-button");
                 btn.classList.add(`${groupName}-button`);
 
 
                 const thumbnail = document.createElement("img");
                 thumbnail.src = `./public/img/accessory-${groupName}-${index}.png`
-                // console.log(thumbnail.src)
                 btn.appendChild(thumbnail);
 
 
@@ -119,7 +116,6 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
                         .forEach(b => b.classList.remove("primary-active"));
                     btn.classList.add("primary-active");
 
-                    // Apply both primary and secondary materials to the new active variant
                     applyMaterial(mesh, primaryMaterialState, "accessory-primary");
                     applyMaterial(mesh, secondaryMaterialState, "accessory-secondary");
                 });
@@ -129,7 +125,6 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
         }
     });
 
-    // --- Primary Color Section ---
     const sectionHeader = document.createElement("div");
     sectionHeader.classList.add("primary-header");
     container.appendChild(sectionHeader);
@@ -145,7 +140,10 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
     const primaryColors = [
         { name: "Carbon", value: 0x17181a, roughness: 0.1, metalness: 0.9 },
         { name: "Pearl", value: 0xf7edf4, roughness: 0.3, metalness: 0.2 },
-        { name: "Matte grey", value: 0x595959, roughness: 0.8, metalness: 0.3 }
+        { name: "Matte grey", value: 0x595959, roughness: 0.8, metalness: 0.3 },
+        { name: "Sage", value: 0xA9B689, roughness: 0.7, metalness: 0.9 },
+        { name: "Desert", value: 0xBFA48F, roughness: 0.9, metalness: 0.2 },
+        { name: "Ultramarine", value: 0x9AADF6, roughness: 0.01, metalness: 0.99 }
     ];
 
     primaryColors.forEach((colorObj, index) => {
@@ -174,7 +172,6 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
         container.appendChild(btn);
     });
 
-    // --- Secondary Color Section ---
     const sectionHeaderSecondary = document.createElement("div");
     sectionHeaderSecondary.classList.add("primary-header");
     container.appendChild(sectionHeaderSecondary);
@@ -190,7 +187,10 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
     const secondaryColors = [
         { name: "Charcoal", value: 0x696b6e, roughness: 0.3, metalness: 0.9 },
         { name: "Pink", value: 0xd9bfd1, roughness: 0.7, metalness: 0.3 },
-        { name: "Light grey", value: 0xc1c5c7, roughness: 0.1, metalness: 0.7 }
+        { name: "Light grey", value: 0xc1c5c7, roughness: 0.1, metalness: 0.7 },
+        { name: "Teal", value: 0xB0D4D2, roughness: 0.8, metalness: 0.9 },
+        { name: "Coral", value: 0xFF6E5A, roughness: 0.7, metalness: 0.3 },
+        { name: "Alpine", value: 0x576856, roughness: 0.1, metalness: 0.7 }
     ];
 
     secondaryColors.forEach((colorObj, index) => {
@@ -210,7 +210,6 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
 
             Object.assign(secondaryMaterialState, colorObj);
 
-            // Apply to all active variants
             Object.values(accessoryGroups).forEach(group => {
                 const activeMesh = group.variants[group.defaultVariantIndex];
                 if (!activeMesh) return;
@@ -221,7 +220,6 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
         container.appendChild(btn);
     });
 
-    // Helper function to apply a material state
     function applyMaterial(mesh, state, materialPrefix) {
         mesh.traverse(child => {
             if (!child.isMesh) return;
@@ -249,8 +247,6 @@ export function toggleAccessoryMenu() {
     if (uiHidden) {
         uiHidden = false
 
-        // $accessoryMenu.classList.remove("visually-hidden");
-        // floor2Tip.classList.remove("visually-hidden");
         $accessoryUI.forEach((ui) => {
             ui.classList.remove("visually-hidden");
         })
@@ -324,3 +320,39 @@ export function toggleTextPanel() {
     }
     // $floor2Text.classList.toggle("visually-hidden")
 }
+
+export function toggleFloor2Desk() {
+    customTableVisible = !customTableVisible;
+    const targetOpacity = customTableVisible ? 1 : 0;
+
+    customTableChildren.forEach(obj => {
+        if (!obj.isMesh) return;
+
+        const materials = Array.isArray(obj.material)
+            ? obj.material
+            : [obj.material];
+
+        obj.visible = true
+
+        materials.forEach(mat => {
+            // Ensure the material supports transparency
+            mat.transparent = true;
+
+            gsap.to(mat, {
+                opacity: targetOpacity,
+                duration: 0.8,
+                ease: "power2.inOut",
+                onComplete: () => {
+                    if (targetOpacity === 0) {
+                        obj.visible = false
+                    }
+                }
+            });
+        });
+    });
+}
+
+document.querySelector('.uni-button').addEventListener('click', () => {
+    // fl3.hide()
+    // toggleCustomObjects()
+});
