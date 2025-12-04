@@ -232,7 +232,7 @@ nav {
   text-align: left;
   padding-left: 12px;
   border-radius: 0.2rem;
-  
+
 
   background: transparent;
   border: none;
@@ -256,10 +256,10 @@ nav {
   backdrop-filter: blur(5px);
 
   border-radius: 0.2rem;
-    pointer-events: none;
-    outline: 2px inset rgba(255, 255, 255, 0.403);
-    outline-offset: -2px;
-    /* border: 2px solid rgba(255, 255, 255, 0.195); */
+  pointer-events: none;
+  outline: 2px inset rgba(255, 255, 255, 0.403);
+  outline-offset: -2px;
+  /* border: 2px solid rgba(255, 255, 255, 0.195); */
 }
 
 /* Hover state */
@@ -276,7 +276,8 @@ nav {
 }
 
 .nav-button.nav-active {
-  color: #1d2129;}
+  color: #1d2129;
+}
 
 
 /* ////////////////////////////////////////////////////
@@ -299,6 +300,19 @@ nav {
   padding: 0.8rem 1.5rem;
   border-radius: 11px;
   cursor: pointer;
+  outline: 0px blue solid;
+  outline-offset: 2px;
+
+  transition: all 0.2s ease-in-out;
+}
+
+.overlay-button:hover {
+  background-color: rgba(218, 218, 218, 0.69);
+}
+
+
+.overlay-button:not(:hover) {
+  animation: pulse-outline 1.5s cubic-bezier(0, 0.55, 0.45, 1) infinite;
 }
 
 
@@ -333,6 +347,7 @@ nav {
 
 #accessory-menu>h2 {
   font-family: Poppins;
+  font-family: "Poppins", sans-serif;
   color: #2C2827;
   font-weight: 600;
   font-size: 2rem;
@@ -342,6 +357,7 @@ nav {
 
 #accessory-menu h3 {
   font-family: Poppins;
+  font-family: "Poppins", sans-serif;
   color: #2C2827;
   font-weight: 400;
   font-size: 1.2rem;
@@ -609,11 +625,15 @@ nav {
   position: absolute;
   right: 2%;
   bottom: 3%;
+
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.808);
 }
 
 
 .ui-panel h4 {
   font-family: Poppins;
+  font-family: "Poppins", sans-serif;
   color: #2C2827;
   font-weight: 600;
   font-size: 2rem;
@@ -624,7 +644,7 @@ nav {
 
 .ui-panel p {
   font-size: 1rem;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.2rem;
 }
 
@@ -672,6 +692,7 @@ nav {
   gap: 0.3125rem;
   border-radius: 0.6875rem;
   background: #2C2827;
+  color: white;
 }
 
 .ui-footer-button:hover {
@@ -1038,7 +1059,8 @@ height: 100%; */
 }
 
 .ui-panel-dark h4 {
-  font-family: Poppins;
+  /* font-family: Poppins; */
+  font-family: "Poppins", sans-serif;
   color: #EEF0F3;
   font-weight: 600;
   font-size: 2rem;
@@ -1061,7 +1083,8 @@ form label {
   margin-bottom: 0.5rem;
 }
 
-form input, form textarea {
+form input,
+form textarea {
   margin-bottom: 1rem;
   margin-top: 0.5rem;
   padding: 0.5rem 0.8rem;
@@ -1070,8 +1093,9 @@ form input, form textarea {
   background-color: #1f2225;
 }
 
-input::placeholder, textarea::placeholder {
-    color: #616365;
+input::placeholder,
+textarea::placeholder {
+  color: #616365;
 }
 
 .form-submit-button {

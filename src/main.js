@@ -58,7 +58,7 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio)
 
   // Lights
-  // scene.add(new THREE.AmbientLight(0xffffff, 1))
+  scene.add(new THREE.AmbientLight(0xffffff, 0.5))
   const dirLight = new THREE.DirectionalLight(0xffffff, 1)
   dirLight.position.set(15, 7, 17.5)
   dirLight.castShadow = true
