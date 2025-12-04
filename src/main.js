@@ -8,6 +8,7 @@ import { createFloor as Floor2, createAccessoryMenu, toggleAccessoryMenu, toggle
 import { createFloor as Floor3 } from './floors/floor3.js';
 import { createFloor as Floor4 } from './floors/floor4.js';
 import { createFloor as Floor5 } from './floors/floor5.js';
+import { showForm, hideForm } from './floors/floor6.js';
 import { setupBuck } from './buck.js';
 import { initNavigation } from './navigation.js';
 
@@ -465,11 +466,14 @@ function checkCurrentFloor() {
           camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0)
         }
       });
+
+      hideForm()
+
     }
 
     if (currentFloor === 6) {
       // spinModel()
-
+      showForm()
     }
 
     if (currentFloor === 2 || currentFloor === 4) {

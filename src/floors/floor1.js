@@ -49,6 +49,15 @@ export function createFloor(scene) {
                 }
             });
 
+            const glass = model.getObjectByName("glass004");
+            if (glass) {
+                glass.material = glass.material.clone();
+                glass.material.transparent = true;
+                glass.material.opacity = 0.5;
+
+                // glass.material.color.setHex(0x88ccff);   // or .setRGB(r, g, b)
+            }
+
             // Add to scene
             scene.add(model);
 
