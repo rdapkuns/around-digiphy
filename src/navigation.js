@@ -1,13 +1,12 @@
 import gsap from 'gsap';
 import ScrollTrigger from 'gsap/ScrollTrigger';
 
-// Define camera Y positions for each floor
 const floorHeights = {
     floor1: 6,
     floor2: 15,
-    floor3: 32,
-    floor4: 55,
-    floor5: 63,
+    floor3: 52.5,
+    floor4: 59,
+    floor5: 65,
     floor6: 71
 };
 
@@ -17,7 +16,6 @@ export function initNavigation(camera) {
     const viewportHeight = window.innerHeight;
     const maxScroll = sectionHeight - viewportHeight;
 
-    // Camera animation range (from your main.js: y: 4 to y: 74)
     const startCameraY = 6;
     const endCameraY = 71;
 
@@ -35,7 +33,6 @@ export function initNavigation(camera) {
             return;
         }
 
-        // Calculate scroll position needed for this camera height
         const cameraProgress = (targetCameraY - startCameraY) / (endCameraY - startCameraY);
         const targetScroll = maxScroll * cameraProgress;
 
@@ -45,7 +42,6 @@ export function initNavigation(camera) {
             currentCameraY: camera.position.y.toFixed(1)
         });
 
-        // Animate scroll and update camera
         const startScroll = document.body.scrollTop;
         const distance = targetScroll - startScroll;
 
@@ -65,7 +61,6 @@ export function initNavigation(camera) {
         });
     }
 
-    // Attach click handlers to navigation buttons
     document.querySelectorAll('.nav-button').forEach(button => {
         button.addEventListener('click', () => {
             const floor = button.dataset.floor;

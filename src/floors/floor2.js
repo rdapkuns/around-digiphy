@@ -227,9 +227,24 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
 
             mats.forEach(mat => {
                 if (mat.name && mat.name.startsWith(materialPrefix)) {
-                    mat.color.set(state.value);
-                    mat.roughness = state.roughness;
-                    mat.metalness = state.metalness;
+
+                    const targetColor = new THREE.Color(state.value);
+
+                    gsap.to(mat.color, {
+                        r: targetColor.r,
+                        g: targetColor.g,
+                        b: targetColor.b,
+                        duration: 0.5,
+                        ease: "power2.out",
+                    });
+
+                    gsap.to(mat, {
+                        roughness: state.roughness,
+                        metalness: state.metalness,
+                        duration: 0.5,
+                        ease: "power2.out"
+                    });
+
                 }
             });
         });

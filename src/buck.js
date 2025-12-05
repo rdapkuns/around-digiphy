@@ -116,7 +116,7 @@ export function setupBuck(scene) {
 
 
                 resolve({ group, update, accessoryGroups, setAccessoryVariant });
-                createAccessoriesTimeline();  // build AFTER loading
+                createAccessoriesTimeline();
 
                 // Find and store references to each chair
                 for (let i = 1; i <= 4; i++) {
@@ -126,11 +126,6 @@ export function setupBuck(scene) {
                     chair.defaultPos = chair.position.clone();
 
                 }
-
-
-
-                // console.log("dashboards: ", dashboards)
-
 
                 // --- configuration
                 const holdY = 15;                       // Y where camera stops to "hold"
@@ -194,7 +189,7 @@ export function setupBuck(scene) {
 
             loader.load('models/platform.glb', (gltf) => {
                 const model = gltf.scene
-                model.rotation.set(0,2.5,0)
+                model.rotation.set(0, 2.5, 0)
                 model.position.set(0, 0, 0)
 
                 scene.add(model)
@@ -250,14 +245,12 @@ export function setupBuck(scene) {
                     const offset = accessoryOffsets[mesh.name] || { x: 0, y: 0, z: 0 };
 
                     mesh.visible = false;
-                    // Use stored materials reference
                     if (mesh.materials) {
                         mesh.materials.forEach(mat => mat.opacity = 0);
                     }
 
                     accessoriesTimeline.set(mesh, { visible: false });
 
-                    // Animate position for all variants
                     accessoriesTimeline.fromTo(
                         mesh.position,
                         {
@@ -272,7 +265,6 @@ export function setupBuck(scene) {
                             duration: 1,
                             ease: "power3.out",
                             onStart: () => {
-                                // Only make active variant visible
                                 if (i === group.defaultVariantIndex) {
                                     mesh.visible = true;
                                 }
@@ -281,7 +273,6 @@ export function setupBuck(scene) {
                         "<"
                     );
 
-                    // Animate opacity only for active variant
                     if (i === group.defaultVariantIndex) {
                         if (mesh.materials) {
                             mesh.materials.forEach((mat, matIndex) => {
@@ -347,7 +338,7 @@ export function setupBuck(scene) {
             console.log("Received command:", payload);
 
             switch (payload.object) {
-                
+
                 case "dashboard":
                     dashboards.forEach((d) => {
                         moveObject(d, payload.direction, payload.amount)
@@ -392,16 +383,48 @@ export function setupBuck(scene) {
             const group = accessoryGroups[groupName];
             if (!group) return;
 
+            const newMesh = group.variants[variantIndex];
             const oldMesh = group.variants[group.defaultVariantIndex];
+            
+            if(oldMesh === newMesh) return
+            
             if (oldMesh) {
-                oldMesh.visible = false;
-                oldMesh.materials.forEach(mat => mat.opacity = 0);
+                gsap.to(oldMesh.scale, {
+                    x: 0.5,
+                    y: 0.5,
+                    z: 0.5,
+                    duration: 0.25,
+                    ease: "power2.in",
+                    onComplete: () => {
+
+                        oldMesh.visible = false;
+                        oldMesh.materials.forEach(mat => mat.opacity = 0);
+                    }
+
+                });
             }
 
-            const newMesh = group.variants[variantIndex];
             if (newMesh) {
-                newMesh.visible = true;
-                newMesh.materials.forEach(mat => mat.opacity = 1);
+                gsap.fromTo(
+                    newMesh.scale, 
+                    {
+                        x: 0.5,
+                        y: 0.5,
+                        z: 0.5,
+                    },
+                    {
+                        x: 1,
+                        y: 1,
+                        z: 1,
+                        duration: 0.35,
+                        ease: "power2.out",
+                        onStart: () => {
+                            newMesh.visible = true;
+                            newMesh.materials.forEach(mat => mat.opacity = 1);
+
+                    }
+                });
+
             }
 
             group.defaultVariantIndex = variantIndex;
