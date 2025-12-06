@@ -119,7 +119,7 @@ export function smallQR() {
         },
             0)
             .to(qrContainer, {
-                top: "3rem",
+                top: "5rem",
                 left: "3rem",
                 width: "3rem",
                 height: "3rem",

@@ -54,7 +54,8 @@ export function createFloor(scene) {
                 glass.material = glass.material.clone();
                 glass.material.transparent = true;
                 glass.material.opacity = 0.6;
-
+                // glass.material.roughness = 0;
+                // glass.material.metalness = 1;
                 // glass.material.color.setHex(0x88ccff);   // or .setRGB(r, g, b)
             }
 

@@ -7,41 +7,113 @@
     <title>Mobile</title>
 </head>
 
-<body>
-    <div class="controls">
-        <div class="controls-chairs chair-1">
-            <p>Chair-1: </p>
-            <div class="slider-container">
-                <label for="chair-slider-1">C</label>
-                <input class="ui-slider" type="range" id="chair-slider-1" min="-1" max="1" step="0.01" value="0">
-            </div>
+<body id="body-m">
+    <div id="rotate-warning" class="hidden">
+        <img src="./public/img/rotate-phone.gif" />
+        <p>
+            Please rotate your device to landscape.
+        </p>
+    </div>
+    <button class="mobile-start">Start</button>
+
+    <div class="controls-container visually-hidden">
+        <div class="mobile-header">
+            <img src="./public/img/granstudio-white.png" />
         </div>
-        <div class="controls-chairs chair-2">
-            <p>Chair-2: </p>
-            <div class="slider-container">
-                <label for="chair-slider-2">C</label>
-                <input class="ui-slider" type="range" id="chair-slider-2" min="-1" max="1" step="0.01" value="0">
+        <div class="mobile-body">
+            <div class="controls-menu">
+                <ul>
+                    <li>
+                        <button class="nav-seats button-active">Seats</button>
+                    </li>
+                    <li>
+                        <button class="nav-dashboard">Dashboard</button>
+                    </li>
+                    <li>
+                        <button class="button-locked">Screen</button>
+                    </li>
+                    <li>
+                        <button class="button-locked">Steering wheel</button>
+                    </li>
+                    <li>
+                        <button class="button-locked">Ergonomics</button>
+                    </li>
+                    <li>
+                        <button class="button-locked">Screen</button>
+                    </li>
+                    <li>
+                        <button class="button-locked">Steering wheel</button>
+                    </li>
+                    <li>
+                        <button class="button-locked">Ergonomics</button>
+                    </li>
+                </ul>
             </div>
-        </div>
-        <div class="controls-chairs chair-3">
-            <p>Chair-3: </p>
-            <div class="slider-container">
-                <label for="chair-slider-3">C</label>
-                <input class="ui-slider" type="range" id="chair-slider-3" min="-1" max="1" step="0.01" value="0">
-            </div>
-        </div>
-        <div class="controls-chairs chair-4">
-            <p>Chair-4: </p>
-            <div class="slider-container">
-                <label for="chair-slider-4">C</label>
-                <input class="ui-slider" type="range" id="chair-slider-4" min="-1" max="1" step="0.01" value="0">
-            </div>
-        </div>
-        <div class="controls-chairs controls-dashboard">
-            <p>Dashboard:</p>
-            <div class="slider-container">
-                <label for="dashbaord-slider">C</label>
-                <input class="ui-slider" type="range" id="dashboard-slider" min="0" max="1" step="0.01" value="0">
+
+            <div class="controls">
+                <div class="controls-chairs chair-1 seat-group">
+                    <p>Chair-1: <span>0</span></p>
+                    <div class="slider-container">
+                        <button id="minus-1">-20</button>
+                        <label for="chair-slider-1">C</label>
+                        <input class="ui-slider" type="range" id="chair-slider-1" min="-1" max="1" step="0.01"
+                            value="0">
+                        <button id="plus-1">+20</button>
+                    </div>
+                </div>
+                <div class="controls-chairs chair-2 seat-group visually-hidden">
+                    <p>Chair-2: <span>0</span></p>
+                    <div class="slider-container">
+                        <button id="minus-2">-20</button>
+                        <label for="chair-slider-2">C</label>
+                        <input class="ui-slider" type="range" id="chair-slider-2" min="-1" max="1" step="0.01"
+                            value="0">
+                        <button id="plus-2">+20</button>
+
+                    </div>
+                </div>
+                <div class="controls-chairs chair-3 seat-group visually-hidden">
+                    <p>Chair-3: <span>0</span></p>
+                    <div class="slider-container">
+                        <button id="minus-3">-20</button>
+                        <label for="chair-slider-3">C</label>
+                        <input class="ui-slider" type="range" id="chair-slider-3" min="-1" max="1" step="0.01"
+                            value="0">
+                        <button id="plus-3">+20</button>
+                    </div>
+                </div>
+                <div class="controls-chairs chair-4 seat-group visually-hidden">
+                    <p>Chair-4: <span>0</span></p>
+                    <div class="slider-container">
+                        <button id="minus-4">-20</button>
+                        <label for="chair-slider-4">C</label>
+                        <input class="ui-slider" type="range" id="chair-slider-4" min="-1" max="1" step="0.01"
+                            value="0">
+                        <button id="plus-4">+20</button>
+                    </div>
+                </div>
+                <div class="seat-sides-container seat-group">
+                    <button class="seat-sides-left seat-btn side-active" data-side="0">L</button>
+                    <button class="seat-sides-right seat-btn" data-side="1">R</button>
+                </div>
+                <div class="seat-forth-container seat-group">
+                    <button class="seat-front seat-btn" data-forth="1">
+                        <img src="./public/img/seat-front-on.png" />
+                    </button>
+                    <button class="seat-back seat-btn" data-forth="3">
+                        <img src="./public/img/seat-back-off.png" />
+                    </button>
+                </div>
+                <div class="controls-chairs dashboard-group controls-dashboard visually-hidden">
+                    <p>Dashboard: <span>0</span></p>
+                    <div class="slider-container">
+                        <button id="minus-5">-10</button>
+                        <input class="ui-slider" type="range" id="dashboard-slider" min="0" max="1" step="0.01"
+                            value="0">
+                        <button id="plus-5">+10</button>
+                    </div>
+                    <img src="./public/img/dashboard.png" />
+                </div>
             </div>
         </div>
     </div>
