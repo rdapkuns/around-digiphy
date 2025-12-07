@@ -9,7 +9,7 @@ import { createFloor as Floor3 } from './floors/floor3.js';
 import { createFloor as Floor4 } from './floors/floor4.js';
 import { createFloor as Floor5 } from './floors/floor5.js';
 import { showForm, hideForm } from './floors/floor6.js';
-import { setupBuck } from './buck.js';
+import { setupBuck, stopFlashingAccessory } from './buck.js';
 import { initNavigation } from './navigation.js';
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
@@ -133,7 +133,7 @@ async function init() {
   scene.add(fl5.group);
 
   // const { accessoryGroups } = await setupBuck(scene);
-  const { accessoryGroups, setAccessoryVariant } = await setupBuck(scene);
+  const { accessoryGroups, setAccessoryVariant, animateSelected } = await setupBuck(scene);
   const primaryMaterialState = { value: 0xbfbdb4, roughness: 0.1, metalness: 0.1 };
   const secondaryMaterialState = { value: 0xbfbdb4, roughness: 0.1, metalness: 0.1 };
 
@@ -325,6 +325,8 @@ const fl2 = Floor2(scene);
 const fl3 = Floor3(scene);
 const fl4 = Floor4(scene);
 const fl5 = Floor5(scene);
+const { animateSelected } = setupBuck(scene);
+
 
 
 let overlayOn = false
@@ -398,6 +400,8 @@ function checkCurrentFloor() {
       fl3.showUI(".floor3-ui-container .ui-tip")
 
       fl4.hideQR()
+      stopFlashingAccessory()
+
 
       gsap.to(camera, {
         fov: 30,
@@ -447,6 +451,7 @@ function checkCurrentFloor() {
     }
 
     if (currentFloor === 5) {
+      stopFlashingAccessory()
       fl4.hideQR()
 
       gsap.to(camera, {

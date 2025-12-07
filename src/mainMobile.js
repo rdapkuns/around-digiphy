@@ -81,6 +81,9 @@ let activeSide = 0
 let activeForth = 1
 let activeSeat = 1
 
+const allChairs = document.querySelectorAll(".chair-slider")
+
+
 const seatButtons = document.querySelectorAll(".seat-btn")
 seatButtons.forEach(btn => {
 
@@ -108,8 +111,8 @@ function updateSeatIndex() {
     console.log("activeseat: ", activeSeat)
 
 
-    const allChairs = document.querySelectorAll(".controls-chairs")
-    allChairs.forEach((chair) => {
+    const allSeats = document.querySelectorAll(".controls-chairs")
+    allSeats.forEach((chair) => {
         chair.classList.add("visually-hidden")
     })
 
@@ -127,6 +130,11 @@ function updateSeatIndex() {
         backSeat.src = "./public/img/seat-back-on.png";
     }
 
+    allChairs.forEach(chair => {
+        if (chair.id === `chair-slider-${activeSeat}`) {
+            chair.dispatchEvent(new Event("input"));
+        }
+    })
     // seatButtons.forEach(btn => {
     //     btn.classList.remove("side-active")
     // })
@@ -173,6 +181,13 @@ const seatForth = document.querySelector(".seat-forth-container")
 
 
 navSeats.addEventListener("click", () => {
+
+    allChairs.forEach(chair => {
+        if(chair.id === `chair-slider-${activeSeat}`){
+
+            chair.dispatchEvent(new Event("input"));
+        }
+    })
 
     dashboardControls.forEach(c => {
         gsap.to(c, {
@@ -232,6 +247,8 @@ navDashboard.addEventListener("click", () => {
             onComplete: () => c.classList.remove("visually-hidden")
         });
     });
+
+    dashboardSlider.dispatchEvent(new Event("input"));
 
     navSeats.classList.remove("button-active");
     navDashboard.classList.add("button-active");

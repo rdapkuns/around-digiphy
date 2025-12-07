@@ -10,6 +10,8 @@ import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger);
 
+let stopFlashingFn = null;
+
 export function setupBuck(scene) {
     return new Promise((resolve) => {
         const loader = new GLTFLoader()
@@ -51,7 +53,7 @@ export function setupBuck(scene) {
         function createGeometry() {
 
 
-            loader.load('models/digiphy-accessories.glb', (gltf) => {
+            loader.load('models/accessories-w-t.glb', (gltf) => {
                 modelDigiphy = gltf.scene
                 modelDigiphy.position.set(0, 2, 0)
                 scene.add(modelDigiphy)
@@ -61,13 +63,23 @@ export function setupBuck(scene) {
                         child.name &&
                         child.name.toLowerCase().includes("dashboard")
                     ) {
-                        // Store base position but DO NOT modify mesh
                         child.defaultPos = child.position.clone();
+
+                        child.traverse(part => {
+                            if (part.isMesh) {
+                                if (Array.isArray(part.material)) {
+                                    part.material = part.material.map(mat => mat.clone());
+                                } else if (part.material) {
+                                    part.material = part.material.clone();
+                                }
+                            }
+                        });
 
                         dashboards.push(child);
 
-                        // console.log("Found dashboard:", child.name, child);
                     }
+                    child.castShadow = true;
+                    child.receiveShadow = true;
                 });
 
 
@@ -115,16 +127,28 @@ export function setupBuck(scene) {
 
 
 
-                resolve({ group, update, accessoryGroups, setAccessoryVariant });
+                resolve({ group, update, accessoryGroups, setAccessoryVariant, animateSelected });
                 createAccessoriesTimeline();
 
-                // Find and store references to each chair
+
+
                 for (let i = 1; i <= 4; i++) {
                     const chair = modelDigiphy.getObjectByName(`chair-${i}`);
-                    if (chair) objects[`chair-${i}`] = chair;
-                    // chair.defaultPos = chair.position
+                    if (!chair) continue;
+
+                    objects[`chair-${i}`] = chair;
+
                     chair.defaultPos = chair.position.clone();
 
+                    chair.traverse(child => {
+                        if (child.isMesh) {
+                            if (Array.isArray(child.material)) {
+                                child.material = child.material.map(mat => mat.clone());
+                            } else if (child.material) {
+                                child.material = child.material.clone();
+                            }
+                        }
+                    });
                 }
 
                 // --- configuration
@@ -193,6 +217,11 @@ export function setupBuck(scene) {
                 model.position.set(0, 0, 0)
 
                 scene.add(model)
+
+                model.traverse(child => {
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                });
 
 
                 // --- configuration
@@ -302,25 +331,92 @@ export function setupBuck(scene) {
         function update() {
         }
 
-        function moveObject(obj, axis, direction) {
+        let selectedObj = null
 
-            console.log("i work")
-            const step = 0.2 * direction;
+        function moveObject(objOrArray, axis, direction) {
+            const objects = Array.isArray(objOrArray) ? objOrArray : [objOrArray];
 
-            // if (obj === dashboard) {
-            gsap.to(obj.position, {
-                [axis]: obj.defaultPos[axis] + direction * 1,
-                duration: 0.3,
-                ease: 'power2.out',
-                onUpdate: () => {
-                    console.log(obj.defaultPos)
+            objects.forEach(obj => {
+                gsap.to(obj.position, {
+                    [axis]: obj.defaultPos[axis] + direction * 1,
+                    duration: 0.3,
+                    ease: "power2.out",
+                });
+
+                if (obj !== selectedObj) {
+                    animateSelected(objOrArray);
                 }
             });
-
         }
 
+        function animateSelected(objOrArray) {
+            if (selectedObj) {
+                const objs = Array.isArray(selectedObj) ? selectedObj : [selectedObj];
 
+                objs.forEach(o => {
+                    o.traverse(child => {
+                        if (!child.isMesh) return;
 
+                        const mats = Array.isArray(child.material) ? child.material : [child.material];
+                        mats.forEach(mat => {
+                            const original = mat.userData.originalColor;
+                            if (!original) return;
+
+                            gsap.killTweensOf(mat.color);
+
+                            gsap.to(mat.color, {
+                                r: original.r,
+                                g: original.g,
+                                b: original.b,
+                                duration: 0.3,
+                                ease: "power2.out"
+                            });
+                        });
+                    });
+                });
+            }
+
+            if (!objOrArray) {
+                selectedObj = null;
+                return;
+            }
+
+            const objects = Array.isArray(objOrArray) ? objOrArray : [objOrArray];
+
+            objects.forEach(obj => {
+                obj.traverse(child => {
+                    if (!child.isMesh) return;
+
+                    const materials = Array.isArray(child.material) ? child.material : [child.material];
+
+                    materials.forEach(mat => {
+                        if (!mat) return;
+
+                        if (!mat.userData.originalColor) {
+                            mat.userData.originalColor = mat.color.clone();
+                        }
+                        const original = mat.userData.originalColor;
+
+                        gsap.killTweensOf(mat.color);
+
+                        const tl = gsap.timeline({ repeat: -1 });
+                        tl.to(mat.color, {
+                            r: 1, g: 1, b: 1,
+                            duration: 1
+                        })
+                            .to(mat.color, {
+                                r: original.r,
+                                g: original.g,
+                                b: original.b,
+                                duration: 1,
+                                ease: "power2.out"
+                            });
+                    });
+                });
+            });
+
+            selectedObj = objOrArray;
+        }
 
 
         const channel = supabase.channel('room1', {
@@ -340,9 +436,7 @@ export function setupBuck(scene) {
             switch (payload.object) {
 
                 case "dashboard":
-                    dashboards.forEach((d) => {
-                        moveObject(d, payload.direction, payload.amount)
-                    })
+                    moveObject(dashboards, payload.direction, payload.amount)
                     break;
                 case "chair-1":
                     moveObject(objects[payload.object], payload.direction, payload.amount)
@@ -357,7 +451,6 @@ export function setupBuck(scene) {
                     moveObject(objects[payload.object], payload.direction, payload.amount)
                     break;
                 case "connected":
-                    // console.log("remote connected!!!")
                     smallQR()
                     break;
                 default:
@@ -378,6 +471,10 @@ export function setupBuck(scene) {
 
         initAnimations();
 
+        function testing() {
+            console.log("I am testing!!!")
+        }
+
 
         function setAccessoryVariant(groupName, variantIndex) {
             const group = accessoryGroups[groupName];
@@ -385,9 +482,9 @@ export function setupBuck(scene) {
 
             const newMesh = group.variants[variantIndex];
             const oldMesh = group.variants[group.defaultVariantIndex];
-            
-            if(oldMesh === newMesh) return
-            
+
+            if (oldMesh === newMesh) return
+
             if (oldMesh) {
                 gsap.to(oldMesh.scale, {
                     x: 0.5,
@@ -406,7 +503,7 @@ export function setupBuck(scene) {
 
             if (newMesh) {
                 gsap.fromTo(
-                    newMesh.scale, 
+                    newMesh.scale,
                     {
                         x: 0.5,
                         y: 0.5,
@@ -422,14 +519,20 @@ export function setupBuck(scene) {
                             newMesh.visible = true;
                             newMesh.materials.forEach(mat => mat.opacity = 1);
 
-                    }
-                });
+                        }
+                    });
 
             }
 
             group.defaultVariantIndex = variantIndex;
         }
-
-        return { group, update };
+        stopFlashingFn = animateSelected;
+        return { group, update, animateSelected };
     })
+}
+
+export function stopFlashingAccessory() {
+    if (stopFlashingFn) {
+        stopFlashingFn(null);
+    }
 }
