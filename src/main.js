@@ -89,7 +89,7 @@ async function init() {
 
   const pmrem = new THREE.PMREMGenerator(renderer)
 
-  new HDRLoader().load('hdri/sunset.hdr', (hdrTexture) => {
+  new HDRLoader().load('hdri/studio.hdr', (hdrTexture) => {
     const envMap = pmrem.fromEquirectangular(hdrTexture).texture
 
     scene.environment = envMap         // used for lighting
@@ -101,7 +101,7 @@ async function init() {
     // Now intensity works
     scene.backgroundBlurriness = 0.05
     scene.backgroundIntensity = 0.2
-    scene.environmentIntensity = 0.1
+    scene.environmentIntensity = 0.5
   })
 
 
@@ -325,7 +325,7 @@ const fl2 = Floor2(scene);
 const fl3 = Floor3(scene);
 const fl4 = Floor4(scene);
 const fl5 = Floor5(scene);
-const { animateSelected } = setupBuck(scene);
+// const { animateSelected } = setupBuck(scene);
 
 
 

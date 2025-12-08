@@ -34,6 +34,7 @@ export function createFloor(scene) {
         const material = new THREE.MeshBasicMaterial({map: texture})
 
         loader.load("floors/floor-1.glb", (gltf) => {
+        // loader.load("models/table.glb", (gltf) => {
             const model = gltf.scene;
 
             // Common transforms

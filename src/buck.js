@@ -77,6 +77,17 @@ export function setupBuck(scene) {
 
                         dashboards.push(child);
 
+                    } else if (child.name && child.name.toLowerCase().includes("shadow")) {
+
+                        const initialMaterial = child.material;
+
+                        child.material = new THREE.MeshBasicMaterial({
+                            map: initialMaterial.map || null,
+                            transparent: initialMaterial.transparent,
+                            opacity: initialMaterial.opacity,
+                            alphaMap: initialMaterial.alphaMap || null,
+                            color: initialMaterial.color,
+                        });
                     }
                     child.castShadow = true;
                     child.receiveShadow = true;
@@ -342,6 +353,8 @@ export function setupBuck(scene) {
                     duration: 0.3,
                     ease: "power2.out",
                 });
+
+                // console.log("name: ", obj.name, "position: ", obj.position, "direction: ", direction,)
 
                 if (obj !== selectedObj) {
                     animateSelected(objOrArray);
