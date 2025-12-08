@@ -385,7 +385,7 @@ canvas {
   align-items: center;
 }
 
-.controls-menu li{
+.controls-menu li {
   width: 100%;
   display: flex;
   justify-content: center;
@@ -496,6 +496,94 @@ nav {
   color: #1d2129;
 }
 
+
+
+
+/* //////////////////////////////////////////////////
+///////////////// INSTRUCTIONS //////////////////////
+//////////////////////////////////////////////////// */
+
+.instruction-wrapper {
+  position: fixed;
+  z-index: 999;
+  inset: 0;
+  /* background-color: pink; */
+  background-color: rgba(33, 36, 41, 0.68);
+  backdrop-filter: blur(12px);
+  display: grid;
+  place-content: center;
+}
+
+.instruction-container {
+  display: flex;
+  flex-direction: column;
+  /* gap: 2rem; */
+  max-width: 35rem;
+  align-items: center;
+}
+
+.instruction-container>h2 {
+  font-size: 1.8rem;
+  text-align: center;
+}
+
+.instruction-body {
+  display: flex;
+  align-items: flex-end;
+}
+
+.instruction-body>div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+  gap: 1rem;
+  padding: 1rem 2rem;
+  margin: 1rem 0rem;
+  color: rgb(203, 203, 203);
+  text-align: center;
+}
+
+.instruction-body>div:first-child {
+  border-right: 1px solid rgb(147, 147, 147);
+}
+
+.btn-wrap>button {
+  width: fit-content;
+  padding: 0.8rem 1.2rem;
+  background-color: transparent;
+  cursor: pointer;
+  --s: 10px;
+  border: 2px solid #0059ff;
+  mask:
+    conic-gradient(#000 0 0) content-box,
+    conic-gradient(at var(--s) var(--s), #0000 75%, #000 0) 0 0/calc(100% - var(--s)) calc(100% - var(--s));
+}
+
+.btn-wrap {
+  margin-top: 3rem;
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  border-radius: inherit;
+  cursor: pointer;
+}
+
+.btn-wrap::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 100%;
+  background: #0059ff;
+  transition: width 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 0;
+}
+
+.btn-wrap:hover::before {
+  width: 100%;
+}
 
 /* ////////////////////////////////////////////////////
 ///////////////// OVERLAY BUTTON //////////////////////

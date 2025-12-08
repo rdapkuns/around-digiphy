@@ -31,10 +31,10 @@ export function createFloor(scene) {
         const texture = new THREE.TextureLoader().load("baked/baked.jpg")
         texture.flipY = false
         texture.colorSpace = THREE.SRGBColorSpace;
-        const material = new THREE.MeshBasicMaterial({map: texture})
+        const material = new THREE.MeshBasicMaterial({ map: texture })
 
         loader.load("floors/floor-1.glb", (gltf) => {
-        // loader.load("models/roof.glb", (gltf) => {
+            // loader.load("models/roof.glb", (gltf) => {
             const model = gltf.scene;
 
             // Common transforms
@@ -396,6 +396,19 @@ export function createFloor(scene) {
             duration: 0,
             ease: "power2.inOut",
             onUpdate: () => {
+            }
+        });
+    }
+
+    document.querySelector(".btn-wrap > button").addEventListener("click", closeInstruction)
+
+    function closeInstruction() {
+        gsap.to(".instruction-wrapper", {
+            opacity: 0,
+            duration: 0.6,
+            ease: "power3.out",
+            onComplete: () => {
+                document.querySelector(".instruction-wrapper").classList.add("visually-hidden")
             }
         });
     }
