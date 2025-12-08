@@ -7,6 +7,13 @@ import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger);
 
+export const tasks = [
+    { brief: "move chair", status: "open", condition: `objects["chair-1"].position.x < 3` },
+    { brief: "move other chair", status: "locked", condition: `objects["chair-3"].position.x > 3.5` },
+    { brief: "raise dashboard", status: "locked", condition: "objects['dashboard'][0].position.y > 0.5" }
+];
+
+
 export function createFloor(scene) {
     const loader = new GLTFLoader()
     const group = new THREE.Group();
@@ -67,7 +74,7 @@ export function createFloor(scene) {
     initAnimations();
 
     const $qrWrapper = document.querySelector(".qr-wrapper")
-    
+
     function showQR() {
         $qrWrapper.classList.remove("visually-hidden");
         gsap.fromTo($qrWrapper,
@@ -200,6 +207,57 @@ export function bigQR() {
         })
 
 
+
+}
+
+
+export function checkTasks(objects) {
+
+    let allComplete = true;
+
+    tasks.forEach((task, i) => {
+        try {
+
+            if (task.status === "locked") {
+                console.log("#################")
+                allComplete = false;
+                return;
+            }
+
+            // check condition
+            const fn = new Function("objects", "return " + task.condition);
+            const conditionMet = fn(objects);
+
+            // if (task.status === "open" || task.status === "complete") {
+            if (task.status === "open") {
+
+                if (conditionMet) {
+                    task.status = "complete";
+                    console.log("✓ Completed:", task.brief);
+
+
+                    if (tasks[i + 1] && tasks[i + 1].status === "locked") {
+                        tasks[i + 1].status = "open";
+                        // console.log("+ New task unlocked:", tasks[i + 1].brief);
+                    }
+                } else {
+                    allComplete = false;
+                    console.log("Current task:", task.brief)
+                }
+
+            } else if (task.status === "complete") {
+                console.log("✓ Completed:", task.brief)
+            }
+
+        } catch (e) {
+            console.error("Task condition error:", task.condition, e);
+            allComplete = false;
+        }
+    });
+
+    if (allComplete) {
+        console.log("all tasks complete");
+    }
 
 }
 

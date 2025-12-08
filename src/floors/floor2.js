@@ -367,7 +367,4 @@ export function toggleFloor2Desk() {
     });
 }
 
-document.querySelector('.uni-button').addEventListener('click', () => {
-    // fl3.hide()
-    // toggleCustomObjects()
-});
+

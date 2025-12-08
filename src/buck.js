@@ -3,8 +3,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { supabase } from './supabase';
 
-import { smallQR } from './floors/floor4.js';
-
+import { smallQR, tasks, checkTasks } from './floors/floor4.js';
 
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
@@ -77,6 +76,7 @@ export function setupBuck(scene) {
 
                         dashboards.push(child);
 
+
                     } else if (child.name && child.name.toLowerCase().includes("shadow")) {
 
                         const initialMaterial = child.material;
@@ -92,6 +92,10 @@ export function setupBuck(scene) {
                     child.castShadow = true;
                     child.receiveShadow = true;
                 });
+
+                // objects.push(dashboards);
+                objects[`dashboard`] = dashboards;
+
 
 
                 modelDigiphy.traverse(child => {
@@ -449,7 +453,7 @@ export function setupBuck(scene) {
             switch (payload.object) {
 
                 case "dashboard":
-                    moveObject(dashboards, payload.direction, payload.amount)
+                    moveObject(objects[payload.object], payload.direction, payload.amount)
                     break;
                 case "chair-1":
                     moveObject(objects[payload.object], payload.direction, payload.amount)
@@ -539,6 +543,23 @@ export function setupBuck(scene) {
 
             group.defaultVariantIndex = variantIndex;
         }
+
+        document.querySelector('.uni-button').addEventListener('click', () => {
+            // console.log(objects)
+            // const results = checkTasks(objects);
+
+            // results.forEach(result => {
+            //     if (result.met && result.status !== "complete") {
+            //         console.log(`Task met: ${result.brief}`);
+            //         result.status = "complete";
+            //     }
+            // });
+            checkTasks(objects)
+            // console.log(objects)
+        });
+
+
+
         stopFlashingFn = animateSelected;
         return { group, update, animateSelected };
     })

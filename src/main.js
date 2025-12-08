@@ -239,7 +239,7 @@ const cameraTL = gsap.timeline({
       fl1.checkHeight(currentCameraHeight, currentIndex);
       fl5.checkHeight(currentCameraHeight, currentIndex);
 
-      console.log(currentCameraHeight)
+      // console.log(currentCameraHeight)
 
     }
   }
