@@ -207,8 +207,8 @@ export function setupBuck(scene) {
                 });
 
 
-                modelTl.add(accessoriesTimeline, "phase2Start+=2");
-                accessoriesTimeline.duration(ratio.hold * 0.4);
+                modelTl.add(accessoriesTimeline, "phase2Start+=0.5");
+                accessoriesTimeline.duration(ratio.hold * 0.5);
 
 
                 gsap.to(modelDigiphy.rotation, {

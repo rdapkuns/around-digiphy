@@ -288,11 +288,11 @@ cameraTL.call(() => {
 
   toggleFloor2Desk()
 
-}, null, "holdStart+=" + (ratio.hold * 0.2));
+}, null, "holdStart+=" + (ratio.hold * 0.1));
 
 cameraTL.call(() => {
   toggleAccessoryMenu()
-}, null, "holdStart+=" + (ratio.hold * 0.75));
+}, null, "holdStart+=" + (ratio.hold * 0.65));
 
 cameraTL.call(() => {
   toggleAccessoryMenu()

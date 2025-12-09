@@ -29,12 +29,13 @@ export function createFloor(scene) {
     function createGeometry() {
 
         const texture = new THREE.TextureLoader().load("baked/baked.jpg")
+        // const texture = new THREE.TextureLoader().load("baked/floortest.jpg")
         texture.flipY = false
         texture.colorSpace = THREE.SRGBColorSpace;
         const material = new THREE.MeshBasicMaterial({ map: texture })
 
         loader.load("floors/floor-1.glb", (gltf) => {
-            // loader.load("models/roof.glb", (gltf) => {
+            // loader.load("floors/foundation.glb", (gltf) => {
             const model = gltf.scene;
 
             // Common transforms
@@ -102,7 +103,7 @@ export function createFloor(scene) {
             });
 
             // Add to scene
-            scene.add(model);
+            // scene.add(model);
 
         });
 
