@@ -6,7 +6,7 @@ import * as THREE from 'three';
 import { createFloor as Floor1 } from './floors/floor1.js';
 import { createFloor as Floor2, createAccessoryMenu, toggleAccessoryMenu, toggleTextPanel, toggleFloor2Desk } from './floors/floor2.js';
 import { createFloor as Floor3 } from './floors/floor3.js';
-import { createFloor as Floor4 } from './floors/floor4.js';
+import { createFloor as Floor4, showTasks, hideTasks, setupTasks, checkTasks, atFloor4 } from './floors/floor4.js';
 import { createFloor as Floor5 } from './floors/floor5.js';
 import { showForm, hideForm } from './floors/floor6.js';
 import { setupBuck, stopFlashingAccessory } from './buck.js';
@@ -133,7 +133,7 @@ async function init() {
   scene.add(fl5.group);
 
   // const { accessoryGroups } = await setupBuck(scene);
-  const { accessoryGroups, setAccessoryVariant, animateSelected } = await setupBuck(scene);
+  const { accessoryGroups, setAccessoryVariant, animateSelected, objects } = await setupBuck(scene);
   const primaryMaterialState = { value: 0xbfbdb4, roughness: 0.1, metalness: 0.1 };
   const secondaryMaterialState = { value: 0xbfbdb4, roughness: 0.1, metalness: 0.1 };
 
@@ -400,7 +400,9 @@ function checkCurrentFloor() {
       fl3.showUI(".floor3-ui-container .ui-tip")
 
       fl4.hideQR()
+      hideTasks()
       stopFlashingAccessory()
+      atFloor4.flag = false;
 
 
       gsap.to(camera, {
@@ -429,6 +431,8 @@ function checkCurrentFloor() {
       fl3.hideUI("#ui-panel-3-1")
       fl3.hideUI(".floor3-ui-container .ui-tip")
       fl4.showQR()
+      atFloor4.flag = true;
+      showTasks()
 
       gsap.to(camera, {
         fov: 30,
@@ -453,6 +457,8 @@ function checkCurrentFloor() {
     if (currentFloor === 5) {
       stopFlashingAccessory()
       fl4.hideQR()
+      hideTasks()
+      atFloor4.flag = false;
 
       gsap.to(camera, {
         fov: 65,
@@ -594,6 +600,8 @@ function setupKeyboardCameraControl(camera, model) {
     moveCameraTo(cameraPoints[currentIndex])
   })
 }
+
+
 
 
 

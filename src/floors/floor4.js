@@ -5,13 +5,29 @@ import QRCode from "qrcode";
 
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
+import { cdl } from 'three/src/nodes/TSL.js';
 gsap.registerPlugin(ScrollTrigger);
 
+
+let interactionStarted = false
+let completeTasks = 0
+
+const taskTexts = [
+    "Lets make some adjustments to the model. Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum!",
+    "So how about we move the driver seat a bit back? To give the driver some more space.",
+    "Alright, the driver seat is now better. But i think theres not enough leg-room for the backseat now. Lets change that",
+    "Well done! I think thats good. If theres any changes you want to make, feel free to adjust the buck as you please"
+]
+
 export const tasks = [
-    { brief: "move chair", status: "open", condition: `objects["chair-1"].position.x < 3` },
-    { brief: "move other chair", status: "locked", condition: `objects["chair-3"].position.x > 3.5` },
-    { brief: "raise dashboard", status: "locked", condition: "objects['dashboard'][0].position.y > 0.5" }
+    { brief: "Move the driver seat back to 0.6m", status: "open", condition: `objects["chair-1"].position.x < 3` },
+    { brief: "Move the right-side backseat forward to 0.8m", status: "locked", condition: `objects["chair-3"].position.x > 3.5` },
+    { brief: "Raise dashboard a little bit", status: "locked", condition: "objects['dashboard'][0].position.y > 0.5" }
 ];
+
+export const atFloor4 = {
+    flag: false
+};
 
 
 export function createFloor(scene) {
@@ -29,16 +45,13 @@ export function createFloor(scene) {
 
 
 
-    // --- build floor
     function createGeometry() {
         loader.load("floors/floor-4.glb", (gltf) => {
             const model = gltf.scene;
 
-            // Common transforms
             model.position.set(0, 0, 0);
             model.rotateY(Math.PI);
 
-            // Enable shadows only once
             model.traverse(child => {
                 if (child.isMesh) {
                     child.castShadow = true;
@@ -46,7 +59,6 @@ export function createFloor(scene) {
                 }
             });
 
-            // Add to scene
             scene.add(model);
         });
 
@@ -210,8 +222,22 @@ export function bigQR() {
 
 }
 
+let tasksSetUp = false
+
+export function setupTasks() {
+    tasks.forEach((task, i) => {
+        const taskBrief = document.querySelector(`#ui-task-${i}`)
+        taskBrief.textContent = task.brief
+    })
+
+    interactionStarted = true
+}
+
+
 
 export function checkTasks(objects) {
+
+    if (!interactionStarted) return
 
     let allComplete = true;
 
@@ -230,11 +256,13 @@ export function checkTasks(objects) {
 
             // if (task.status === "open" || task.status === "complete") {
             if (task.status === "open") {
+                document.querySelector(`#ui-task-${i}`).classList.remove("visually-hidden")
 
                 if (conditionMet) {
                     task.status = "complete";
                     console.log("✓ Completed:", task.brief);
-
+                    document.querySelector(`#ui-task-${i}`).classList.add("ui-task-complete")
+                    completeTasks += 1
 
                     if (tasks[i + 1] && tasks[i + 1].status === "locked") {
                         tasks[i + 1].status = "open";
@@ -247,7 +275,11 @@ export function checkTasks(objects) {
 
             } else if (task.status === "complete") {
                 console.log("✓ Completed:", task.brief)
+                // document.querySelector(`#ui-task-${i}`).classList.add("ui-task-complete")
             }
+
+            document.querySelector(".task-counter").textContent = completeTasks
+            document.querySelector(".task-header > .ui-swaptext").textContent = taskTexts[completeTasks]
 
         } catch (e) {
             console.error("Task condition error:", task.condition, e);
@@ -261,3 +293,46 @@ export function checkTasks(objects) {
 
 }
 
+
+export function showTasks() {
+console.log(atFloor4.flag)
+    if (!interactionStarted || atFloor4.flag === false) return
+
+    const el = document.querySelector(".floor4-ui-container");
+
+    el.classList.remove('visually-hidden');
+
+    gsap.fromTo(el,
+        {
+            opacity: 0,
+            scale: 0.8,
+            y: 20,
+        },
+        {
+            opacity: 1,
+            duration: 0.5,
+            scale: 1,
+            y: 0,
+            ease: "power2.out"
+        }
+    );
+}
+
+
+export function hideTasks() {
+    const el = document.querySelector(".floor4-ui-container");
+
+    gsap.to(el,
+
+        {
+            opacity: 0,
+            duration: 0.5,
+            scale: 0.8,
+            y: 20,
+            ease: "power2.out",
+            onComplete() {
+                el.classList.add('visually-hidden');
+            }
+        }
+    );
+}

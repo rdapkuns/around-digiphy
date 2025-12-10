@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { supabase } from './supabase';
 
-import { smallQR, tasks, checkTasks } from './floors/floor4.js';
+import { smallQR, tasks, checkTasks, showTasks, setupTasks } from './floors/floor4.js';
 
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
@@ -142,7 +142,7 @@ export function setupBuck(scene) {
 
 
 
-                resolve({ group, update, accessoryGroups, setAccessoryVariant, animateSelected });
+                resolve({ group, update, accessoryGroups, setAccessoryVariant, animateSelected, objects });
                 createAccessoriesTimeline();
 
 
@@ -447,33 +447,57 @@ export function setupBuck(scene) {
 
 
 
+        let lastSignalTime = Date.now();
+        let taskCheckTimer = null;
+
+        // Call this whenever a signal is received
+        function updateLastSignalTime() {
+            lastSignalTime = Date.now();
+
+            // Reset timer
+            if (taskCheckTimer) clearTimeout(taskCheckTimer);
+
+            // Set a new timer to run checkTasks after 1 second of no signals
+            taskCheckTimer = setTimeout(() => {
+                console.log("No signal for 1 second → running task check...");
+                checkTasks(objects);
+            }, 1000);
+        }
+
         channel.on('broadcast', { event: 'command' }, ({ payload }) => {
             console.log("Received command:", payload);
+
+            // Update idle-timer because we received a signal
+            updateLastSignalTime();
 
             switch (payload.object) {
 
                 case "dashboard":
-                    moveObject(objects[payload.object], payload.direction, payload.amount)
+                    moveObject(objects[payload.object], payload.direction, payload.amount);
                     break;
+
                 case "chair-1":
-                    moveObject(objects[payload.object], payload.direction, payload.amount)
-                    break;
                 case "chair-2":
-                    moveObject(objects[payload.object], payload.direction, payload.amount)
-                    break;
                 case "chair-3":
-                    moveObject(objects[payload.object], payload.direction, payload.amount)
-                    break;
                 case "chair-4":
-                    moveObject(objects[payload.object], payload.direction, payload.amount)
+                    moveObject(objects[payload.object], payload.direction, payload.amount);
                     break;
+
                 case "connected":
-                    smallQR()
+                    smallQR();
+                    showTasks();
                     break;
+
+                case "start":
+                    setupTasks();
+                    break;
+
                 default:
                     console.warn("Unknown command type:", payload.type);
             }
         });
+
+
 
         // Subscribe
         channel.subscribe((status) => {
@@ -487,11 +511,6 @@ export function setupBuck(scene) {
 
 
         initAnimations();
-
-        function testing() {
-            console.log("I am testing!!!")
-        }
-
 
         function setAccessoryVariant(groupName, variantIndex) {
             const group = accessoryGroups[groupName];
@@ -545,20 +564,20 @@ export function setupBuck(scene) {
         }
 
         document.querySelector('.uni-button').addEventListener('click', () => {
-            // console.log(objects)
-            // const results = checkTasks(objects);
-
-            // results.forEach(result => {
-            //     if (result.met && result.status !== "complete") {
-            //         console.log(`Task met: ${result.brief}`);
-            //         result.status = "complete";
-            //     }
-            // });
             checkTasks(objects)
-            // console.log(objects)
         });
 
 
+
+        document.querySelector('.qr-wrapper-close').addEventListener('click', () => {
+            setupTasks()
+            checkTasks(objects)
+
+            setTimeout(() => {
+                
+                showTasks()
+            }, 1000);
+        });
 
         stopFlashingFn = animateSelected;
         return { group, update, animateSelected };
@@ -570,3 +589,6 @@ export function stopFlashingAccessory() {
         stopFlashingFn(null);
     }
 }
+
+
+

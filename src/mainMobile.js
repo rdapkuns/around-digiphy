@@ -183,7 +183,7 @@ const seatForth = document.querySelector(".seat-forth-container")
 navSeats.addEventListener("click", () => {
 
     allChairs.forEach(chair => {
-        if(chair.id === `chair-slider-${activeSeat}`){
+        if (chair.id === `chair-slider-${activeSeat}`) {
 
             chair.dispatchEvent(new Event("input"));
         }
@@ -330,6 +330,8 @@ startButton.addEventListener("click", async () => {
         } else {
             alert("Fullscreen API not supported.");
         }
+
+        sendMessage("start", "y", 1)
     } catch (err) {
         alert("Fullscreen request failed:", err);
     }

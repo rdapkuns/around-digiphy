@@ -32,7 +32,7 @@ export function createFloor(scene) {
     let box;
 
     function createGeometry() {
-        loader.load("floors/floor-5.glb", (gltf) => {
+        loader.load("floors/cartest-2.glb", (gltf) => {
             const model = gltf.scene;
 
             model.position.set(0, 0, 0);

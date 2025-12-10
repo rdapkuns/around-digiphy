@@ -28,14 +28,14 @@ export function createFloor(scene) {
     // --- build floor
     function createGeometry() {
 
-        const texture = new THREE.TextureLoader().load("baked/baked.jpg")
-        // const texture = new THREE.TextureLoader().load("baked/floortest.jpg")
+        // const texture = new THREE.TextureLoader().load("baked/baked.jpg")
+        const texture = new THREE.TextureLoader().load("baked/floor-1-a.jpg")
         texture.flipY = false
         texture.colorSpace = THREE.SRGBColorSpace;
         const material = new THREE.MeshBasicMaterial({ map: texture })
 
-        loader.load("floors/floor-1.glb", (gltf) => {
-            // loader.load("floors/foundation.glb", (gltf) => {
+        // loader.load("floors/floor-1.glb", (gltf) => {
+        loader.load("floors/floor-1-a.glb", (gltf) => {
             const model = gltf.scene;
 
             // Common transforms
@@ -49,16 +49,17 @@ export function createFloor(scene) {
                     child.castShadow = true;
                     child.receiveShadow = true;
                 }
+                console.log(child.name)
             });
 
-            const glass = model.getObjectByName("glass004");
+            const glass = model.getObjectByName("glass006");
             if (glass) {
                 glass.material = glass.material.clone();
                 glass.material.transparent = true;
                 glass.material.opacity = 0.6;
                 // glass.material.roughness = 0;
                 // glass.material.metalness = 1;
-                // glass.material.color.setHex(0x88ccff);   // or .setRGB(r, g, b)
+                glass.material.color.setHex(0xf2f9ff);   // or .setRGB(r, g, b)
             }
 
             // Add to scene
@@ -66,7 +67,15 @@ export function createFloor(scene) {
 
         });
 
-        loader.load("floors/floor-1-nb.glb", (gltf) => {
+
+        // const texture = new THREE.TextureLoader().load("baked/baked.jpg")
+        const textureB = new THREE.TextureLoader().load("baked/floor-1-b.jpg")
+        textureB.flipY = false
+        textureB.colorSpace = THREE.SRGBColorSpace;
+        const materialB = new THREE.MeshBasicMaterial({ map: textureB })
+
+        // loader.load("floors/floor-1.glb", (gltf) => {
+        loader.load("floors/floor-1-b.glb", (gltf) => {
             const model = gltf.scene;
 
             // Common transforms
@@ -74,15 +83,27 @@ export function createFloor(scene) {
             model.rotateY(Math.PI);
 
             // Enable shadows only once
-            // model.traverse(child => {
-            //     if (child.isMesh) {
-            //         child.material = material
-            //         child.castShadow = true;
-            //         child.receiveShadow = true;
-            //     }
-            // });
+            model.traverse(child => {
+                if (child.isMesh) {
+                    child.material = materialB
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                }
+            });
 
             // Add to scene
+            scene.add(model);
+
+        });
+
+        // loader.load("floors/floor-1-nb.glb", (gltf) => {
+        loader.load("floors/floor-1-c.glb", (gltf) => {
+
+            const model = gltf.scene;
+
+            model.position.set(0, 0, 0);
+            model.rotateY(Math.PI);
+
             scene.add(model);
 
         });
