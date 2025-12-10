@@ -49,7 +49,7 @@ export function createFloor(scene) {
                     child.castShadow = true;
                     child.receiveShadow = true;
                 }
-                console.log(child.name)
+                // console.log(child.name)
             });
 
             const glass = model.getObjectByName("glass006");

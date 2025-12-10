@@ -17,7 +17,15 @@ export function createFloor(scene) {
     let floorGroup = new THREE.Group();
 
     function createGeometry() {
-        loader.load("floors/floor-2.glb", (gltf) => {
+
+        const texture = new THREE.TextureLoader().load("baked/floor-2-a.jpg")
+        texture.flipY = false
+        texture.colorSpace = THREE.SRGBColorSpace;
+        const material = new THREE.MeshBasicMaterial({ map: texture })
+
+        loader.load("floors/floor-2-a.glb", (gltf) => {
+            // loader.load("models/floor2glass.glb", (gltf) => {
+
             const model = gltf.scene;
             floorGroup.add(model);
             model.position.set(0, 0, 0);
@@ -25,22 +33,74 @@ export function createFloor(scene) {
 
             model.traverse(child => {
                 if (child.isMesh) {
+                    child.material = material
                     child.castShadow = true;
                     child.receiveShadow = true;
                 }
             });
 
+            const glass = model.getObjectByName("glass002");
+            if (glass) {
+                glass.material = glass.material.clone();
+                glass.material.transparent = true;
+                glass.material.opacity = 0.6;
+                glass.material.color.setHex(0xf2f9ff); 
+            }
+        });
+
+
+
+        // const texture = new THREE.TextureLoader().load("baked/baked.jpg")
+        const textureB = new THREE.TextureLoader().load("baked/floor-2-b.jpg")
+        textureB.flipY = false
+        textureB.colorSpace = THREE.SRGBColorSpace;
+        const materialB = new THREE.MeshBasicMaterial({ map: textureB })
+
+        // loader.load("floors/floor-1.glb", (gltf) => {
+        loader.load("floors/floor-2-b.glb", (gltf) => {
+            const model = gltf.scene;
+            floorGroup.add(model);
+            model.position.set(0, 0, 0);
+            model.rotateY(Math.PI);
+
+            model.traverse(child => {
+                if (child.isMesh) {
+                    child.material = materialB
+                    child.castShadow = true;
+                    child.receiveShadow = true;
+                }
+            });
+        });
+
+        // loader.load("floors/floor-1-nb.glb", (gltf) => {
+        loader.load("floors/floor-2-c.glb", (gltf) => {
+            
+            const model = gltf.scene;
+            floorGroup.add(model);
+
+            model.position.set(0, 0, 0);
+            model.rotateY(Math.PI);
+
             scene.add(floorGroup);
 
-            const customTable = model.getObjectByName("custom_table");
+            model.traverse(child => {
+      
+                console.log(child.name)
+
+            });
+
+
+            const customTable = model.getObjectByName("custom_screen001");
 
             if (customTable) {
                 customTableChildren.push(customTable);
                 customTable.traverse(obj => {
                     customTableChildren.push(obj);
+                    console.log(obj.name)
                 });
 
             }
+
         });
     }
 
@@ -195,7 +255,6 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
 
     secondaryColors.forEach((colorObj, index) => {
         const btn = document.createElement("button");
-        // btn.textContent = colorObj.name;
         btn.classList.add("color-button");
         btn.classList.add("secondary-color-button");
         btn.classList.add(`secondary-${index}`);
@@ -297,7 +356,6 @@ export function toggleAccessoryMenu() {
         });
         console.log("ui hidden: ", uiHidden)
     }
-    // $accessoryMenu.classList.toggle("visually-hidden")
 }
 
 
@@ -333,7 +391,6 @@ export function toggleTextPanel() {
             }
         });
     }
-    // $floor2Text.classList.toggle("visually-hidden")
 }
 
 export function toggleFloor2Desk() {
@@ -350,7 +407,6 @@ export function toggleFloor2Desk() {
         obj.visible = true
 
         materials.forEach(mat => {
-            // Ensure the material supports transparency
             mat.transparent = true;
 
             gsap.to(mat, {

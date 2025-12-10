@@ -485,11 +485,11 @@ export function setupBuck(scene) {
 
                 case "connected":
                     smallQR();
-                    showTasks();
+                    setupTasks();
                     break;
 
                 case "start":
-                    setupTasks();
+                    showTasks();
                     break;
 
                 default:
@@ -574,7 +574,7 @@ export function setupBuck(scene) {
             checkTasks(objects)
 
             setTimeout(() => {
-                
+
                 showTasks()
             }, 1000);
         });

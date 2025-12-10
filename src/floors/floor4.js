@@ -46,7 +46,13 @@ export function createFloor(scene) {
 
 
     function createGeometry() {
-        loader.load("floors/floor-4.glb", (gltf) => {
+
+        const texture = new THREE.TextureLoader().load("baked/floor-4-a.jpg")
+        texture.flipY = false
+        texture.colorSpace = THREE.SRGBColorSpace;
+        const material = new THREE.MeshBasicMaterial({ map: texture })
+
+        loader.load("floors/floor-4-a.glb", (gltf) => {
             const model = gltf.scene;
 
             model.position.set(0, 0, 0);
@@ -54,15 +60,41 @@ export function createFloor(scene) {
 
             model.traverse(child => {
                 if (child.isMesh) {
+                    child.material = material
                     child.castShadow = true;
                     child.receiveShadow = true;
                 }
+                // console.log(child.name)
             });
+
+            const glass = model.getObjectByName("glass009");
+            if (glass) {
+                glass.material = glass.material.clone();
+                glass.material.transparent = true;
+                glass.material.opacity = 0.6;
+                // glass.material.roughness = 0;
+                // glass.material.metalness = 1;
+                glass.material.color.setHex(0xf2f9ff);   // or .setRGB(r, g, b)
+            }
 
             scene.add(model);
         });
 
 
+
+
+
+
+        loader.load("floors/floor-4-c.glb", (gltf) => {
+
+            const model = gltf.scene;
+
+            model.position.set(0, 0, 0);
+            model.rotateY(Math.PI);
+
+            scene.add(model);
+
+        });
     }
 
 
@@ -295,7 +327,7 @@ export function checkTasks(objects) {
 
 
 export function showTasks() {
-console.log(atFloor4.flag)
+    console.log(atFloor4.flag)
     if (!interactionStarted || atFloor4.flag === false) return
 
     const el = document.querySelector(".floor4-ui-container");

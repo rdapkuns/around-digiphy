@@ -26,36 +26,98 @@ export function createFloor(scene) {
     let overlayVisible = false;
     let floorGroup = new THREE.Group();
 
-    // --- build floor
     function createGeometry() {
-        loader.load("floors/floor-3.glb", (gltf) => {
+        // loader.load("models/testfloor3.glb", (gltf) => {
+        //     const model = gltf.scene;
+        //     floorGroup.add(model);
+        //     model.position.set(0, 0, 0);
+        //     model.rotateY(Math.PI);
+
+        //     model.traverse(child => {
+        //         if (child.isMesh) {
+        //             child.castShadow = true;
+        //             child.receiveShadow = true;
+        //         }
+        //     });
+
+        //     scene.add(floorGroup);
+
+        // });
+
+
+        const texture = new THREE.TextureLoader().load("baked/floor-3-a.jpg")
+        texture.flipY = false
+        texture.colorSpace = THREE.SRGBColorSpace;
+        const material = new THREE.MeshBasicMaterial({ map: texture })
+
+        loader.load("floors/floor-3-a.glb", (gltf) => {
+            // loader.load("models/floor5cars.glb", (gltf) => {
+
             const model = gltf.scene;
-            floorGroup.add(model);
+
             model.position.set(0, 0, 0);
             model.rotateY(Math.PI);
 
             model.traverse(child => {
                 if (child.isMesh) {
+                    child.material = material
                     child.castShadow = true;
                     child.receiveShadow = true;
                 }
+                // console.log(child.name)
             });
 
-            // Add to scene
-            scene.add(floorGroup);
-            // console.log(floor.position, floor.children[0].position);
+            const glass = model.getObjectByName("glass008");
+            if (glass) {
+                glass.material = glass.material.clone();
+                glass.material.transparent = true;
+                glass.material.opacity = 0.6;
+                // glass.material.roughness = 0;
+                // glass.material.metalness = 1;
+                glass.material.color.setHex(0xf2f9ff);   // or .setRGB(r, g, b)
+            }
+
+            scene.add(model);
+        });
+
+
+
+
+
+
+        loader.load("floors/floor-3-c.glb", (gltf) => {
+
+            const model = gltf.scene;
+
+            model.position.set(0, 0, 0);
+            model.rotateY(Math.PI);
+
+
+
+            model.traverse(child => {
+                // if (child.isMesh) {
+                //     child.material = material
+                //     child.castShadow = true;
+                //     child.receiveShadow = true;
+                // }
+                console.log(child.name)
+            });
+
+
+            scene.add(model);
 
         });
+
+
 
         loader.load('models/digiphy-overlay.glb', (gltf) => {
             overlayModel = gltf.scene;
             overlayModel.position.set(0, 2, 0);
 
-            // ensure all materials can use opacity
             overlayModel.traverse((child) => {
                 if (child.isMesh && child.material) {
                     child.material.transparent = true;
-                    child.material.opacity = 0; // start at 0 opacity
+                    child.material.opacity = 0;
                     overlayModel.visible = false;
                 }
             });

@@ -170,10 +170,13 @@ dashboardPlus.addEventListener("click", () => {
 setupControls()
 
 const navSeats = document.querySelector(".nav-seats")
-const navDashboard = document.querySelector(".nav-dashboard")
-const dashboardControls = document.querySelectorAll(".dashboard-group")
 const seatControls = document.querySelectorAll(".seat-group")
 
+const navDashboard = document.querySelector(".nav-dashboard")
+const dashboardControls = document.querySelectorAll(".dashboard-group")
+
+const navLocked = document.querySelectorAll(".nav-locked")
+const featureUnavailable = document.querySelectorAll(".feature-unavailable")
 
 const seatSides = document.querySelector(".seat-sides-container")
 const seatForth = document.querySelector(".seat-forth-container")
@@ -190,6 +193,14 @@ navSeats.addEventListener("click", () => {
     })
 
     dashboardControls.forEach(c => {
+        gsap.to(c, {
+            opacity: 0,
+            duration: 0.2,
+            onComplete: () => c.classList.add("visually-hidden")
+        });
+    });
+
+    featureUnavailable.forEach(c => {
         gsap.to(c, {
             opacity: 0,
             duration: 0.2,
@@ -248,11 +259,72 @@ navDashboard.addEventListener("click", () => {
         });
     });
 
+    featureUnavailable.forEach(c => {
+        gsap.to(c, {
+            opacity: 0,
+            duration: 0.2,
+            onComplete: () => c.classList.add("visually-hidden")
+        });
+    });
+
     dashboardSlider.dispatchEvent(new Event("input"));
 
     navSeats.classList.remove("button-active");
     navDashboard.classList.add("button-active");
 });
+
+
+
+
+
+navLocked.forEach(nav => {
+
+    nav.addEventListener("click", () => {
+
+        seatControls.forEach(c => {
+            gsap.to(c, {
+                opacity: 0,
+                duration: 0.2,
+                onComplete: () => c.classList.add("visually-hidden")
+            });
+        });
+
+        [seatSides, seatForth].forEach(el => {
+            gsap.to(el, {
+                opacity: 0,
+                duration: 0.2,
+                onComplete: () => el.classList.add("visually-hidden")
+            });
+        });
+
+        dashboardControls.forEach(c => {
+            gsap.to(c, {
+                opacity: 0,
+                duration: 0.2,
+                onComplete: () => c.classList.add("visually-hidden")
+            });
+        });
+
+        featureUnavailable.forEach(c => {
+            // gsap.to(c, {
+            //     opacity: 0,
+            //     duration: 0.2,
+            //     onComplete: () => c.classList.add("visually-hidden")
+            // });
+
+            gsap.to(c, {
+                opacity: 1,
+                duration: 0.25,
+                onComplete: () => c.classList.remove("visually-hidden")
+            });
+        });
+
+        dashboardSlider.dispatchEvent(new Event("input"));
+        
+        navSeats.classList.remove("button-active");
+        navDashboard.classList.remove("button-active");
+    });
+})
 
 
 
