@@ -20,7 +20,6 @@ export function createFloor(scene) {
         const material = new THREE.MeshBasicMaterial({ map: texture })
 
         loader.load("floors/floor-6-a.glb", (gltf) => {
-            // loader.load("models/floor5cars.glb", (gltf) => {
 
             const model = gltf.scene;
 
@@ -33,7 +32,6 @@ export function createFloor(scene) {
                     child.castShadow = true;
                     child.receiveShadow = true;
                 }
-                // console.log(child.name)
             });
 
             scene.add(model);
@@ -52,7 +50,6 @@ export function createFloor(scene) {
                     child.castShadow = true;
                     child.receiveShadow = true;
                 }
-                console.log(child.name)
 
                 if (child.name && child.name.toLowerCase().startsWith("light")) {
 
@@ -67,9 +64,26 @@ export function createFloor(scene) {
                         mat.opacity = 0.1;
                         mat.roughness = 1;
 
-                        // optional: tweak color (warm light tint)
                         mat.color.setHex(0xbb00ff);
                     });
+                }
+
+
+                if (child.name && child.name.toLowerCase().startsWith("core")) {
+                    console.log(child.name)
+                    const delay = Math.random() * 5;
+                    gsap.fromTo(child.rotation, {
+                        z: 1.5,
+                    },
+                        {
+                            z: 0.5,
+                            duration: 8,
+                            repeat: -1,
+                            yoyo: true,
+                            yoyoEase: "power3.inOut",
+                            delay: delay
+                        })
+
                 }
             });
 

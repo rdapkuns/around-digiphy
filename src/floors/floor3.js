@@ -65,7 +65,8 @@ export function createFloor(scene) {
                 glass.material.color.setHex(0xf2f9ff);   // or .setRGB(r, g, b)
             }
 
-            scene.add(model);
+            // scene.add(model);
+            floorGroup.add(model);
         });
 
         loader.load("floors/floor-3-b.glb", (gltf) => {
@@ -100,10 +101,6 @@ export function createFloor(scene) {
             basicModels.position.set(0, 0, 0);
             basicModels.rotateY(Math.PI);
 
-            basicModels.traverse(child => {
-                console.log(child.name)
-            });
-
             // scene.add(basicModels);
             floorGroup.add(basicModels);
         });
@@ -126,17 +123,6 @@ export function createFloor(scene) {
             scene.add(overlayModel);
             scene.add(floorGroup);
 
-
-            // gsap.to(overlayModel.position, {
-            //     ease: "linear",
-            //     y: overlayModel.position.y + 63,
-            //     scrollTrigger: {
-            //         trigger: '.three-section',
-            //         start: "top top",
-            //         end: "bottom bottom",
-            //         scrub: true,
-            //     }
-            // })
 
             // --- configuration
             const holdY = 15;                       // 26 because camera starts at 6 and this at 0

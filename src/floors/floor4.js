@@ -64,7 +64,6 @@ export function createFloor(scene) {
                     child.castShadow = true;
                     child.receiveShadow = true;
                 }
-                // console.log(child.name)
             });
 
             const glass = model.getObjectByName("glass009");
@@ -72,9 +71,7 @@ export function createFloor(scene) {
                 glass.material = glass.material.clone();
                 glass.material.transparent = true;
                 glass.material.opacity = 0.6;
-                // glass.material.roughness = 0;
-                // glass.material.metalness = 1;
-                glass.material.color.setHex(0xf2f9ff);   // or .setRGB(r, g, b)
+                glass.material.color.setHex(0xf2f9ff);
             }
 
             scene.add(model);
