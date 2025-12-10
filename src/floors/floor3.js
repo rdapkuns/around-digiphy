@@ -23,27 +23,15 @@ export function createFloor(scene) {
     const group = new THREE.Group();
     scene.add(group);
     let overlayModel;
+    let alignmentModels
     let overlayVisible = false;
     let floorGroup = new THREE.Group();
+    let headset
+    let basicModels
+
 
     function createGeometry() {
-        // loader.load("models/testfloor3.glb", (gltf) => {
-        //     const model = gltf.scene;
-        //     floorGroup.add(model);
-        //     model.position.set(0, 0, 0);
-        //     model.rotateY(Math.PI);
-
-        //     model.traverse(child => {
-        //         if (child.isMesh) {
-        //             child.castShadow = true;
-        //             child.receiveShadow = true;
-        //         }
-        //     });
-
-        //     scene.add(floorGroup);
-
-        // });
-
+   
 
         const texture = new THREE.TextureLoader().load("baked/floor-3-a.jpg")
         texture.flipY = false
@@ -80,32 +68,44 @@ export function createFloor(scene) {
             scene.add(model);
         });
 
+        loader.load("floors/floor-3-b.glb", (gltf) => {
 
+            alignmentModels = gltf.scene;
+
+            alignmentModels.position.set(0, 0, 0);
+            alignmentModels.rotateY(Math.PI);
+
+
+
+            alignmentModels.traverse(child => {
+                if (child.isMesh && child.material) {
+                    child.material.transparent = true;
+                    child.material.opacity = 0;
+                    alignmentModels.visible = false;
+                }
+            });
+
+            floorGroup.add(alignmentModels);
+            // scene.add(alignmentModels);
+
+        });
 
 
 
 
         loader.load("floors/floor-3-c.glb", (gltf) => {
 
-            const model = gltf.scene;
+            basicModels = gltf.scene;
 
-            model.position.set(0, 0, 0);
-            model.rotateY(Math.PI);
+            basicModels.position.set(0, 0, 0);
+            basicModels.rotateY(Math.PI);
 
-
-
-            model.traverse(child => {
-                // if (child.isMesh) {
-                //     child.material = material
-                //     child.castShadow = true;
-                //     child.receiveShadow = true;
-                // }
+            basicModels.traverse(child => {
                 console.log(child.name)
             });
 
-
-            scene.add(model);
-
+            // scene.add(basicModels);
+            floorGroup.add(basicModels);
         });
 
 
@@ -122,7 +122,10 @@ export function createFloor(scene) {
                 }
             });
 
+            // floorGroup.add(overlayModel);
             scene.add(overlayModel);
+            scene.add(floorGroup);
+
 
             // gsap.to(overlayModel.position, {
             //     ease: "linear",
@@ -194,15 +197,15 @@ export function createFloor(scene) {
     }
 
 
-    function toggleOverlayOpacity() {
-        if (!overlayModel) return;
+    function toggleOverlayOpacity(model) {
+        if (!model) return;
 
-        overlayVisible = !overlayVisible;
+        // overlayVisible = !overlayVisible;
 
         if (overlayVisible) {
-            overlayModel.visible = true;
+            model.visible = true;
 
-            overlayModel.traverse(child => {
+            model.traverse(child => {
                 if (child.isMesh) {
                     gsap.to(child.material, {
                         opacity: 0.5,
@@ -213,20 +216,19 @@ export function createFloor(scene) {
             });
 
         } else {
-            overlayModel.traverse(child => {
+            model.traverse(child => {
                 if (child.isMesh) {
                     gsap.to(child.material, {
                         opacity: 0,
                         duration: 0.5,
                         ease: "power2.out",
                         onComplete: () => {
-                            overlayModel.visible = false;
+                            model.visible = false;
                         }
                     });
                 }
             });
         }
-        // console.log("overlayVisible: ", overlayVisible)
         hideUI(".floor3-ui-container .ui-tip")
     }
 
@@ -248,9 +250,37 @@ export function createFloor(scene) {
                 });
             }
         });
+
+        alignmentModels.traverse(child => {
+            if (child.isMesh) {
+                gsap.to(child.material, {
+                    opacity: 0,
+                    duration: 0.5,
+                    ease: "power2.out",
+                    onComplete: () => {
+                        alignmentModels.visible = false;
+                    }
+                });
+            }
+        });
         hideUI(".floor3-ui-container .ui-tip")
 
     }
+
+
+    document.querySelector('.overlay-button').addEventListener('click', () => {
+
+        overlayVisible = !overlayVisible;
+
+        toggleOverlayOpacity(overlayModel)
+        toggleOverlayOpacity(alignmentModels)
+    });
+
+
+
+
+
+
 
     function rotateFloor(deg) {
         if (!floorGroup) {

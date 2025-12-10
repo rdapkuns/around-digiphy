@@ -85,7 +85,7 @@ export function createFloor(scene) {
 
             model.traverse(child => {
       
-                console.log(child.name)
+                // console.log(child.name)
 
             });
 

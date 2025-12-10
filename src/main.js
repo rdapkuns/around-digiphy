@@ -8,7 +8,7 @@ import { createFloor as Floor2, createAccessoryMenu, toggleAccessoryMenu, toggle
 import { createFloor as Floor3 } from './floors/floor3.js';
 import { createFloor as Floor4, showTasks, hideTasks, setupTasks, checkTasks, atFloor4 } from './floors/floor4.js';
 import { createFloor as Floor5 } from './floors/floor5.js';
-import { showForm, hideForm } from './floors/floor6.js';
+import { createFloor as Floor6, showForm, hideForm } from './floors/floor6.js';
 import { setupBuck, stopFlashingAccessory } from './buck.js';
 import { initNavigation } from './navigation.js';
 
@@ -325,13 +325,14 @@ const fl2 = Floor2(scene);
 const fl3 = Floor3(scene);
 const fl4 = Floor4(scene);
 const fl5 = Floor5(scene);
+const fl6 = Floor6(scene)
 // const { animateSelected } = setupBuck(scene);
 
 
 
 let overlayOn = false
 
-document.querySelector('.overlay-button').addEventListener('click', fl3.toggleOverlayOpacity);
+// document.querySelector('.overlay-button').addEventListener('click', fl3.toggleOverlayOpacity);
 
 
 function checkCurrentFloor() {
