@@ -203,7 +203,9 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
         { name: "Matte grey", value: 0x595959, roughness: 0.8, metalness: 0.3 },
         { name: "Sage", value: 0xA9B689, roughness: 0.7, metalness: 0.9 },
         { name: "Desert", value: 0xBFA48F, roughness: 0.9, metalness: 0.2 },
-        { name: "Ultramarine", value: 0x9AADF6, roughness: 0.01, metalness: 0.99 }
+        { name: "Ultramarine", value: 0x9AADF6, roughness: 0.01, metalness: 0.99 },
+        { name: "Arina", value: 0x660407, roughness: 0.1, metalness: 0.9 },
+        { name: "Tom Green", value: 0x004d24, roughness: 0.1, metalness: 0.2 },
     ];
 
     primaryColors.forEach((colorObj, index) => {
@@ -250,7 +252,8 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
         { name: "Light grey", value: 0xc1c5c7, roughness: 0.1, metalness: 0.7 },
         { name: "Teal", value: 0xB0D4D2, roughness: 0.8, metalness: 0.9 },
         { name: "Coral", value: 0xFF6E5A, roughness: 0.7, metalness: 0.3 },
-        { name: "Alpine", value: 0x576856, roughness: 0.1, metalness: 0.7 }
+        { name: "Alpine", value: 0x576856, roughness: 0.1, metalness: 0.7 },
+        { name: "Copper", value: 0x99280c, roughness: 0.3, metalness: 0.7 }
     ];
 
     secondaryColors.forEach((colorObj, index) => {

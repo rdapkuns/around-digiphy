@@ -284,24 +284,51 @@ export function checkTasks(objects) {
             const fn = new Function("objects", "return " + task.condition);
             const conditionMet = fn(objects);
 
+            const currentTask = document.querySelector(`#ui-task-${i}`)
             // if (task.status === "open" || task.status === "complete") {
             if (task.status === "open") {
-                document.querySelector(`#ui-task-${i}`).classList.remove("visually-hidden")
+                currentTask.classList.remove("visually-hidden")
+                currentTask.classList.add("ui-task-open")
+
 
                 if (conditionMet) {
                     task.status = "complete";
                     console.log("✓ Completed:", task.brief);
-                    document.querySelector(`#ui-task-${i}`).classList.add("ui-task-complete")
+                    currentTask.classList.remove("ui-task-open")
+                    currentTask.classList.add("ui-task-complete")
                     completeTasks += 1
+
+                    gsap.to(`#ui-task-${i}`, {
+                        scale: 1.06,
+                        duration: 0.2,
+                        ease: "power2.out",
+                        backgroundColor: "#74b6efff",
+                    })
+
+                    gsap.to(`#ui-task-${i}`, {
+                        scale: 1,
+                        duration: 0.5,
+                        delay: 0.2,
+                        ease: "back.out(1.7)",
+                        backgroundColor: "#4f4f4f54",
+                    })
 
                     if (tasks[i + 1] && tasks[i + 1].status === "locked") {
                         tasks[i + 1].status = "open";
                         // console.log("+ New task unlocked:", tasks[i + 1].brief);
+                        gsap.from(`#ui-task-${i + 1}`, {
+                            opacity: 0,
+                            x: 100,
+                            duration: 0.5,
+                            ease: "power3.out",
+                        })
                     }
                 } else {
                     allComplete = false;
                     console.log("Current task:", task.brief)
                 }
+
+
 
             } else if (task.status === "complete") {
                 console.log("✓ Completed:", task.brief)
@@ -373,5 +400,5 @@ document.querySelector('.uni-button').addEventListener('click', () => {
     // cameraControls.moveCameraTo(new THREE.Vector3(0, 10, 0));
     // window.cameraControls.moveCameraTo(new THREE.Vector3(-20, 0, -10));
 
-    
+
 });

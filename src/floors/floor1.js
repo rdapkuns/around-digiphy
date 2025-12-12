@@ -29,7 +29,7 @@ export function createFloor(scene) {
     function createGeometry() {
 
         // const texture = new THREE.TextureLoader().load("baked/baked.jpg")
-        const texture = new THREE.TextureLoader().load("baked/floor-1-a.jpg")
+        const texture = new THREE.TextureLoader().load("baked/floor-1-aa.jpg")
         texture.flipY = false
         texture.colorSpace = THREE.SRGBColorSpace;
         const material = new THREE.MeshBasicMaterial({ map: texture })
@@ -141,6 +141,7 @@ export function createFloor(scene) {
     function update() {
     }
 
+    let activeComponent = null
     let uiVisible = false
     let currentStation
     const physicalButtons = document.querySelectorAll(".physical-component")
@@ -150,7 +151,7 @@ export function createFloor(scene) {
         cameraY = cameraHeight
 
         //SHOW HIDE THE PHYSICAL BUTTONS
-        if (currentStationIndex === 1 && cameraY < 8) {
+        if (currentStationIndex === 1 && cameraY < 7) {
             physicalButtons.forEach(element => {
                 element.classList.remove("visually-hidden")
             });
@@ -180,6 +181,7 @@ export function createFloor(scene) {
         }
         if (6 > cameraHeight || cameraHeight > 10 && uiVisible === true) {
             hideUI()
+            physicalHide(activeComponent)
             // animateUI(`.floor1-ui-station${currentStation}`, false);
         }
     }
@@ -188,12 +190,21 @@ export function createFloor(scene) {
     document.querySelectorAll("[data-target]").forEach(btn => {
         const target = btn.dataset.target;
 
-        btn.addEventListener("mouseover", () => physical(target));
-        btn.addEventListener("mouseout", () => physicalHide(target));
+        // btn.addEventListener("mouseover", () => physical(target));
+        btn.addEventListener("click", (event) => {
+            event.stopPropagation()
+            physical(target)
+        });
+        // btn.addEventListener("mouseout", () => physicalHide(target));
 
         // btn.addEventListener("mouseover", () => animateUI(target, true));
         // btn.addEventListener("mouseout", () => animateUI(target, false));
     });
+    // document.querySelector(".floor1-ui-station1").addEventListener("click", () => {fvergbvg
+    window.addEventListener("click", () => {
+        physicalHide(activeComponent)
+        console.log("activeComponent: ", activeComponent)
+    })
 
     const gsapDefaults = {
         hidden: { opacity: 0, scale: 0.8, y: 20 },
@@ -237,6 +248,7 @@ export function createFloor(scene) {
     // const station1Tip = document.querySelector(".floor1-ui-station1 > .ui-tip")
 
     function physical(target) {
+        activeComponent = target
         if (currentStation !== 1 || cameraY > 8) {
             return
         }
@@ -270,8 +282,8 @@ export function createFloor(scene) {
                 ease: "power2.out"
             }
         );
-
         uiVisible = true;
+
     }
 
     function physicalHide(target) {
@@ -330,6 +342,7 @@ export function createFloor(scene) {
 
     function hideUI() {
         const activeStation = document.querySelector(`.floor1-ui-station${currentStation}`);
+        console.log(activeStation)
         if (!activeStation) return;
 
         const children = [...activeStation.children];

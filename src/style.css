@@ -83,12 +83,12 @@ canvas {
   transform: translate(-50%, -50%);
   top: 50%;
   left: 50%;
-  padding: 2rem;
+  padding: 4rem;
 
   display: grid;
   grid-template-columns: 3fr 2fr;
   gap: 1rem;
-  color: rgb(36, 34, 45);
+  color: white;
   width: 40rem;
   height: 20rem;
   align-items: center;
@@ -98,16 +98,29 @@ canvas {
 
   pointer-events: none;
 
-  border-radius: 0.68rem;
-  pointer-events: none;
-  border: 2px solid rgba(255, 255, 255, 0.195);
-
-  background: rgba(238, 240, 243, 0.7);
   box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.05);
-  backdrop-filter: blur(7.5px);
+  background-color: rgba(79, 79, 79, 0.33);
+  backdrop-filter: blur(42px);
+  color: white;
+
+  clip-path: polygon(0 30px, 30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%);
+
+  border-width: 1px;
+  border-style: solid;
+  border-image: linear-gradient(to bottom left, rgba(255, 255, 255, 0.7) 0%,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(255, 255, 255, 0) 60%,
+      rgba(255, 255, 255, 0.7) 100%) 1;
 }
 
-
+.qr-left {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: flex-start;
+  gap: 2rem;
+}
 
 .qr-right {
   display: flex;
@@ -119,9 +132,18 @@ canvas {
 }
 
 .qr-wrapper h4 {
-  font-weight: 800;
+
+  color: white;
+  font-weight: 600;
   font-size: 1.6rem;
-  margin-bottom: 1rem;
+  font-size: 3rem;
+  font-style: normal;
+  font-weight: 400;
+  font-family: "Sometype Mono", monospace;
+  text-transform: uppercase;
+
+  text-align: right;
+  line-height: 110%;
 }
 
 .qr-wrapper svg {
@@ -149,6 +171,55 @@ canvas {
   grid-template-columns: 1fr;
   pointer-events: all;
   cursor: pointer;
+  clip-path: none
+}
+
+
+
+
+
+/* ////////////////////////////////////////////////////
+//////////////////////MOBILE WARNING//////////////////
+//////////////////////////////////////////////////// */
+
+.mobile-warning {
+  position: fixed;
+  inset: 0;
+  background: #0E0F14;
+  z-index: 9999;
+  display: flex;
+  /* place-content: center; */
+  color: white;
+  padding: 2rem;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: center;
+}
+
+.mobile-warning img {
+  max-width: 10rem;
+}
+
+.mobile-warning>div {
+  position: absolute;
+  top: 0rem;
+  background-color: pink;
+  padding: 1rem;
+  width: 100%;
+
+  background:
+    linear-gradient(#0E0F14, #0E0F14) padding-box,
+    linear-gradient(60deg, #345DFD, #EB148B 100%) border-box;
+
+  border-bottom: 3px solid transparent;
+}
+
+@media (min-width: 1024px) {
+  .mobile-warning {
+    display: none;
+  }
 }
 
 /* ////////////////////////////////////////////////////
@@ -159,7 +230,7 @@ canvas {
   position: fixed;
   inset: 0;
   background: white;
-  z-index: 9999;
+  z-index: 9998;
 }
 
 .intro-container>video {
@@ -898,6 +969,14 @@ nav {
   background-color: #3f529f;
 }
 
+.primary-6 {
+  background-color: #660407;
+}
+
+.primary-7 {
+  background-color: #004d24;
+}
+
 
 .secondary-0 {
   background-color: #696b6e;
@@ -921,6 +1000,10 @@ nav {
 
 .secondary-5 {
   background-color: #576856;
+}
+
+.secondary-6 {
+  background-color: #99280c;
 }
 
 /* ////////////////////////////////////////////////////
@@ -966,6 +1049,47 @@ nav {
 
   background-color: rgba(255, 255, 255, 0.472);
   backdrop-filter: blur(3.6px);
+}
+
+.horizontal-controls-left,
+.horizontal-controls-right {
+  position: relative;
+  overflow: hidden;
+  transition: color 0.3s ease;
+}
+
+.horizontal-controls-left:hover,
+.horizontal-controls-right:hover {
+  color: white;
+}
+
+.horizontal-controls-left::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 0;
+  background: var(--primary-blue);
+  transition: width 0.3s ease;
+  z-index: -1;
+}
+
+.horizontal-controls-right::before {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 0;
+  background: var(--primary-blue);
+  transition: width 0.3s ease;
+  z-index: -1;
+}
+
+.horizontal-controls-left:hover::before,
+.horizontal-controls-right:hover::before {
+  width: 100%;
 }
 
 .horizontal-controls span {
@@ -1024,7 +1148,16 @@ nav {
   backdrop-filter: blur(42px);
   color: white;
 
-  clip-path: polygon(0 40px, 40px 0, 100% 0, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%);
+  clip-path: polygon(0 30px, 30px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%);
+  /* mask: linear-gradient(-45deg, #0000 56.57px, #000 0 calc(100% - 56.57px), #0000 0); */
+
+  /* border: 1px solid white; */
+  border-width: 1px;
+  border-style: solid;
+  border-image: linear-gradient(to bottom left, rgba(255, 255, 255, 0.7) 0%,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(255, 255, 255, 0) 60%,
+      rgba(255, 255, 255, 0.7) 100%) 1;
 }
 
 .ui-tip {
@@ -1072,7 +1205,7 @@ nav {
   font-weight: 800;
   font-size: 1.6rem;
   margin-bottom: 1rem;
-  margin-top: 2rem;
+  /* margin-top: 2rem; */
   padding-bottom: 1rem;
   border-bottom: 1px solid white;
 
@@ -1082,12 +1215,13 @@ nav {
   font-family: "Sometype Mono", monospace;
   text-transform: uppercase;
 
+  text-align: right;
 }
 
 .ui-panel p {
   font-size: 1rem;
   font-weight: 400;
-  line-height: 1.2rem;
+  line-height: 140%;
 }
 
 .ui-swaptext {
@@ -1251,6 +1385,7 @@ height: 100%; */
   right: 0;
   top: 0;
   bottom: 0;
+  /* pointer-events: all; */
 }
 
 #ui-panel-4 {
@@ -1465,10 +1600,35 @@ height: 100%; */
   padding: 1rem 1rem;
   padding-left: 3rem;
   margin: 0.5rem 1rem;
-  background-color: rgba(79, 79, 79, 0.33);
+  background-color: #4f4f4f54;
   backdrop-filter: blur(42px);
   color: white;
   clip-path: none;
+
+  border-width: 1px;
+  border-style: solid;
+  border-image: linear-gradient(to bottom left, rgba(255, 255, 255, 0.7) 0%,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(255, 255, 255, 0) 60%,
+      rgba(255, 255, 255, 0.7) 100%) 1;
+}
+
+.ui-task-open {
+  position: relative;
+  color: white;
+  background-color: var(--primary-blue);
+}
+
+.ui-task-open::before {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  width: 1.5rem;
+  height: 1.5rem;
+  left: 0.75rem;
+  top: 0.75rem;
+  color: white;
+  background: url("../public/img/icon-message.svg") no-repeat center/contain;
 }
 
 .ui-task-complete {
@@ -1526,7 +1686,7 @@ height: 100%; */
 }
 
 .client-title {
-  text-align: center;
+  text-align: center !important;
 }
 
 .client-quote {
