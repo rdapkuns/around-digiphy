@@ -6,8 +6,8 @@ const videoB = document.getElementById("videoB");
 const btn = document.getElementById("intro-start");
 
 
-videoA.src = "./public/video/intro-loop.mp4";     
-videoB.src = "./public/video/intro-enter1.mp4"; 
+videoA.src = "./video/intro-loop.mp4";
+videoB.src = "./video/intro-enter1.mp4";
 
 videoA.play();
 gsap.set(videoA, { opacity: 1 });

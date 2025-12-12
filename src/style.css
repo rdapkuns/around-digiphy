@@ -1456,8 +1456,6 @@ height: 100%; */
   margin-bottom: 1rem;
 }
 
-.task-header>h4 {}
-
 .ui-task-title {
   border: none !important;
   padding: 0 !important;
@@ -1477,7 +1475,7 @@ height: 100%; */
   /* background-color: #34C022; */
   text-decoration: line-through;
   position: relative;
-  color: rgb(181, 181, 181);
+  color: white;
 }
 
 .ui-task-complete::before {
