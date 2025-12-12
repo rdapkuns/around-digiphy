@@ -31,7 +31,7 @@ export function createFloor(scene) {
 
 
     function createGeometry() {
-   
+
 
         const texture = new THREE.TextureLoader().load("baked/floor-3-a.jpg")
         texture.flipY = false
@@ -260,10 +260,74 @@ export function createFloor(scene) {
 
         toggleOverlayOpacity(overlayModel)
         toggleOverlayOpacity(alignmentModels)
+
+        toggleTextPanel()
     });
 
+    const textPanel1 = document.querySelector("#ui-panel-3-1")
+    const textPanel2 = document.querySelector("#ui-panel-3-2")
+    let currentText1 = true
+
+    function toggleTextPanel() {
+        currentText1 = !currentText1
+        if (currentText1) {
+
+            textPanel1.classList.remove("visually-hidden");
+            gsap.fromTo(textPanel1,
+                { opacity: 0, scale: 0.8, y: 20 },
+                {
+                    opacity: 1,
+                    scale: 1,
+                    y: 0,
+                    duration: 0.4,
+                    ease: "power2.out"
+                }
+            );
+
+            gsap.to(textPanel2, {
+                opacity: 0,
+                scale: 0.8,
+                y: 20,
+                duration: 0.3,
+                stagger: 0.06,
+                ease: "power2.in",
+                onComplete: () => {
+                    textPanel2.classList.add("visually-hidden");
+                }
+            });
+        } else {
+            textPanel2.classList.remove("visually-hidden");
+            gsap.fromTo(textPanel2,
+                { opacity: 0, scale: 0.8, y: 20 },
+                {
+                    opacity: 1,
+                    scale: 1,
+                    y: 0,
+                    duration: 0.4,
+                    ease: "power2.out"
+                }
+            );
+
+            gsap.to(textPanel1, {
+                opacity: 0,
+                scale: 0.8,
+                y: 20,
+                duration: 0.3,
+                stagger: 0.06,
+                ease: "power2.in",
+                onComplete: () => {
+                    textPanel1.classList.add("visually-hidden");
+                }
+            });
+        }
 
 
+
+        // textPanel1.classList.toggle("visually-hidden")
+        // textPanel2.classList.toggle("visually-hidden")
+
+
+    }
 
 
 
@@ -307,52 +371,52 @@ export function createFloor(scene) {
 
 
 
-    const textElement = document.querySelector(".ui-swaptext-3-1");
-    const titleElement = document.querySelector(".ui-swaptitle-3-1");
-    const progressDots = document.querySelectorAll("#ui-panel-3-1 .ui-panel-progress div");
+    // const textElement = document.querySelector(".ui-swaptext-3-1");
+    // const titleElement = document.querySelector(".ui-swaptitle-3-1");
+    // const progressDots = document.querySelectorAll("#ui-panel-3-1 .ui-panel-progress div");
 
-    function updateText() {
-        textElement.textContent = texts[currentTextPanelIndex];
-        titleElement.textContent = titles[currentTextPanelIndex];
-        progressDots.forEach((dot, i) => {
-            dot.classList.toggle("active", i === currentTextPanelIndex);
-        });
-    }
-
-
-
-    const nextBtn = document.querySelector("#ui-panel-3-1 .ui-panel-next")
-    const backBtn = document.querySelector("#ui-panel-3-1 .ui-panel-back")
-
-    nextBtn.addEventListener("click", () => {
-        if (currentTextPanelIndex < texts.length - 1) {
-            currentTextPanelIndex++;
-
-            // console.log("disable next")
-            updateText();
-        }
-
-        if (currentTextPanelIndex === texts.length - 1) {
-            nextBtn.classList.add("ui-footer-button-disabled")
-            backBtn.classList.remove("ui-footer-button-disabled")
-
-        }
+    // function updateText() {
+    //     textElement.textContent = texts[currentTextPanelIndex];
+    //     titleElement.textContent = titles[currentTextPanelIndex];
+    //     progressDots.forEach((dot, i) => {
+    //         dot.classList.toggle("active", i === currentTextPanelIndex);
+    //     });
+    // }
 
 
-    });
-    backBtn.addEventListener("click", () => {
-        if (currentTextPanelIndex > 0) {
-            currentTextPanelIndex--;
-            updateText();
-        }
-        if (currentTextPanelIndex === 0) {
-            backBtn.classList.add("ui-footer-button-disabled")
-            nextBtn.classList.remove("ui-footer-button-disabled")
 
-        }
-    });
+    // const nextBtn = document.querySelector("#ui-panel-3-1 .ui-panel-next")
+    // const backBtn = document.querySelector("#ui-panel-3-1 .ui-panel-back")
 
-    updateText()
+    // nextBtn.addEventListener("click", () => {
+    //     if (currentTextPanelIndex < texts.length - 1) {
+    //         currentTextPanelIndex++;
+
+    //         // console.log("disable next")
+    //         updateText();
+    //     }
+
+    //     if (currentTextPanelIndex === texts.length - 1) {
+    //         nextBtn.classList.add("ui-footer-button-disabled")
+    //         backBtn.classList.remove("ui-footer-button-disabled")
+
+    //     }
+
+
+    // });
+    // backBtn.addEventListener("click", () => {
+    //     if (currentTextPanelIndex > 0) {
+    //         currentTextPanelIndex--;
+    //         updateText();
+    //     }
+    //     if (currentTextPanelIndex === 0) {
+    //         backBtn.classList.add("ui-footer-button-disabled")
+    //         nextBtn.classList.remove("ui-footer-button-disabled")
+
+    //     }
+    // });
+
+    // updateText()
 
 
 
@@ -372,6 +436,9 @@ export function createFloor(scene) {
     }
 
     function hideUI(targetSelector) {
+        if (targetSelector !== ".floor3-ui-container .ui-tip"){
+            currentText1 = true
+        }
         const target = document.querySelector(targetSelector)
 
         gsap.to(target, {

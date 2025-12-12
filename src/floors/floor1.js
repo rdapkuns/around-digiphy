@@ -234,7 +234,7 @@ export function createFloor(scene) {
         }
     }
 
-    const station1Tip = document.querySelector(".floor1-ui-station1 > .ui-tip")
+    // const station1Tip = document.querySelector(".floor1-ui-station1 > .ui-tip")
 
     function physical(target) {
         if (currentStation !== 1 || cameraY > 8) {
@@ -247,17 +247,17 @@ export function createFloor(scene) {
 
         activeStation.classList.remove("visually-hidden");
 
-        gsap.to(station1Tip, {
-            opacity: 0,
-            scale: 0.8,
-            y: 20,
-            duration: 0.3,
-            stagger: 0.06,
-            ease: "power2.in",
-            onComplete: () => {
-                station1Tip.classList.add("visually-hidden");
-            }
-        });
+        // gsap.to(station1Tip, {
+        //     opacity: 0,
+        //     scale: 0.8,
+        //     y: 20,
+        //     duration: 0.3,
+        //     stagger: 0.06,
+        //     ease: "power2.in",
+        //     onComplete: () => {
+        //         station1Tip.classList.add("visually-hidden");
+        //     }
+        // });
 
         gsap.fromTo(children,
             { opacity: 0, scale: 0.8, y: 20 },
@@ -359,51 +359,51 @@ export function createFloor(scene) {
 
     initAnimations();
 
-    let currentTextPanelIndex = 0;
-    const textElement = document.querySelector(".ui-swaptext");
-    const titleElement = document.querySelector(".ui-swaptitle");
-    const progressDots = document.querySelectorAll(".ui-panel-progress div");
+    // let currentTextPanelIndex = 0;
+    // const textElement = document.querySelector(".ui-swaptext");
+    // const titleElement = document.querySelector(".ui-swaptitle");
+    // const progressDots = document.querySelectorAll(".ui-panel-progress div");
 
-    function updateText() {
-        textElement.textContent = texts[currentTextPanelIndex];
-        titleElement.textContent = titles[currentTextPanelIndex];
-        progressDots.forEach((dot, i) => {
-            dot.classList.toggle("active", i === currentTextPanelIndex);
-        });
-    }
+    // function updateText() {
+    //     textElement.textContent = texts[currentTextPanelIndex];
+    //     titleElement.textContent = titles[currentTextPanelIndex];
+    //     progressDots.forEach((dot, i) => {
+    //         dot.classList.toggle("active", i === currentTextPanelIndex);
+    //     });
+    // }
 
-    const nextBtn = document.querySelector(".ui-panel-next")
-    const backBtn = document.querySelector(".ui-panel-back")
+    // const nextBtn = document.querySelector(".ui-panel-next")
+    // const backBtn = document.querySelector(".ui-panel-back")
 
-    nextBtn.addEventListener("click", () => {
-        if (currentTextPanelIndex < texts.length - 1) {
-            currentTextPanelIndex++;
+    // nextBtn.addEventListener("click", () => {
+    //     if (currentTextPanelIndex < texts.length - 1) {
+    //         currentTextPanelIndex++;
 
-            // console.log("disable next")
-            updateText();
-        }
+    //         // console.log("disable next")
+    //         updateText();
+    //     }
 
-        if (currentTextPanelIndex === texts.length - 1) {
-            nextBtn.classList.add("ui-footer-button-disabled")
-            backBtn.classList.remove("ui-footer-button-disabled")
+    //     if (currentTextPanelIndex === texts.length - 1) {
+    //         nextBtn.classList.add("ui-footer-button-disabled")
+    //         backBtn.classList.remove("ui-footer-button-disabled")
 
-        }
+    //     }
 
 
-    });
-    backBtn.addEventListener("click", () => {
-        if (currentTextPanelIndex > 0) {
-            currentTextPanelIndex--;
-            updateText();
-        }
-        if (currentTextPanelIndex === 0) {
-            backBtn.classList.add("ui-footer-button-disabled")
-            nextBtn.classList.remove("ui-footer-button-disabled")
+    // });
+    // backBtn.addEventListener("click", () => {
+    //     if (currentTextPanelIndex > 0) {
+    //         currentTextPanelIndex--;
+    //         updateText();
+    //     }
+    //     if (currentTextPanelIndex === 0) {
+    //         backBtn.classList.add("ui-footer-button-disabled")
+    //         nextBtn.classList.remove("ui-footer-button-disabled")
 
-        }
-    });
+    //     }
+    // });
 
-    updateText()
+    // updateText()
 
     function rotateFloor(deg = 30) {
         if (!floorGroup) {

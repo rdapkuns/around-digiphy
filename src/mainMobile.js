@@ -123,11 +123,11 @@ function updateSeatIndex() {
     const frontSeat = document.querySelector(".seat-front img")
 
     if (activeForth === 1) {
-        frontSeat.src = "./public/img/seat-front-on.png";
-        backSeat.src = "./public/img/seat-back-off.png";
+        frontSeat.src = "./img/seat-front-on.png";
+        backSeat.src = "./img/seat-back-off.png";
     } else {
-        frontSeat.src = "./public/img/seat-front-off.png";
-        backSeat.src = "./public/img/seat-back-on.png";
+        frontSeat.src = "./img/seat-front-off.png";
+        backSeat.src = "./img/seat-back-on.png";
     }
 
     allChairs.forEach(chair => {

@@ -1,8 +1,9 @@
 import * as THREE from 'three';
 
+// import { moveCameraTo } from '../main.js';
+
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import QRCode from "qrcode";
-
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import { cdl } from 'three/src/nodes/TSL.js';
@@ -365,3 +366,12 @@ export function hideTasks() {
         }
     );
 }
+
+
+document.querySelector('.uni-button').addEventListener('click', () => {
+    // checkTasks(objects)
+    // cameraControls.moveCameraTo(new THREE.Vector3(0, 10, 0));
+    // window.cameraControls.moveCameraTo(new THREE.Vector3(-20, 0, -10));
+
+    
+});

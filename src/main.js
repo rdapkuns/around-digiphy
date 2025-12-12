@@ -11,6 +11,7 @@ import { createFloor as Floor5 } from './floors/floor5.js';
 import { createFloor as Floor6, showForm, hideForm } from './floors/floor6.js';
 import { setupBuck, stopFlashingAccessory } from './buck.js';
 import { initNavigation } from './navigation.js';
+import { initIntro } from './intro.js';
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { HDRLoader } from 'three/examples/jsm/loaders/HDRLoader.js'
@@ -38,6 +39,7 @@ init();
 animate();
 
 
+export const cameraControls = {};
 
 
 
@@ -109,28 +111,12 @@ async function init() {
 
   // Load chapters
   const fl1 = Floor1(scene);
-  // const fl2 = Floor2(scene);
-  // const fl3 = Floor3(scene);
-  // const fl4 = Floor4(scene);
-  const fl5 = Floor5(scene);
-
-  // const buck = setupBuck(scene);
 
 
   floors.push(fl1);
-  // floors.push(fl2);
-  // floors.push(fl3);
-  // floors.push(fl4);
-  floors.push(fl5);
 
 
-
-  // Add chapter groups to the scene
   scene.add(fl1.group);
-  // scene.add(fl2.group);
-  // scene.add(fl3.group);
-  // scene.add(fl4.group);
-  scene.add(fl5.group);
 
   // const { accessoryGroups } = await setupBuck(scene);
   const { accessoryGroups, setAccessoryVariant, animateSelected, objects } = await setupBuck(scene);
@@ -171,25 +157,6 @@ gsap.to('.canvas-wrapper', {
     pin: '.canvas-wrapper',
   }
 });
-
-
-//move camera on scroll  
-// gsap.to(camera.position, {
-//   ease: "linear",
-//   y: camera.position.y + 63,
-//   scrollTrigger: {
-//     trigger: '.three-section',
-//     start: "top top",
-//     end: "bottom bottom",
-//     scrub: true,
-//     onUpdate: () => {
-//       currentCameraHeight = camera.position.y;
-//       camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0)
-
-//       checkCurrentFloor()
-//     }
-//   }
-// })
 
 
 function setupCameraScroll() {
@@ -377,6 +344,8 @@ function checkCurrentFloor() {
 
       // fl3.toggleTextPanel()
       fl3.hideUI("#ui-panel-3-1")
+      fl3.hideUI("#ui-panel-3-2")
+
       fl3.hideUI(".floor3-ui-container .ui-tip")
 
 
@@ -430,6 +399,7 @@ function checkCurrentFloor() {
       qr.classList.remove("visually-hidden")
 
       fl3.hideUI("#ui-panel-3-1")
+      fl3.hideUI("#ui-panel-3-2")
       fl3.hideUI(".floor3-ui-container .ui-tip")
       fl4.showQR()
       atFloor4.flag = true;
@@ -460,6 +430,16 @@ function checkCurrentFloor() {
       fl4.hideQR()
       hideTasks()
       atFloor4.flag = false;
+
+      // if (currentIndex === 0) {
+      //   fl5.rotateFloor(0)
+      // }
+      // if (currentIndex === 1) {
+      //   fl5.rotateFloor(120)
+      // }
+      // if (currentIndex === 2) {
+      //   fl5.rotateFloor(-120)
+      // }
 
       gsap.to(camera, {
         fov: 65,
@@ -573,6 +553,12 @@ function setupKeyboardCameraControl(camera, model) {
     })
   }
 
+
+  window.cameraControls = cameraControls;
+
+  cameraControls.moveCameraTo = moveCameraTo;
+
+
   fl1.checkHeight(currentCameraHeight, currentIndex);
   fl5.checkHeight(currentCameraHeight, currentIndex);
 
@@ -591,6 +577,11 @@ function setupKeyboardCameraControl(camera, model) {
       moveCameraTo(cameraPoints[currentIndex])
     }
   })
+
+  window.addEventListener("cameraMove", (e) => {
+    moveCameraTo(e.detail.target);
+    currentIndex = 2
+  });
 
   const $buttonRight = document.querySelector(".horizontal-controls-right").addEventListener("click", () => {
     currentIndex = (currentIndex + 1) % cameraPoints.length
