@@ -15,7 +15,7 @@ const texts = [
     "DigiPHY, created by Granstudio, merges a physical seating frame with a real-time digital layer. It allows me to sit in the adjustable frame, change seat positions, move displays, test visibility, and see everything update instantly wearing any AR goggles. DigiPHY lets me experience and adjust a full car interior long before a physical prototype exists - saving huge amounts of time and money.",
 ];
 
-
+let componentsOpen = false
 
 export function createFloor(scene) {
     const loader = new GLTFLoader()
@@ -162,27 +162,22 @@ export function createFloor(scene) {
         }
 
 
-        // console.log("received change")
         if (currentStationIndex !== currentStation) {
 
 
             hideUI()
-            // animateUI(`.floor1-ui-station${currentStation}`, false);
 
         }
         if (currentStationIndex === -1) {
             return
         }
         currentStation = currentStationIndex
-        // console.log(currentStation)
         if (6 <= cameraHeight && cameraHeight < 10 && uiVisible === false) {
             showUI()
-            // animateUI(`.floor1-ui-station${currentStation}`, true);
         }
         if (6 > cameraHeight || cameraHeight > 10 && uiVisible === true) {
             hideUI()
             physicalHide(activeComponent)
-            // animateUI(`.floor1-ui-station${currentStation}`, false);
         }
     }
 
@@ -192,6 +187,7 @@ export function createFloor(scene) {
 
         // btn.addEventListener("mouseover", () => physical(target));
         btn.addEventListener("click", (event) => {
+            console.log(componentsOpen)
             event.stopPropagation()
             physical(target)
         });
@@ -248,28 +244,21 @@ export function createFloor(scene) {
     // const station1Tip = document.querySelector(".floor1-ui-station1 > .ui-tip")
 
     function physical(target) {
-        activeComponent = target
         if (currentStation !== 1 || cameraY > 8) {
             return
         }
         const activeStation = document.querySelector(target);
         if (!activeStation) return;
 
+        if (componentsOpen) return
+        componentsOpen = true
+
+        activeComponent = target
+
         const children = [...activeStation.children];
 
         activeStation.classList.remove("visually-hidden");
 
-        // gsap.to(station1Tip, {
-        //     opacity: 0,
-        //     scale: 0.8,
-        //     y: 20,
-        //     duration: 0.3,
-        //     stagger: 0.06,
-        //     ease: "power2.in",
-        //     onComplete: () => {
-        //         station1Tip.classList.add("visually-hidden");
-        //     }
-        // });
 
         gsap.fromTo(children,
             { opacity: 0, scale: 0.8, y: 20 },
@@ -292,6 +281,8 @@ export function createFloor(scene) {
         }
         const activeStation = document.querySelector(target);
         if (!activeStation) return;
+
+        componentsOpen = false
 
         const children = [...activeStation.children];
 
@@ -372,51 +363,6 @@ export function createFloor(scene) {
 
     initAnimations();
 
-    // let currentTextPanelIndex = 0;
-    // const textElement = document.querySelector(".ui-swaptext");
-    // const titleElement = document.querySelector(".ui-swaptitle");
-    // const progressDots = document.querySelectorAll(".ui-panel-progress div");
-
-    // function updateText() {
-    //     textElement.textContent = texts[currentTextPanelIndex];
-    //     titleElement.textContent = titles[currentTextPanelIndex];
-    //     progressDots.forEach((dot, i) => {
-    //         dot.classList.toggle("active", i === currentTextPanelIndex);
-    //     });
-    // }
-
-    // const nextBtn = document.querySelector(".ui-panel-next")
-    // const backBtn = document.querySelector(".ui-panel-back")
-
-    // nextBtn.addEventListener("click", () => {
-    //     if (currentTextPanelIndex < texts.length - 1) {
-    //         currentTextPanelIndex++;
-
-    //         // console.log("disable next")
-    //         updateText();
-    //     }
-
-    //     if (currentTextPanelIndex === texts.length - 1) {
-    //         nextBtn.classList.add("ui-footer-button-disabled")
-    //         backBtn.classList.remove("ui-footer-button-disabled")
-
-    //     }
-
-
-    // });
-    // backBtn.addEventListener("click", () => {
-    //     if (currentTextPanelIndex > 0) {
-    //         currentTextPanelIndex--;
-    //         updateText();
-    //     }
-    //     if (currentTextPanelIndex === 0) {
-    //         backBtn.classList.add("ui-footer-button-disabled")
-    //         nextBtn.classList.remove("ui-footer-button-disabled")
-
-    //     }
-    // });
-
-    // updateText()
 
     function rotateFloor(deg = 30) {
         if (!floorGroup) {

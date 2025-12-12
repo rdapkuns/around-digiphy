@@ -207,7 +207,6 @@ export function bigQR() {
         return
     }
     qrBig = true
-    console.log("dassddasndakondasopndaspd")
     qrContainer.classList.remove("qr-small")
     console.log(qrBig)
 
@@ -226,10 +225,10 @@ export function bigQR() {
         .to(qrContainer, {
             top: "50%",
             left: "50%",
-            width: "40rem",
+            width: "45rem",
             height: "20rem",
             color: "black",
-            padding: "2rem",
+            padding: "4rem",
             duration: 1,
             ease: "power3.out",
             onComplete: () => {
