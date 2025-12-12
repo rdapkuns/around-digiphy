@@ -1044,15 +1044,11 @@ nav {
 
 .horizontal-controls {
   cursor: pointer;
-  /* width: 3.5rem; */
   width: fit-content;
-  /* height: 2rem; */
   max-height: 31px;
   height: fit-content;
   margin: 0;
   padding: 0;
-  /* border-radius: 100px; */
-  /* background-color: rgba(255, 255, 255, 0.264); */
   background-color: transparent;
   color: rgb(8, 8, 169);
   border: none;
@@ -1402,6 +1398,11 @@ height: 100%; */
   /* pointer-events: all; */
 }
 
+.ui-hoverpanels>img {
+  border-radius: 0rem;
+  clip-path: polygon(0 0, calc(100% - 30px) 0, 100% 30px, 100% 100%, 30px 100%, 0 calc(100% - 30px));
+}
+
 #ui-panel-4 {
   position: absolute;
   left: 5%;
@@ -1412,7 +1413,6 @@ height: 100%; */
   position: absolute;
   right: 5%;
   top: 45%;
-  border-radius: 10px;
   height: 20rem;
 }
 
@@ -1420,7 +1420,6 @@ height: 100%; */
   position: absolute;
   left: 5%;
   top: 10%;
-  border-radius: 10px;
   height: 20rem;
 }
 
@@ -1428,7 +1427,6 @@ height: 100%; */
   position: absolute;
   right: 5%;
   top: 10%;
-  border-radius: 10px;
   height: 15rem;
 }
 
@@ -1439,14 +1437,12 @@ height: 100%; */
   position: absolute;
   right: 5%;
   top: 10%;
-  border-radius: 10px;
 }
 
 #ui-panel-4-5 {
   position: absolute;
   left: 10%;
   top: 15%;
-  border-radius: 10px;
   height: 15rem;
 }
 
@@ -1454,7 +1450,6 @@ height: 100%; */
   position: absolute;
   left: 10%;
   bottom: 10%;
-  border-radius: 10px;
   height: 20rem;
 }
 
@@ -1462,7 +1457,6 @@ height: 100%; */
   position: absolute;
   right: 5%;
   top: 40%;
-  border-radius: 10px;
   height: 15rem;
 }
 
@@ -1473,14 +1467,12 @@ height: 100%; */
   position: absolute;
   right: 5%;
   top: 65%;
-  border-radius: 10px;
 }
 
 #ui-panel-4-9 {
   position: absolute;
   left: 10%;
   top: 15%;
-  border-radius: 10px;
   height: 20rem;
 }
 
@@ -1488,7 +1480,6 @@ height: 100%; */
   position: absolute;
   left: 10%;
   bottom: 10%;
-  border-radius: 10px;
   height: 15rem;
 }
 
@@ -1496,7 +1487,6 @@ height: 100%; */
   position: absolute;
   right: 2%;
   top: 20%;
-  border-radius: 10px;
   height: 15rem;
   rotate: -90deg;
 }
@@ -1507,7 +1497,6 @@ height: 100%; */
   position: absolute;
   left: 5%;
   top: 65%;
-  border-radius: 10px;
   pointer-events: none;
 }
 
@@ -1515,7 +1504,6 @@ height: 100%; */
   position: absolute;
   left: 10%;
   top: 15%;
-  border-radius: 10px;
   height: 15rem;
   pointer-events: none;
 }
@@ -1524,7 +1512,6 @@ height: 100%; */
   position: absolute;
   right: 15%;
   bottom: 15%;
-  border-radius: 10px;
   height: 15rem;
   pointer-events: none;
 }
@@ -1533,7 +1520,6 @@ height: 100%; */
   position: absolute;
   right: 5%;
   top: 10%;
-  border-radius: 10px;
   height: 20rem;
   pointer-events: none;
 }
@@ -1549,7 +1535,6 @@ height: 100%; */
   position: absolute;
   right: 5%;
   top: 20%;
-  border-radius: 10px;
   height: 20rem;
 }
 
@@ -1730,42 +1715,56 @@ height: 100%; */
   top: 5%;
 }
 
+#ui-panel-6-2 {
+  position: absolute;
+  right: 2%;
+  top: 5%;
+}
+
+#ui-panel-6-2>p {
+  margin-top: 3rem;
+}
+
 .ui-panel-dark {
-  background-color: black;
+  background-color: rgba(1, 0, 12, 0.868);
 
   pointer-events: all;
 
-  border-radius: 0.68rem;
   border: 1px solid rgba(64, 71, 83, 0.5);
   box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.05);
-  backdrop-filter: blur(7.5px);
+  backdrop-filter: blur(70px);
+
+  border-width: 1px;
+  border-style: solid;
+  border-image: linear-gradient(to bottom left, rgba(255, 255, 255, 0.5) 0%,
+      rgba(255, 255, 255, 0) 40%,
+      rgba(255, 255, 255, 0) 60%,
+      rgba(255, 255, 255, 0.5) 100%) 1;
 }
 
 .ui-panel-header {
   padding-bottom: 2rem;
-  border-bottom: 2px solid #272727;
   margin-bottom: 2rem;
   padding-top: 2rem;
 }
 
 .ui-panel-dark h4 {
-  /* font-family: Poppins; */
-  font-family: "Poppins", sans-serif;
   color: #EEF0F3;
-  font-weight: 600;
-  font-size: 2rem;
-  font-weight: 800;
-  font-size: 1.6rem;
-  margin-bottom: 1rem;
 }
 
 .ui-panel-dark p {
+  margin-top: 1rem;
+
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.2rem;
 
-  color: #7C7F82;
+  color: #c5cad0;
   font-family: Montserrat;
+}
+
+.ui-panel-dark>button {
+  margin-top: 1.5rem;
 }
 
 form label {
@@ -1780,15 +1779,15 @@ form textarea {
   padding: 0.5rem 0.8rem;
   border-radius: 6px;
   border: none;
-  background-color: #1f2225;
+  background-color: #252a2f;
 }
 
 input::placeholder,
 textarea::placeholder {
-  color: #616365;
+  color: #7d8287;
 }
 
-.form-submit-button {
+/* .form-submit-button {
   background-color: white;
   color: black;
   border: none;
@@ -1797,4 +1796,43 @@ textarea::placeholder {
   padding: 0.625rem 0.9375rem;
   align-items: center;
   gap: 0.3125rem;
+} */
+
+
+.form-submit-button {
+  position: relative;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  pointer-events: all;
+  color: white;
+  padding: 0.7rem 1rem;
+  background-color: var(--primary-blue);
+  --p: 4px;
+  border-radius: 0;
+}
+
+.form-submit-button::before {
+  content: "";
+  position: absolute;
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  padding: var(--p);
+  z-index: -1;
+  transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+
+  transition: all 0.3s ease;
+
+  --s: 15px;
+  border: 1px solid white;
+  mask:
+    conic-gradient(#000 0 0) content-box,
+    conic-gradient(at var(--s) var(--s), #0000 75%, #000 0) 0 0/calc(100% - var(--s)) calc(100% - var(--s));
+}
+
+.form-submit-button:hover {
+  --p: 1px;
 }

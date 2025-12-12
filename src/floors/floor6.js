@@ -138,3 +138,31 @@ export function hideForm() {
         uiVisible = false;
     }
 }
+
+document.querySelector("#ui-panel-6-2 > button").addEventListener("click", () => {
+    console.log("button works")
+
+    gsap.to("#ui-panel-6-2", {
+        opacity: 0,
+        scale: 0.8,
+        y: 20,
+        duration: 0.3,
+        ease: "power2.in",
+        onComplete: () => {
+            document.querySelector("#ui-panel-6-2").classList.add("visually-hidden");
+        }
+    });
+
+
+    gsap.from("#ui-panel-6-1", {
+        opacity: 0,
+        scale: 0.8,
+        y: 20,
+        duration: 0.3,
+        delay: 0.3,
+        ease: "power2.in",
+        onStart: () => {
+            document.querySelector("#ui-panel-6-1").classList.remove("visually-hidden");
+        }
+    });
+})
