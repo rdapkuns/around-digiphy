@@ -46,7 +46,7 @@ export const cameraControls = {};
 
 
 async function init() {
-  
+
   scene = new THREE.Scene()
   scene.background = null
 
@@ -279,7 +279,15 @@ cameraTL.to(camera.position, {
   y: finalY,
   ease: 'linear',
   duration: ratio.last
-});
+}, "lastPhase");
+
+cameraTL.call(() => {
+  document.querySelector("#three-canvas").classList.remove("canvas-dark")
+}, null, "lastPhase+=" + (ratio.last * 0.89));
+
+cameraTL.call(() => {
+  document.querySelector("#three-canvas").classList.add("canvas-dark")
+}, null, "lastPhase+=" + (ratio.last * 0.9));
 
 cameraTL.call(() => {
 
@@ -449,11 +457,14 @@ function checkCurrentFloor() {
       });
 
       hideForm()
+      // document.querySelector("#three-canvas").classList.remove("canvas-dark")
 
     }
 
     if (currentFloor === 6) {
       showForm()
+
+      // document.querySelector("#three-canvas").classList.add("canvas-dark")
     }
 
     if (currentFloor === 2 || currentFloor === 4) {

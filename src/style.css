@@ -39,12 +39,45 @@ body {
 
 
 canvas {
+
+  position: relative;
   width: 100%;
   height: 100%;
   display: block;
   z-index: 0;
-  background: linear-gradient(180deg, rgb(249, 255, 255) 0%, rgb(108, 112, 120) 100%);
+  opacity: 1;
+  /* background: linear-gradient(180deg, rgb(249, 255, 255) 0%, rgb(108, 112, 120) 100%); */
+  background-color: white;
+  transition: all 0.5s linear;
+  /* background: linear-gradient(180deg, rgb(249, 255, 255) 0%, rgb(108, 112, 120) 100%);
+  transition: all 1s ease-in-out;
+
+  /* --top: rgb(249, 255, 255);
+    --bottom: rgb(108, 112, 120);
+  
+    background: linear-gradient(180deg, var(--top), var(--bottom));
+    transition: --top 1s ease-in-out, --bottom 1s ease-in-out; */
+  /* } */
+
+  /* canvas.canvas-dark {
+  --top: rgb(4, 3, 16);
+  --bottom: rgb(63, 27, 68);
+  transition: --top 1s ease-in-out, --bottom 1s ease-in-out;
+} */
 }
+
+.canvas-dark {
+  background-color: #ffffff00;
+}
+
+canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: relative;
+  z-index: 0;
+}
+
 
 .logo {
   position: fixed;
@@ -74,9 +107,22 @@ canvas {
   width: 100vw;
   height: 100vh;
   background-color: gold;
+  background: linear-gradient(180deg,
+      rgb(4, 3, 16) 0%,
+      rgb(63, 27, 68) 100%);
   position: relative;
   pointer-events: none;
 }
+
+.canvas-wrapper > img{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  opacity: 0.9;
+  object-fit: contain;
+  mix-blend-mode: normal;
+}
+
 
 .qr-wrapper {
   position: fixed;
@@ -1575,28 +1621,28 @@ height: 100%; */
 
 #ui-panel-4 {
   position: absolute;
-  left: 5%;
-  top: 55%;
+  left: 9rem;
+  top: 26rem;
 }
 
 #ui-panel-4-1 {
   position: absolute;
-  right: 5%;
-  top: 45%;
+  right: 3rem;
+  top: 22rem;
   height: 20rem;
 }
 
 #ui-panel-4-2 {
   position: absolute;
-  left: 5%;
-  top: 10%;
+  left: 5rem;
+  top: 5rem;
   height: 20rem;
 }
 
 #ui-panel-4-3 {
   position: absolute;
-  right: 5%;
-  top: 10%;
+  right: 3rem;
+  top: 5rem;
   height: 15rem;
 }
 
@@ -1605,28 +1651,28 @@ height: 100%; */
 
 #ui-panel-4-4 {
   position: absolute;
-  right: 5%;
-  top: 10%;
+  right: 2rem;
+  top: 2rem;
 }
 
 #ui-panel-4-5 {
   position: absolute;
-  left: 10%;
-  top: 15%;
+  left: 10rem;
+  bottom: 27rem;
   height: 15rem;
 }
 
 #ui-panel-4-6 {
   position: absolute;
-  left: 10%;
-  bottom: 10%;
+  left: 10rem;
+  bottom: 5rem;
   height: 20rem;
 }
 
 #ui-panel-4-7 {
   position: absolute;
-  right: 5%;
-  top: 40%;
+  right: 3rem;
+  top: 20rem;
   height: 15rem;
 }
 
@@ -1635,61 +1681,60 @@ height: 100%; */
 
 #ui-panel-4-8 {
   position: absolute;
-  right: 5%;
-  top: 65%;
+  right: 3rem;
+  bottom: 5rem;
 }
 
 #ui-panel-4-9 {
   position: absolute;
-  left: 10%;
-  top: 15%;
+  left: 5rem;
+  top: 5rem;
   height: 20rem;
 }
 
 #ui-panel-4-10 {
   position: absolute;
-  left: 10%;
-  bottom: 10%;
+  left: 10rem;
+  top: 27rem;
   height: 15rem;
 }
 
 #ui-panel-4-11 {
   position: absolute;
-  right: 2%;
-  top: 20%;
+  right: 4rem;
+  bottom: 25rem;
   height: 15rem;
-  rotate: -90deg;
 }
 
 /* FOR PEDALS */
 
 #ui-panel-4-12 {
   position: absolute;
-  left: 5%;
-  top: 65%;
+  right: 3rem;
+  bottom: 5rem;
   pointer-events: none;
 }
 
 #ui-panel-4-13 {
   position: absolute;
-  left: 10%;
-  top: 15%;
+  left: 10rem;
+  bottom: 25rem;
   height: 15rem;
   pointer-events: none;
 }
 
 #ui-panel-4-14 {
   position: absolute;
-  right: 15%;
-  bottom: 15%;
-  height: 15rem;
+  left: 10rem;
+  bottom: 5rem;
+  height: 18rem;
   pointer-events: none;
 }
 
 #ui-panel-4-15 {
   position: absolute;
-  right: 5%;
-  top: 10%;
+  right: 4rem;
+  bottom: 23rem;
   height: 20rem;
   pointer-events: none;
 }
