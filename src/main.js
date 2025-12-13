@@ -293,14 +293,9 @@ const fl3 = Floor3(scene);
 const fl4 = Floor4(scene);
 const fl5 = Floor5(scene);
 const fl6 = Floor6(scene)
-// const { animateSelected } = setupBuck(scene);
-
 
 
 let overlayOn = false
-
-// document.querySelector('.overlay-button').addEventListener('click', fl3.toggleOverlayOpacity);
-
 
 function checkCurrentFloor() {
   //each is 11
@@ -342,7 +337,6 @@ function checkCurrentFloor() {
 
 
 
-      // fl3.toggleTextPanel()
       fl3.hideUI("#ui-panel-3-1")
       fl3.hideUI("#ui-panel-3-2")
 
@@ -362,10 +356,6 @@ function checkCurrentFloor() {
         fl3.rotateFloor(-120)
       }
 
-
-      overlayButton.classList.remove("visually-hidden")
-
-      // fl3.toggleTextPanel()
       fl3.showUI("#ui-panel-3-1")
       fl3.showUI(".floor3-ui-container .ui-tip")
 
@@ -431,16 +421,6 @@ function checkCurrentFloor() {
       hideTasks()
       atFloor4.flag = false;
 
-      // if (currentIndex === 0) {
-      //   fl5.rotateFloor(0)
-      // }
-      // if (currentIndex === 1) {
-      //   fl5.rotateFloor(120)
-      // }
-      // if (currentIndex === 2) {
-      //   fl5.rotateFloor(-120)
-      // }
-
       gsap.to(camera, {
         fov: 65,
         duration: 1,
@@ -464,17 +444,10 @@ function checkCurrentFloor() {
     }
 
     if (currentFloor === 6) {
-      // spinModel()
       showForm()
     }
 
     if (currentFloor === 2 || currentFloor === 4) {
-      // overlayButton.classList.remove("visually-hidden")
-
-    }
-    if (currentFloor === 2 || currentFloor === 4) {
-      overlayButton.classList.add("visually-hidden")
-
       fl3.overlayOff();
     }
 
