@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+  <link rel="icon" type="image/svg+xml" href="./img/favicon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link
@@ -13,56 +13,83 @@
   <link href="https://fonts.googleapis.com/css2?family=Sometype+Mono:ital,wght@0,400..700;1,400..700&display=swap"
     rel="stylesheet">
 
-  <title>around-digiphy</title>
-  <script type="module" crossorigin src="/around-digiphy/assets/main-C2rP8CJP.js"></script>
-  <link rel="modulepreload" crossorigin href="/around-digiphy/assets/supabase-BDmk_h4L.js">
-  <link rel="stylesheet" crossorigin href="/around-digiphy/assets/supabase-nRDo_lkH.css">
+  <title>DigiPHY</title>
+  <script type="module" crossorigin src="/around-digiphy/assets/main-DDHu3deN.js"></script>
+  <link rel="modulepreload" crossorigin href="/around-digiphy/assets/supabase-B31qoorF.js">
+  <link rel="stylesheet" crossorigin href="/around-digiphy/assets/supabase-Bs8qZECT.css">
   <link rel="stylesheet" crossorigin href="/around-digiphy/assets/main-7YOhKgBH.css">
 </head>
 
 <body>
 
-  <div class="intro-container">
+
+  <div class="mobile-warning">
+    <div>
+      <img src="/around-digiphy/assets/granstudio-w-BygzrRbU.png" />
+    </div>
+    <img src="./img/desktop.png">
+    <p>You'll need a desktop for this experience, sorry :V </p>
+  </div>
+
+  <div class="intro-container visually-hidden">
     <video id="videoA" playsinline muted loop preload="auto"></video>
     <video id="videoB" playsinline muted preload="auto"></video>
     <button id="intro-start">Enter studio</button>
   </div>
 
+  <button class="instructions-button">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path
+        d="M12 16V12M12 8H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z"
+        stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </button>
+
   <section class="three-section three-section">
     <div class="canvas-wrapper">
+      <img src="/around-digiphy/assets/sky-DeFIZXpo.png">
       <canvas class="three-canvas" id="three-canvas"></canvas>
-
-
     </div>
 
     <div class="overlay-button-container visually-hidden">
-      <button class="overlay-button">
-        <svg xmlns="http://www.w3.org/2000/svg" width="6" height="31" viewBox="0 0 6 31" fill="none">
-          <path d="M4.47035e-07 0V6H0.923077V1.03053H6V0H4.47035e-07Z" fill="#345DFD" />
-          <path d="M7.61698e-07 31L6 31L6 30L1 30L1 24.6934L4.76837e-07 24.6934L7.61698e-07 31Z" fill="#345DFD" />
+      <button class="overlay-button pulsing">
+        <svg xmlns="http://www.w3.org/2000/svg" width="7" height="45" viewBox="0 0 7 45" fill="none">
+          <path d="M2.25283e-07 4.76837e-07L7 1.70857e-07L7 1.5L1.5 1.5L1.5 7L0 7L2.25283e-07 4.76837e-07Z"
+            fill="#345DFD" />
+          <path d="M2.25283e-07 45L7 45L7 43.5L1.5 43.5L1.5 38L0 38L2.25283e-07 45Z" fill="#345DFD" />
         </svg>
         <span>HEADSET</span>
-        <span>+</span>
+        <span class="toggle-text">
+          <span class="on">ON</span>
+          <span class="off">OFF</span>
+        </span>
       </button>
     </div>
 
 
     <div class="logo">
-      <img src="/around-digiphy/assets/granstudio-w-Cb6dIGDQ.png" />
+      <img src="/around-digiphy/assets/granstudio-w-BygzrRbU.png" />
     </div>
 
-    <div class="instruction-wrapper">
+    <div class="instruction-wrapper visually-hidden">
       <div class="instruction-container">
         <h2>This is an interactive experience</h2>
         <div class="instruction-body">
           <div>
-            <svg xmlns="http://www.w3.org/2000/svg" width="115" height="54" viewBox="0 0 115 54" fill="none">
-              <rect x="1" y="1" width="52" height="52" rx="4" stroke="white" stroke-width="2" />
-              <rect x="-1" y="1" width="52" height="52" rx="4" transform="matrix(-1 0 0 1 113 0)" stroke="white"
-                stroke-width="2" />
-              <path d="M32 18L19 27.5477L32 37" stroke="#EEF0F3" stroke-width="2" stroke-linecap="round"
+            <svg xmlns="http://www.w3.org/2000/svg" width="125" height="55" viewBox="0 0 125 55" fill="none">
+              <path
+                d="M47.6667 1H6.83333C3.61167 1 1 3.61167 1 6.83333V47.6667C1 50.8883 3.61167 53.5 6.83333 53.5H47.6667C50.8883 53.5 53.5 50.8883 53.5 47.6667V6.83333C53.5 3.61167 50.8883 1 47.6667 1Z"
+                stroke="#EEF0F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M27.2507 15.584L15.584 27.2507L27.2507 38.9173" stroke="#EEF0F3" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M38.9173 27.25H15.584" stroke="#EEF0F3" stroke-width="2" stroke-linecap="round"
                 stroke-linejoin="round" />
-              <path d="M83 18L96 27.5477L83 37" stroke="#EEF0F3" stroke-width="2" stroke-linecap="round"
+              <path
+                d="M76.8333 1H117.667C120.888 1 123.5 3.61167 123.5 6.83333V47.6667C123.5 50.8883 120.888 53.5 117.667 53.5H76.8333C73.6117 53.5 71 50.8883 71 47.6667V6.83333C71 3.61167 73.6117 1 76.8333 1Z"
+                stroke="#EEF0F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M97.2493 15.584L108.916 27.2507L97.2493 38.9173" stroke="#EEF0F3" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M85.5827 27.25H108.916" stroke="#EEF0F3" stroke-width="2" stroke-linecap="round"
                 stroke-linejoin="round" />
             </svg>
             <p>Use the arrow keys to move around the room</p>
@@ -94,63 +121,34 @@
           DigiPHY shines in user testing. By scanning the QR code, you can connect your phone to DigiPHY and adjust the
           frame in
           real time.
-          I do this almost every day in the studio, and it stays surprisingly fun every single time.
+          <br> <br>
+          I do this every day in the studio, and it stays fun every single time. Read what they say and adjust the
+          frame.
         </p>
       </div>
       <div class="qr-right">
+        <span>Scan the QR code</span>
         <canvas id="qrcode"></canvas>
-        <button class="qr-wrapper-close">[ Continue without QR ]</button>
+        <span>or</span>
+        <button class="qr-wrapper-close">Continue without QR</button>
       </div>
 
       <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
         <path
-          d="M4 4V12H12V4H4ZM16 12C16 14.2091 14.2091 16 12 16H4C1.79086 16 0 14.2091 0 12V4C0 1.79086 1.79086 0 4 0H12C14.2091 0 16 1.79086 16 4V12Z"
-          fill="#21272A" />
-        <path
-          d="M6 28.0195V28C6 26.8954 6.89543 26 8 26C9.10457 26 10 26.8954 10 28V28.0195C10 29.1241 9.10457 30.0195 8 30.0195C6.89543 30.0195 6 29.1241 6 28.0195Z"
-          fill="#21272A" />
-        <path
-          d="M24 4V12H32V4H24ZM36 12C36 14.2091 34.2091 16 32 16H24C21.7909 16 20 14.2091 20 12V4C20 1.79086 21.7909 0 24 0H32C34.2091 0 36 1.79086 36 4V12Z"
-          fill="#21272A" />
-        <path
-          d="M6 8.01953V8C6 6.89543 6.89543 6 8 6C9.10457 6 10 6.89543 10 8V8.01953C10 9.1241 9.10457 10.0195 8 10.0195C6.89543 10.0195 6 9.1241 6 8.01953Z"
-          fill="#21272A" />
-        <path
-          d="M4 24V32H12V24H4ZM16 32C16 34.2091 14.2091 36 12 36H4C1.79086 36 0 34.2091 0 32V24C0 21.7909 1.79086 20 4 20H12C14.2091 20 16 21.7909 16 24V32Z"
-          fill="#21272A" />
-        <path
-          d="M26 8.01953V8C26 6.89543 26.8954 6 28 6C29.1046 6 30 6.89543 30 8V8.01953C30 9.1241 29.1046 10.0195 28 10.0195C26.8954 10.0195 26 9.1241 26 8.01953Z"
-          fill="#21272A" />
-        <path
-          d="M28 20C29.1046 20 30 20.8954 30 22C30 23.1046 29.1046 24 28 24H22C20.8954 24 20 23.1046 20 22C20 20.8954 20.8954 20 22 20H28Z"
-          fill="#21272A" />
-        <path
-          d="M32 22.0195V22C32 20.8954 32.8954 20 34 20C35.1046 20 36 20.8954 36 22V22.0195C36 23.1241 35.1046 24.0195 34 24.0195C32.8954 24.0195 32 23.1241 32 22.0195Z"
-          fill="#21272A" />
-        <path
-          d="M20 28V22C20 20.8954 20.8954 20 22 20C23.1046 20 24 20.8954 24 22V28C24 29.1046 23.1046 30 22 30C20.8954 30 20 29.1046 20 28Z"
-          fill="#21272A" />
-        <path
-          d="M28 32C29.1046 32 30 32.8954 30 34C30 35.1046 29.1046 36 28 36H22C20.8954 36 20 35.1046 20 34C20 32.8954 20.8954 32 22 32H28Z"
-          fill="#21272A" />
-        <path
-          d="M34 26C35.1046 26 36 26.8954 36 28C36 29.1046 35.1046 30 34 30H28C26.8954 30 26 29.1046 26 28C26 26.8954 26.8954 26 28 26H34Z"
-          fill="#21272A" />
-        <path
-          d="M32 34V28C32 26.8954 32.8954 26 34 26C35.1046 26 36 26.8954 36 28V34C36 35.1046 35.1046 36 34 36C32.8954 36 32 35.1046 32 34Z"
-          fill="#21272A" />
+          d="M31.5 24H27C26.2044 24 25.4413 24.3161 24.8787 24.8787C24.3161 25.4413 24 26.2044 24 27V31.5M31.5 31.5V31.515M18 10.5V15C18 15.7956 17.6839 16.5587 17.1213 17.1213C16.5587 17.6839 15.7956 18 15 18H10.5M4.5 18H4.515M18 4.5H18.015M18 24V24.015M24 18H25.5M31.5 18V18.015M18 31.5V30M6 4.5H10.5C11.3284 4.5 12 5.17157 12 6V10.5C12 11.3284 11.3284 12 10.5 12H6C5.17157 12 4.5 11.3284 4.5 10.5V6C4.5 5.17157 5.17157 4.5 6 4.5ZM25.5 4.5H30C30.8284 4.5 31.5 5.17157 31.5 6V10.5C31.5 11.3284 30.8284 12 30 12H25.5C24.6716 12 24 11.3284 24 10.5V6C24 5.17157 24.6716 4.5 25.5 4.5ZM6 24H10.5C11.3284 24 12 24.6716 12 25.5V30C12 30.8284 11.3284 31.5 10.5 31.5H6C5.17157 31.5 4.5 30.8284 4.5 30V25.5C4.5 24.6716 5.17157 24 6 24Z"
+          stroke="#EEF0F3" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
     </div>
 
 
 
     <nav>
-      <button class="nav-button" data-floor="floor6">Contact</button>
-      <button class="nav-button" data-floor="floor5">Clients</button>
-      <button class="nav-button" data-floor="floor4">Iterate</button>
-      <button class="nav-button" data-floor="floor3">Digital</button>
-      <button class="nav-button" data-floor="floor2">Physical</button>
-      <button class="nav-button" data-floor="floor1">Welcome</button>
+      <button class="nav-button" data-floor="floor6">CONTACT</button>
+      <button class="nav-button" data-floor="floor5">CLIENTS</button>
+      <button class="nav-button" data-floor="floor4">TESTING</button>
+      <button class="nav-button" data-floor="floor3">SOFTWARE</button>
+      <button class="nav-button" data-floor="floor2">PHYSICAL</button>
+      <button class="nav-button" data-floor="floor1">WELCOME</button>
     </nav>
 
     <div id="accessory-menu" class="visually-hidden ui-accessories ui-panel"></div>
@@ -222,7 +220,7 @@
               d="M10.75 20.75C16.2728 20.75 20.75 16.2728 20.75 10.75C20.75 5.22715 16.2728 0.75 10.75 0.75C5.22715 0.75 0.75 5.22715 0.75 10.75C0.75 16.2728 5.22715 20.75 10.75 20.75Z"
               stroke="#EEF0F3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          <p>Hover over the component you want to explore in detail.
+          <p><strong>Click</strong> the component you want to explore in detail.
           </p>
         </div>
 
@@ -253,36 +251,36 @@
           <img id="ui-panel-4-6" src="/around-digiphy/assets/steer2-5faMXZNQ.jpg">
           <img id="ui-panel-4-7" src="/around-digiphy/assets/steer3-DO2bR3_M.jpg">
         </div>
-      </div>
 
-      <div class="ui-hoverpanels ui-hoverpanels-3 visually-hidden">
-        <div class="ui-panel" id="ui-panel-4-8">
-          <h4>Alignment cameras</h4>
-          <p>The alignment cameras help me bring the digital layer into the real setup. They make sure every virtual
-            element sits
-            exactly where it should, so the whole experience lines up perfectly.</p>
+        <div class="ui-hoverpanels ui-hoverpanels-3 visually-hidden">
+          <div class="ui-panel" id="ui-panel-4-8">
+            <h4>Alignment cameras</h4>
+            <p>The alignment cameras help me bring the digital layer into the real setup. They make sure every virtual
+              element sits
+              exactly where it should, so the whole experience lines up perfectly.</p>
+          </div>
+          <img id="ui-panel-4-9" src="/around-digiphy/assets/camera2-S97M6uB6.jpg">
+          <img id="ui-panel-4-10" src="/around-digiphy/assets/camera1-CU93REl8.jpg">
+          <img id="ui-panel-4-11" src="/around-digiphy/assets/camera3-CSXVXuJu.jpg">
         </div>
-        <img id="ui-panel-4-9" src="/around-digiphy/assets/camera2-S97M6uB6.jpg">
-        <img id="ui-panel-4-10" src="/around-digiphy/assets/camera1-CU93REl8.jpg">
-        <img id="ui-panel-4-11" src="/around-digiphy/assets/camera3-CSXVXuJu.jpg">
-      </div>
 
 
-      <div class="ui-hoverpanels ui-hoverpanels-4 visually-hidden">
-        <div class="ui-panel" id="ui-panel-4-12">
-          <h4>Pedals</h4>
-          <p>The pedals in Digiphy are fully adjustable, so I can set them up to match the driving position of any
-            type
-            of
-            car. I can
-            move them closer, lower, wider,... Whatever the layout needs.</p>
+        <div class="ui-hoverpanels ui-hoverpanels-4 visually-hidden">
+          <div class="ui-panel" id="ui-panel-4-12">
+            <h4>Pedals</h4>
+            <p>The pedals in Digiphy are fully adjustable, so I can set them up to match the driving position of any
+              type
+              of
+              car. I can
+              move them closer, lower, wider,... Whatever the layout needs.</p>
+          </div>
+          <img id="ui-panel-4-15" src="/around-digiphy/assets/pedals1-C8Wb2x3p.jpg">
+          <img id="ui-panel-4-14" src="/around-digiphy/assets/pedals2-ATkmiHf7.jpg">
+          <img id="ui-panel-4-13" src="/around-digiphy/assets/pedals3-4wFb2Xbo.jpg">
         </div>
-        <img id="ui-panel-4-15" src="/around-digiphy/assets/pedals1-C8Wb2x3p.jpg">
-        <img id="ui-panel-4-14" src="/around-digiphy/assets/pedals2-ATkmiHf7.jpg">
-        <img id="ui-panel-4-13" src="/around-digiphy/assets/pedals3-4wFb2Xbo.jpg">
+
+
       </div>
-
-
 
       <div class="floor1-ui-station2 ui-station visually-hidden">
         <div class="ui-panel" id="ui-panel-5">
@@ -404,8 +402,8 @@
 
     <div class="floor5-ui-container ui-container">
       <div class="ui-panel visually-hidden" id="ui-panel-5-0">
-        <div class="img-wrapper">
-          <img alt="Lynk & Co logo" src="https://upload.wikimedia.org/wikipedia/commons/9/95/Lynk_%26_Co_2016_logo.svg">
+        <div class="img-wrapper client-img">
+          <img alt="Lynk & Co logo" src="/around-digiphy/assets/logo-lync-Bu_JmKJT.png">
         </div>
         <h4 class="ui-swaptitle-5-0 client-title">Lync & Co</h4>
         <p class="client-quote">
@@ -416,7 +414,7 @@
       </div>
 
       <div class="ui-panel visually-hidden" id="ui-panel-5-1">
-        <div class="img-wrapper">
+        <div class="img-wrapper client-img">
           <img alt="Renault icon since 2021"
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Renault_2021.svg/512px-Renault_2021.svg.png?20221011204020">
         </div>
@@ -431,8 +429,8 @@
       </div>
 
       <div class="ui-panel visually-hidden" id="ui-panel-5-2">
-        <div class="img-wrapper">
-          <img alt="Mazda logo 2024 (vertical)" src="/around-digiphy/assets/logo-mazda-DluySpzU.png">
+        <div class="img-wrapper client-img">
+          <img alt="Mazda logo 2024 (vertical)" src="/around-digiphy/assets/logo-mazda-B__YBAAE.png">
         </div>
         <h4 class="ui-swaptitle-5-2 client-title">Mazda</h4>
         <p class="client-quote">
@@ -448,7 +446,7 @@
     <!-- ROOF UI -->
 
     <div class="floor6-ui-container visually-hidden ui-container">
-      <div class="ui-panel ui-panel-dark" id="ui-panel-6-1">
+      <div class="ui-panel ui-panel-dark visually-hidden" id="ui-panel-6-1">
         <div class="ui-panel-header">
           <h4>Ready to elevate your design?</h4>
           <p>Dont hesitate to reach out. Grantudio will get you the solution that suits
@@ -466,8 +464,18 @@
           <label for="lname">Your message (250 char. max):</label><br>
           <textarea id="message" name="message" rows="6" cols="45" placeholder="An incredible message..."></textarea>
 
-          <input class="form-submit-button" type="submit" value="Submit">
+          <input class="form-submit-button" type="submit" value="SUBMIT">
         </form>
+      </div>
+
+      <div class="ui-panel ui-panel-dark" id="ui-panel-6-2">
+        <h4>NOW YOU GET IT!</h4>
+        <p>
+          You reached the end of our story and designed a car!
+          <br><br>
+          But it's not the end of our shared journey. Reach out to Granstudio and learn more!
+        </p>
+        <button class="qr-wrapper-close">CONTACT GRANSTUDIO</button>
       </div>
     </div>
 

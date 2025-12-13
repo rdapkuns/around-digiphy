@@ -4,20 +4,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mobile</title>
-  <script type="module" crossorigin src="/around-digiphy/assets/mobile-BjfTJo7u.js"></script>
-  <link rel="modulepreload" crossorigin href="/around-digiphy/assets/supabase-BDmk_h4L.js">
-  <link rel="stylesheet" crossorigin href="/around-digiphy/assets/supabase-nRDo_lkH.css">
+    <link rel="icon" type="image/svg+xml" href="./img/favicon.png" />
+    <title>DigiPHY remote</title>
+  <script type="module" crossorigin src="/around-digiphy/assets/mobile-D4ZIfBJf.js"></script>
+  <link rel="modulepreload" crossorigin href="/around-digiphy/assets/supabase-B31qoorF.js">
+  <link rel="stylesheet" crossorigin href="/around-digiphy/assets/supabase-Bs8qZECT.css">
 </head>
 
 <body id="body-m">
+
     <div id="rotate-warning" class="hidden">
         <img src="/around-digiphy/assets/rotate-phone-Sm_FA5Kb.gif" />
         <p>
             Please rotate your device to landscape.
         </p>
     </div>
-    <button class="mobile-start">Start</button>
+
+    <div class="mobile-start">
+        <h3>How to use</h3>
+        <div class="mobile-instructions">
+            <div>
+                <img src="data:image/png;base64,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">
+                <p>
+                    Use the toggle to choose the left or right side of the car
+                </p>
+            </div>
+            <div>
+                <img src="/around-digiphy/assets/instruction-seats-CFhLVqLN.png">
+                <p>
+                    Tap the seat icons to select the front or back seat
+                </p>
+            </div>
+        </div>
+        
+        <button>UNDERSTOOD</button>
+    </div>
 
     <div class="controls-container visually-hidden">
         <div class="mobile-header">
