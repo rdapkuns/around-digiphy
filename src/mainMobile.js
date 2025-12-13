@@ -327,8 +327,8 @@ navLocked.forEach(nav => {
 })
 
 
-
-const startButton = document.querySelector(".mobile-start")
+const mobileStart = document.querySelector(".mobile-start")
+const startButton = document.querySelector(".mobile-start button")
 const warning = document.getElementById("rotate-warning");
 
 function isPortrait() {
@@ -357,13 +357,13 @@ function updateOrientation() {
 function showControls() {
     const $controlsContainer = document.querySelector(".controls-container")
     $controlsContainer.classList.remove("visually-hidden")
-    startButton.classList.add("visually-hidden")
+    mobileStart.classList.add("visually-hidden")
 }
 
 function hideControls() {
     const $controlsContainer = document.querySelector(".controls-container")
     $controlsContainer.classList.add("visually-hidden")
-    startButton.classList.remove("visually-hidden")
+    mobileStart.classList.remove("visually-hidden")
 }
 
 window.addEventListener("orientationchange", updateOrientation);
