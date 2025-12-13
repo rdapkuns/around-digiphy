@@ -30,10 +30,13 @@ let currentCameraHeight = 6
 let prevFloor = 1
 
 let cameraTargetOffset = { value: 4 }
-
+let atRoof = false
 
 let cameraScrollTrigger;
 let scrollLocked = false
+
+let orbitTween = null;
+const orbitState = { angle: 0 };
 
 init();
 animate();
@@ -290,8 +293,24 @@ cameraTL.call(() => {
 }, null, "lastPhase+=" + (ratio.last * 0.9));
 
 cameraTL.call(() => {
+  stopCameraOrbit();
+}, null, "lastPhase+=" + (ratio.last * 0.995));
+
+cameraTL.call(() => {
+  startCameraOrbit(camera, {
+    center: new THREE.Vector3(0, currentCameraHeight - cameraTargetOffset.value, 0),
+    radius: 23,
+    speed: 30
+  });
+}, null, "lastPhase+=" + (ratio.last));
+
+
+
+cameraTL.call(() => {
 
 }, null, "holdStart+=" + ratio.hold);
+
+
 
 
 
@@ -457,14 +476,12 @@ function checkCurrentFloor() {
       });
 
       hideForm()
-      // document.querySelector("#three-canvas").classList.remove("canvas-dark")
-
+      atRoof = false
     }
 
     if (currentFloor === 6) {
       showForm()
-
-      // document.querySelector("#three-canvas").classList.add("canvas-dark")
+      atRoof = true
     }
 
     if (currentFloor === 2 || currentFloor === 4) {
@@ -491,9 +508,20 @@ function checkCurrentFloor() {
       });
     }
 
+    if (currentFloor === 5 && prevFloor === 6) {
+      // moveCameraTo(cameraPoints[currentIndex])
+
+      // Pick a predefined point, for example the first one
+      const targetPoint = new THREE.Vector3(0, currentCameraHeight, 23);
+
+      moveCameraToPoint(camera, targetPoint, currentCameraHeight, cameraTargetOffset, fl1, fl5);
+
+    }
+
 
     prevFloor = currentFloor
     setActiveFloor(prevFloor)
+
 
   }
 
@@ -525,7 +553,7 @@ function setupKeyboardCameraControl(camera, model) {
     isAnimating = true
     gsap.to(camera.position, {
       x: targetVec3.x,
-      y: currentCameraHeight,
+      // y: currentCameraHeight,
       z: targetVec3.z,
       duration: 1.5,
       ease: 'power2.inOut',
@@ -561,7 +589,7 @@ function setupKeyboardCameraControl(camera, model) {
   camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0)
 
   window.addEventListener('keydown', (e) => {
-    if (isAnimating) return
+    if (isAnimating || atRoof) return
     if (e.key === 'ArrowRight') {
       currentIndex = (currentIndex + 1) % cameraPoints.length
       moveCameraTo(cameraPoints[currentIndex])
@@ -588,6 +616,66 @@ function setupKeyboardCameraControl(camera, model) {
 
 
 
+function startCameraOrbit(camera, {
+  center = new THREE.Vector3(0, 0, 0),
+  radius = 10,
+  speed = 20,   // seconds per full rotation
+} = {}) {
+
+  // Prevent duplicate orbits
+  stopCameraOrbit();
+
+  // Capture current camera height
+  const height = camera.position.y;
+
+  // Compute initial angle from current camera position
+  orbitState.angle = Math.atan2(
+    camera.position.z - center.z,
+    camera.position.x - center.x
+  );
+
+  orbitTween = gsap.to(orbitState, {
+    angle: orbitState.angle + Math.PI * 2,
+    duration: speed,
+    repeat: -1,
+    ease: "none",
+    onUpdate: () => {
+      camera.position.x = center.x + Math.cos(orbitState.angle) * radius;
+      camera.position.z = center.z + Math.sin(orbitState.angle) * radius;
+      camera.position.y = height;
+
+      camera.lookAt(center);
+    }
+  });
+}
+
+function stopCameraOrbit() {
+  if (orbitTween) {
+    orbitTween.kill();
+    orbitTween = null;
+
+  }
+}
+
+
+function moveCameraToPoint(camera, targetVec3, currentCameraHeight, cameraTargetOffset, fl1, fl5) {
+  gsap.to(camera.position, {
+    x: targetVec3.x,
+    z: targetVec3.z,
+    duration: 1.5,
+    ease: 'power2.inOut',
+    onStart: () => {
+      fl5.checkHeight(currentCameraHeight, -1);
+    },
+    onComplete: () => {
+      fl5.checkHeight(currentCameraHeight, 0);
+    }
+  });
+}
+
+
+
+
 
 
 window.addEventListener('resize', resize);
@@ -596,13 +684,7 @@ window.addEventListener('resize', resize);
 function animate() {
   requestAnimationFrame(animate);
 
-
-
-  // Update only *current* chapter or all chapters as needed
-  // floors[currentFloor]?.update();
   render()
-
-  // renderer.render(scene, camera);
 }
 
 
