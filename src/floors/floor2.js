@@ -24,7 +24,6 @@ export function createFloor(scene) {
         const material = new THREE.MeshBasicMaterial({ map: texture })
 
         loader.load("floors/floor-2-a.glb", (gltf) => {
-            // loader.load("models/floor2glass.glb", (gltf) => {
 
             const model = gltf.scene;
             floorGroup.add(model);
@@ -44,19 +43,15 @@ export function createFloor(scene) {
                 glass.material = glass.material.clone();
                 glass.material.transparent = true;
                 glass.material.opacity = 0.6;
-                glass.material.color.setHex(0xf2f9ff); 
+                glass.material.color.setHex(0xf2f9ff);
             }
         });
 
-
-
-        // const texture = new THREE.TextureLoader().load("baked/baked.jpg")
         const textureB = new THREE.TextureLoader().load("baked/floor-2-b.jpg")
         textureB.flipY = false
         textureB.colorSpace = THREE.SRGBColorSpace;
         const materialB = new THREE.MeshBasicMaterial({ map: textureB })
 
-        // loader.load("floors/floor-1.glb", (gltf) => {
         loader.load("floors/floor-2-b.glb", (gltf) => {
             const model = gltf.scene;
             floorGroup.add(model);
@@ -72,9 +67,8 @@ export function createFloor(scene) {
             });
         });
 
-        // loader.load("floors/floor-1-nb.glb", (gltf) => {
         loader.load("floors/floor-2-c.glb", (gltf) => {
-            
+
             const model = gltf.scene;
             floorGroup.add(model);
 
@@ -82,13 +76,6 @@ export function createFloor(scene) {
             model.rotateY(Math.PI);
 
             scene.add(floorGroup);
-
-            model.traverse(child => {
-      
-                // console.log(child.name)
-
-            });
-
 
             const customTable = model.getObjectByName("custom_screen001");
 
@@ -133,10 +120,10 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
     container.innerHTML = '';
 
     const title = document.createElement("h2");
-    title.textContent = "Accessories";
+    title.textContent = "DESIGN YOUR CAR";
     container.appendChild(title);
 
-    Object.entries(accessoryGroups).forEach(([groupName, group]) => {
+    Object.entries(accessoryGroups).forEach(([groupName, group], i) => {
         if (group.variants.length > 1) {
             const title = document.createElement("h3");
             title.textContent = groupName;
@@ -146,7 +133,6 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
             btn.classList.add("accessory-variant-button");
             btn.classList.add("accessory-variant-button-none");
             btn.classList.add(`${groupName}-button`);
-
 
             btn.addEventListener("click", () => {
                 setAccessoryVariant(groupName, -1);
@@ -162,6 +148,9 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
                 const btn = document.createElement("button");
                 btn.classList.add("accessory-variant-button");
                 btn.classList.add(`${groupName}-button`);
+                if (index === 0){
+                    btn.classList.add("primary-active");
+                } 
 
 
                 const thumbnail = document.createElement("img");

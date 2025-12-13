@@ -46,7 +46,7 @@ export const cameraControls = {};
 
 
 async function init() {
-  // Basic setup
+  
   scene = new THREE.Scene()
   scene.background = null
 
@@ -178,6 +178,15 @@ function setupCameraScroll() {
   cameraScrollTrigger = tween.scrollTrigger;
 }
 
+document.querySelector(".instructions-button").addEventListener("click", () => {
+  document.querySelector(".instruction-wrapper").classList.remove("visually-hidden")
+
+  gsap.to(".instruction-wrapper", {
+    opacity: 1,
+    duration: 0.4,
+    ease: "power3.out",
+  });
+})
 
 
 

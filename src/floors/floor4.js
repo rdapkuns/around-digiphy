@@ -168,8 +168,8 @@ export function smallQR() {
         },
             0)
             .to(qrContainer, {
-                top: "5rem",
-                left: "3rem",
+                top: "7rem",
+                left: "2.5rem",
                 width: "3rem",
                 height: "3rem",
                 padding: "0.2rem",

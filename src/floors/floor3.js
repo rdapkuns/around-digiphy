@@ -94,7 +94,6 @@ export function createFloor(scene) {
         });
 
 
-
         loader.load('models/digiphy-overlay.glb', (gltf) => {
             overlayModel = gltf.scene;
             overlayModel.position.set(0, 2, 0);
