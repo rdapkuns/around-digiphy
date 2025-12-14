@@ -68,5 +68,9 @@ export function initNavigation(camera) {
         });
     });
 
-    console.log('Navigation buttons ready');
+
+    const btn = document.getElementById("intro-start").addEventListener('click', () => {
+        navigateToFloor("floor1");
+    })
+
 }

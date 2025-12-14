@@ -497,15 +497,6 @@ export function setupBuck(scene) {
                         detail: { target: new THREE.Vector3(-20, 0, -10) }
                     }));
 
-                    // if (currentIndex === 0) {
-                    //     rotateFloor4(0)
-                    // }
-                    // if (currentIndex === 1) {
-                    //     rotateFloor4(120)
-                    // }
-                    // if (currentIndex === 2) {
-                    //     rotateFloor4(-120)
-                    // }
                     break;
 
                 default:

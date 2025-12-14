@@ -9,6 +9,7 @@ import ScrollTrigger from 'gsap/ScrollTrigger'
 import { cdl } from 'three/src/nodes/TSL.js';
 gsap.registerPlugin(ScrollTrigger);
 
+const taskCompleteSound = new Audio("./audio/task-complete.mp3");
 
 let interactionStarted = false
 let completeTasks = 0
@@ -151,7 +152,7 @@ export function createFloor(scene) {
 
 const qrContainer = document.querySelector(".qr-wrapper")
 const qr = document.getElementById("qrcode")
-document.querySelector('.qr-wrapper-close').addEventListener('click', smallQR);
+document.querySelector('#qr-wrapper-close').addEventListener('click', smallQR);
 const qrContents = document.querySelectorAll(".qr-wrapper div")
 const qrSVG = document.querySelector(".qr-wrapper > svg")
 
@@ -168,11 +169,14 @@ export function smallQR() {
         },
             0)
             .to(qrContainer, {
-                top: "7rem",
-                left: "2.5rem",
+                // top: "7rem",
+                // left: "2.5rem",
+                top: "unset",
+                bottom: "-0.6rem",
+                left: "9.7rem",
                 width: "3rem",
                 height: "3rem",
-                padding: "0.2rem",
+                padding: "0rem",
                 duration: 1,
                 ease: "power3.out",
             },
@@ -223,7 +227,7 @@ export function bigQR() {
     },
         0)
         .to(qrContainer, {
-            top: "50%",
+            bottom: "0%",
             left: "50%",
             width: "45rem",
             height: "20rem",
@@ -312,6 +316,9 @@ export function checkTasks(objects) {
                         backgroundColor: "#4f4f4f54",
                     })
 
+                    taskCompleteSound.currentTime = 0;
+                    taskCompleteSound.play();
+
                     if (tasks[i + 1] && tasks[i + 1].status === "locked") {
                         tasks[i + 1].status = "open";
                         // console.log("+ New task unlocked:", tasks[i + 1].brief);
@@ -392,12 +399,3 @@ export function hideTasks() {
         }
     );
 }
-
-
-document.querySelector('.uni-button').addEventListener('click', () => {
-    // checkTasks(objects)
-    // cameraControls.moveCameraTo(new THREE.Vector3(0, 10, 0));
-    // window.cameraControls.moveCameraTo(new THREE.Vector3(-20, 0, -10));
-
-
-});

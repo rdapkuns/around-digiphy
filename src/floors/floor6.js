@@ -37,6 +37,35 @@ export function createFloor(scene) {
             scene.add(model);
         });
 
+        loader.load("floors/balcony.glb", (gltf) => {
+
+            const model = gltf.scene;
+
+            model.position.set(0, 0, 0);
+            model.rotateY(Math.PI);
+
+            model.traverse(child => {
+                if (child.name && child.name.toLowerCase().startsWith("balkons")) {
+
+                    const mats = Array.isArray(child.material)
+                        ? child.material
+                        : [child.material];
+
+                    mats.forEach(mat => {
+                        if (!mat) return;
+
+                        mat.transparent = true;
+                        mat.opacity = 0.2;
+                        mat.roughness = 0.1;
+
+                        // mat.color.setHex(0xbb00ff);
+                    });
+                }
+            });
+
+            scene.add(model);
+        });
+
 
         loader.load("floors/floor-6-c.glb", (gltf) => {
 

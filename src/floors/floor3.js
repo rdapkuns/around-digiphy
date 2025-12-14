@@ -5,6 +5,8 @@ import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger);
 
+const overlayOnSound = new Audio("./audio/overlay.mp3");
+
 
 export function createFloor(scene) {
     const loader = new GLTFLoader()
@@ -186,6 +188,8 @@ export function createFloor(scene) {
                     });
                 }
             });
+            overlayOnSound.currentTime = 0;
+            overlayOnSound.play();
 
         } else {
             model.traverse(child => {
@@ -200,6 +204,9 @@ export function createFloor(scene) {
                     });
                 }
             });
+
+            overlayOnSound.currentTime = 0;
+            overlayOnSound.play();
         }
     }
 

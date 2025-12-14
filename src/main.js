@@ -45,9 +45,6 @@ animate();
 export const cameraControls = {};
 
 
-
-
-
 async function init() {
 
   scene = new THREE.Scene()
@@ -300,7 +297,7 @@ cameraTL.call(() => {
   startCameraOrbit(camera, {
     center: new THREE.Vector3(0, currentCameraHeight - cameraTargetOffset.value, 0),
     radius: 23,
-    speed: 30
+    speed: 80
   });
 }, null, "lastPhase+=" + (ratio.last));
 
@@ -619,16 +616,13 @@ function setupKeyboardCameraControl(camera, model) {
 function startCameraOrbit(camera, {
   center = new THREE.Vector3(0, 0, 0),
   radius = 10,
-  speed = 20,   // seconds per full rotation
+  speed = 50,
 } = {}) {
 
-  // Prevent duplicate orbits
   stopCameraOrbit();
 
-  // Capture current camera height
   const height = camera.position.y;
 
-  // Compute initial angle from current camera position
   orbitState.angle = Math.atan2(
     camera.position.z - center.z,
     camera.position.x - center.x
@@ -638,7 +632,7 @@ function startCameraOrbit(camera, {
     angle: orbitState.angle + Math.PI * 2,
     duration: speed,
     repeat: -1,
-    ease: "none",
+    ease: "power1.inOut",
     onUpdate: () => {
       camera.position.x = center.x + Math.cos(orbitState.angle) * radius;
       camera.position.z = center.z + Math.sin(orbitState.angle) * radius;
@@ -692,4 +686,30 @@ function animate() {
 window.addEventListener('load', () => {
   ScrollTrigger.refresh();
   initNavigation(camera);
+});
+
+const muteBtn = document.getElementById("muteBtn");
+const audios = document.querySelectorAll("audio");
+
+let isMuted = false;
+
+muteBtn.addEventListener("click", () => {
+  isMuted = !isMuted;
+
+  audios.forEach(audio => {
+    audio.muted = isMuted;
+  });
+
+  muteBtn.innerHTML = !isMuted ? `
+   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <path
+        d="M7 16V3L19 1V14M7 16C7 17.6569 5.65685 19 4 19C2.34315 19 1 17.6569 1 16C1 14.3431 2.34315 13 4 13C5.65685 13 7 14.3431 7 16ZM19 14C19 15.6569 17.6569 17 16 17C14.3431 17 13 15.6569 13 14C13 12.3431 14.3431 11 16 11C17.6569 11 19 12.3431 19 14Z"
+        stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  ` : `
+  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="20" viewBox="0 0 22 20" fill="none">
+  <path d="M7 16C7 17.6569 5.65685 19 4 19C2.34315 19 1 17.6569 1 16C1 14.3431 2.34315 13 4 13C5.65685 13 7 14.3431 7 16ZM7 16V11.5M16 17C14 17 13 16 13 15M16 11C16.5 11 18.5 11 19 13V1L7 3V4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M2.5 5L20.5 17" stroke="white" stroke-width="2" stroke-linecap="round"/>
+</svg>
+  `
 });

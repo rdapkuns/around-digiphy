@@ -10,6 +10,10 @@ gsap.registerPlugin(ScrollTrigger);
 const customTableChildren = [];
 let customTableVisible = true;
 
+const clickSound = new Audio("./audio/clink-1.mp3");
+const colorSound = new Audio("./audio/clink-2.mp3");
+
+
 export function createFloor(scene) {
     const loader = new GLTFLoader()
     const group = new THREE.Group();
@@ -140,6 +144,9 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
                 document.querySelectorAll(`.${groupName}-button`)
                     .forEach(b => b.classList.remove("primary-active"));
                 btn.classList.add("primary-active");
+
+                clickSound.currentTime = 0;
+                clickSound.play();
             });
 
             container.appendChild(btn);
@@ -167,6 +174,9 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
 
                     applyMaterial(mesh, primaryMaterialState, "accessory-primary");
                     applyMaterial(mesh, secondaryMaterialState, "accessory-secondary");
+
+                    clickSound.currentTime = 0;
+                    clickSound.play();
                 });
 
                 container.appendChild(btn);
@@ -218,6 +228,10 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
                 if (!activeMesh) return;
                 applyMaterial(activeMesh, primaryMaterialState, "accessory-primary");
             });
+
+            colorSound.currentTime = 0;
+            colorSound.volume = 0.3;
+            colorSound.play();
         });
 
         container.appendChild(btn);
@@ -266,6 +280,10 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
                 if (!activeMesh) return;
                 applyMaterial(activeMesh, secondaryMaterialState, "accessory-secondary");
             });
+
+            colorSound.currentTime = 0;
+            colorSound.volume = 0.5;
+            colorSound.play();
         });
 
         container.appendChild(btn);
