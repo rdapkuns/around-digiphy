@@ -14,14 +14,15 @@
     rel="stylesheet">
 
   <title>DigiPHY</title>
-  <script type="module" crossorigin src="/around-digiphy/assets/main-DDHu3deN.js"></script>
-  <link rel="modulepreload" crossorigin href="/around-digiphy/assets/supabase-B31qoorF.js">
-  <link rel="stylesheet" crossorigin href="/around-digiphy/assets/supabase-Bs8qZECT.css">
+  <script type="module" crossorigin src="/around-digiphy/assets/main-6w1_9N2r.js"></script>
+  <link rel="modulepreload" crossorigin href="/around-digiphy/assets/supabase-UPyZfoAJ.js">
+  <link rel="stylesheet" crossorigin href="/around-digiphy/assets/supabase-DxvX57Ew.css">
   <link rel="stylesheet" crossorigin href="/around-digiphy/assets/main-7YOhKgBH.css">
 </head>
 
 <body>
 
+  <audio id="ambientSound" src="./audio/ambient.mp3" loop></audio>
 
   <div class="mobile-warning">
     <div>
@@ -31,16 +32,25 @@
     <p>You'll need a desktop for this experience, sorry :V </p>
   </div>
 
-  <div class="intro-container visually-hidden">
-    <video id="videoA" playsinline muted loop preload="auto"></video>
+  <div class="intro-container">
+    <video id="videoA" playsinline muted preload="auto"></video>
     <video id="videoB" playsinline muted preload="auto"></video>
-    <button id="intro-start">Enter studio</button>
+    <!-- <button id="intro-start">Enter studio</button> -->
+    <button class="qr-wrapper-close visually-hidden" id="intro-start">ENTER STUDIO</button>
   </div>
 
-  <button class="instructions-button">
+  <button class="corner-button instructions-button">
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
       <path
         d="M12 16V12M12 8H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z"
+        stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </button>
+
+  <button class="corner-button mute-button" id="muteBtn">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+      <path
+        d="M7 16V3L19 1V14M7 16C7 17.6569 5.65685 19 4 19C2.34315 19 1 17.6569 1 16C1 14.3431 2.34315 13 4 13C5.65685 13 7 14.3431 7 16ZM19 14C19 15.6569 17.6569 17 16 17C14.3431 17 13 15.6569 13 14C13 12.3431 14.3431 11 16 11C17.6569 11 19 12.3431 19 14Z"
         stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
     </svg>
   </button>
@@ -71,7 +81,7 @@
       <img src="/around-digiphy/assets/granstudio-w-BygzrRbU.png" />
     </div>
 
-    <div class="instruction-wrapper visually-hidden">
+    <div class="instruction-wrapper">
       <div class="instruction-container">
         <h2>This is an interactive experience</h2>
         <div class="instruction-body">
@@ -130,7 +140,7 @@
         <span>Scan the QR code</span>
         <canvas id="qrcode"></canvas>
         <span>or</span>
-        <button class="qr-wrapper-close">Continue without QR</button>
+        <button class="qr-wrapper-close" id="qr-wrapper-close">Continue without QR</button>
       </div>
 
       <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 36 36" fill="none">
