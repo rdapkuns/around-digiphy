@@ -7,6 +7,8 @@ import { createFloor as Floor5, showFloor5Tip, hideFloor5Tip } from './floors/fl
 import { createFloor as Floor6, showForm, hideForm } from './floors/floor6.js';
 import { setupBuck, stopFlashingAccessory } from './buck.js';
 import { initNavigation } from './navigation.js';
+import { initIntro } from './intro.js';
+
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { HDRLoader } from 'three/examples/jsm/loaders/HDRLoader.js'
@@ -33,6 +35,7 @@ const orbitState = { angle: 0 };
 
 init();
 animate();
+initIntro()
 
 
 export const cameraControls = {};
@@ -243,7 +246,7 @@ const fl6 = Floor6(scene)
 function checkCurrentFloor() {
   const currentFloor = Math.floor(currentCameraHeight / 13.3) + 1
   if (currentFloor !== prevFloor) {
-    
+
     if (currentFloor === 1) {
       gsap.to(camera, {
         fov: 65,
