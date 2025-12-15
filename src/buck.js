@@ -230,7 +230,7 @@ export function setupBuck(scene) {
             })
 
 
-            loader.load('models/platform.glb', (gltf) => {
+            loader.load('models/platform-2.glb', (gltf) => {
                 const model = gltf.scene
                 model.rotation.set(0, 2.5, 0)
                 model.position.set(0, 0, 0)
@@ -242,6 +242,16 @@ export function setupBuck(scene) {
                     child.receiveShadow = true;
                 });
 
+                gsap.to(model.rotation, {
+                    ease: "linear",
+                    y: model.rotation.y + 5,
+                    scrollTrigger: {
+                        trigger: '.three-section',
+                        start: "top top",
+                        end: "bottom bottom",
+                        scrub: true,
+                    }
+                })
 
                 // --- configuration
                 const holdY = 13;                       // 26 because camera starts at 6 and this at 0

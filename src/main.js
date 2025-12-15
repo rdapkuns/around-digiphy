@@ -7,7 +7,7 @@ import { createFloor as Floor1 } from './floors/floor1.js';
 import { createFloor as Floor2, createAccessoryMenu, toggleAccessoryMenu, toggleTextPanel, toggleFloor2Desk } from './floors/floor2.js';
 import { createFloor as Floor3 } from './floors/floor3.js';
 import { createFloor as Floor4, showTasks, hideTasks, setupTasks, checkTasks, atFloor4 } from './floors/floor4.js';
-import { createFloor as Floor5 } from './floors/floor5.js';
+import { createFloor as Floor5, showFloor5Tip, hideFloor5Tip } from './floors/floor5.js';
 import { createFloor as Floor6, showForm, hideForm } from './floors/floor6.js';
 import { setupBuck, stopFlashingAccessory } from './buck.js';
 import { initNavigation } from './navigation.js';
@@ -283,11 +283,11 @@ cameraTL.to(camera.position, {
 
 cameraTL.call(() => {
   document.querySelector("#three-canvas").classList.remove("canvas-dark")
-}, null, "lastPhase+=" + (ratio.last * 0.89));
+}, null, "lastPhase+=" + (ratio.last * 0.875));
 
 cameraTL.call(() => {
   document.querySelector("#three-canvas").classList.add("canvas-dark")
-}, null, "lastPhase+=" + (ratio.last * 0.9));
+}, null, "lastPhase+=" + (ratio.last * 0.88));
 
 cameraTL.call(() => {
   stopCameraOrbit();
@@ -446,6 +446,9 @@ function checkCurrentFloor() {
         }
       });
 
+      hideFloor5Tip()
+
+
     }
 
     if (currentFloor === 5) {
@@ -472,11 +475,14 @@ function checkCurrentFloor() {
         }
       });
 
+      showFloor5Tip()
+
       hideForm()
       atRoof = false
     }
 
     if (currentFloor === 6) {
+      hideFloor5Tip()
       showForm()
       atRoof = true
     }
@@ -714,3 +720,6 @@ muteBtn.addEventListener("click", () => {
 </svg>
   `
 });
+
+
+document.querySelector(".uni-button")

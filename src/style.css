@@ -35,8 +35,13 @@ body {
   overflow-x: hidden;
   background: #000;
   box-sizing: border-box;
+
+  overscroll-behavior: none;
 }
 
+p {
+  font-family: "Montserrat", sans-serif;
+}
 
 canvas {
 
@@ -49,21 +54,7 @@ canvas {
   /* background: linear-gradient(180deg, rgb(249, 255, 255) 0%, rgb(108, 112, 120) 100%); */
   background-color: white;
   transition: all 0.5s linear;
-  /* background: linear-gradient(180deg, rgb(249, 255, 255) 0%, rgb(108, 112, 120) 100%);
-  transition: all 1s ease-in-out;
 
-  /* --top: rgb(249, 255, 255);
-    --bottom: rgb(108, 112, 120);
-  
-    background: linear-gradient(180deg, var(--top), var(--bottom));
-    transition: --top 1s ease-in-out, --bottom 1s ease-in-out; */
-  /* } */
-
-  /* canvas.canvas-dark {
-  --top: rgb(4, 3, 16);
-  --bottom: rgb(63, 27, 68);
-  transition: --top 1s ease-in-out, --bottom 1s ease-in-out;
-} */
 }
 
 .canvas-dark {
@@ -84,7 +75,7 @@ canvas {
   left: 1rem;
   top: 1rem;
   z-index: 999;
-  width: 10rem;
+  width: 12rem;
 }
 
 .logo>img {
@@ -153,7 +144,7 @@ canvas {
   line-height: 1.2rem;
   z-index: 100;
 
-
+  line-height: 140%;
   pointer-events: none;
 
   box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.05);
@@ -179,6 +170,7 @@ canvas {
   justify-content: flex-start;
   gap: 2rem;
   margin-right: 3rem;
+  font-size: 18px;
 }
 
 .qr-right {
@@ -300,6 +292,7 @@ canvas {
   background: #0E0F14;
   z-index: 9999;
   display: flex;
+  display: none;
   /* place-content: center; */
   color: white;
   padding: 2rem;
@@ -361,6 +354,8 @@ canvas {
   left: 50%;
   bottom: 5rem;
   translate: -50%;
+  font-weight: 800;
+  font-size: 1rem !important;
 
   animation-duration: 0.2s;
 }
@@ -760,6 +755,7 @@ nav {
   width: 8.5rem;
   height: 40px;
   cursor: pointer;
+  color: white;
 
   font-size: 16px;
   font-weight: 600;
@@ -828,6 +824,7 @@ nav {
 .instruction-container>h2 {
   font-size: 1.8rem;
   text-align: center;
+  margin-bottom: 5rem;
 }
 
 .instruction-body {
@@ -845,15 +842,33 @@ nav {
   margin: 1rem 0rem;
   color: rgb(203, 203, 203);
   text-align: center;
+  font-weight: 400;
 }
 
 .instruction-body>div:first-child {
   border-right: 1px solid rgb(147, 147, 147);
 }
 
-.instruction-body>div:first-child>svg {
+.instruction-body>div:last-child>svg {
   padding-bottom: 1rem;
 }
+
+.instruction-bottomtext {
+  position: absolute;
+  translate: -50%;
+  bottom: 1rem;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  color: rgb(203, 203, 203);
+}
+
+.instruction-bottomtext>span {
+  margin-left: 0.7rem;
+  padding-right: 0.2rem;
+}
+
 
 .corner-button {
   position: fixed;
@@ -871,6 +886,7 @@ nav {
   cursor: pointer;
   transition: all 0.3s ease-out;
   border-radius: 2px;
+  color: white;
 }
 
 .corner-button::before {
@@ -1021,7 +1037,7 @@ nav {
   left: 21rem;
   top: 1rem;
   z-index: 99;
-  display: none;
+  /* display: none; */
 }
 
 
@@ -1424,6 +1440,8 @@ nav {
   margin: 1rem;
   pointer-events: all;
 
+  font-family: "Montserrat", sans-serif;
+
   /* border-radius: 0.68rem; */
   pointer-events: none;
   /* border: 2px solid rgba(255, 255, 255, 0.195); */
@@ -1506,7 +1524,9 @@ nav {
 }
 
 .ui-panel p {
+  font-family: "Montserrat", !important;
   font-size: 1rem;
+  font-size: 18px;
   font-weight: 400;
   line-height: 140%;
 }
@@ -1687,29 +1707,29 @@ height: 100%; */
 
 #ui-panel-4 {
   position: absolute;
-  left: 9rem;
-  top: 26rem;
+  left: 9%;
+  top: 47%;
 }
 
 #ui-panel-4-1 {
   position: absolute;
   right: 3rem;
-  top: 22rem;
-  height: 20rem;
+  bottom: 10%;
+  height: 40%;
 }
 
 #ui-panel-4-2 {
   position: absolute;
-  left: 5rem;
-  top: 5rem;
-  height: 20rem;
+  left: 10%;
+  top: 10%;
+  height: 35%;
 }
 
 #ui-panel-4-3 {
   position: absolute;
   right: 3rem;
-  top: 5rem;
-  height: 15rem;
+  bottom: 53%;
+  height: 30%;
 }
 
 
@@ -1717,29 +1737,29 @@ height: 100%; */
 
 #ui-panel-4-4 {
   position: absolute;
-  right: 2rem;
-  top: 2rem;
+  right: 5%;
+  top: 5%;
 }
 
 #ui-panel-4-5 {
   position: absolute;
-  left: 10rem;
-  bottom: 27rem;
-  height: 15rem;
+  left: 12rem;
+  bottom: 53%;
+  height: 25%;
 }
 
 #ui-panel-4-6 {
   position: absolute;
   left: 10rem;
-  bottom: 5rem;
-  height: 20rem;
+  bottom: 15%;
+  height: 35%;
 }
 
 #ui-panel-4-7 {
   position: absolute;
-  right: 3rem;
-  top: 20rem;
-  height: 15rem;
+  right: 6%;
+  top: 37%;
+  height: 40%;
 }
 
 
@@ -1747,62 +1767,69 @@ height: 100%; */
 
 #ui-panel-4-8 {
   position: absolute;
-  right: 3rem;
-  bottom: 5rem;
+  right: 5%;
+  bottom: 10%;
 }
 
 #ui-panel-4-9 {
   position: absolute;
-  left: 5rem;
-  top: 5rem;
-  height: 20rem;
+  left: 8%;
+  top: 10%;
+  height: 40%;
 }
 
 #ui-panel-4-10 {
   position: absolute;
-  left: 10rem;
-  top: 27rem;
-  height: 15rem;
+  left: 13%;
+  top: 56%;
+  height: 25%;
 }
 
 #ui-panel-4-11 {
   position: absolute;
-  right: 4rem;
-  bottom: 25rem;
-  height: 15rem;
+  left: 47%;
+  top: 10%;
+  height: 25%;
 }
 
 /* FOR PEDALS */
 
 #ui-panel-4-12 {
   position: absolute;
-  right: 3rem;
-  bottom: 5rem;
+  /* right: 3rem; */
+  /* bottom: 5rem; */
   pointer-events: none;
+
+  right: 8rem;
+  top: 48%;
 }
 
 #ui-panel-4-13 {
   position: absolute;
-  left: 10rem;
-  bottom: 25rem;
-  height: 15rem;
+  right: 60rem;
+  top: 2%;
+  height: 18rem;
   pointer-events: none;
 }
 
 #ui-panel-4-14 {
   position: absolute;
   left: 10rem;
-  bottom: 5rem;
-  height: 18rem;
+  bottom: 8%;
+  height: 35%;
   pointer-events: none;
 }
 
 #ui-panel-4-15 {
   position: absolute;
   right: 4rem;
-  bottom: 23rem;
+  /* bottom: 23rem; */
   height: 20rem;
   pointer-events: none;
+
+  right: 8rem;
+  top: 2%;
+  height: 45%;
 }
 
 #ui-panel-5 {
@@ -1819,6 +1846,84 @@ height: 100%; */
   height: 20rem;
 }
 
+
+
+
+
+
+@media (min-width: 1920px) {
+
+  .intro-container>video {
+    object-fit: fill;
+  }
+
+
+  .physical-pedals {
+    left: 29%;
+    top: 48%;
+    width: 6rem;
+    height: 7rem;
+  }
+
+  .physical-chair {
+    left: 38%;
+    top: 56%;
+    width: 8rem;
+    height: 10rem;
+  }
+
+  .physical-steer {
+    left: 54%;
+    top: 50%;
+    width: 7rem;
+    height: 7rem;
+  }
+
+  .physical-camera {
+    left: 65%;
+    top: 53%;
+    width: 7rem;
+    height: 7rem;
+  }
+
+
+
+
+
+
+  /* pedals */
+  /* 
+  #ui-panel-4-12 {
+    position: absolute;
+    right: 8rem;
+    top: 52%;
+    pointer-events: none;
+  }
+
+  #ui-panel-4-13 {
+    position: absolute;
+    left: 10rem;
+    bottom: 25rem;
+    height: 15rem;
+    pointer-events: none;
+  }
+
+  #ui-panel-4-14 {
+    position: absolute;
+    left: 10rem;
+    bottom: 5rem;
+    height: 18rem;
+    pointer-events: none;
+  }
+
+  #ui-panel-4-15 {
+    position: absolute;
+    right: 8rem;
+    top: 2%;
+    height: 50%;
+    pointer-events: none;
+  } */
+}
 
 /* ////////////////////////////////////////////////////
 //////////////////// FLOOR 2 UI //////////////////////
@@ -1981,6 +2086,35 @@ height: 100%; */
   padding-top: 1rem;
 }
 
+.client-credits-model {
+  color: rgba(255, 255, 255, 0.58);
+  padding-top: 1rem;
+  font-size: 0.7rem !important;
+}
+
+.client-credits-model a {
+  color: rgba(255, 255, 255, 0.58);
+  cursor: pointer;
+  pointer-events: all;
+}
+
+
+.client-credits-model a:link {
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.client-credits-model a:visited {
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.client-credits-model a:hover {
+  color: rgba(255, 255, 255, 0.58);
+}
+
+.client-credits-model a:active {
+  color: rgba(255, 255, 255, 0.58);
+}
+
 .client-img img {
   filter: brightness(20);
 }
@@ -2040,7 +2174,7 @@ height: 100%; */
 .ui-panel-dark p {
   margin-top: 1rem;
 
-  font-size: 1rem;
+  font-size: 18px;
   font-weight: 400;
   line-height: 1.2rem;
 
@@ -2065,6 +2199,7 @@ form textarea {
   border-radius: 6px;
   border: none;
   background-color: #252a2f;
+  color: white;
 }
 
 input::placeholder,

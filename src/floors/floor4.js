@@ -10,21 +10,23 @@ import { cdl } from 'three/src/nodes/TSL.js';
 gsap.registerPlugin(ScrollTrigger);
 
 const taskCompleteSound = new Audio("./audio/task-complete.mp3");
+const allTasksCompleteSound = new Audio("./audio/task-complete-all.mp3");
+
 
 let interactionStarted = false
 let completeTasks = 0
 
 const taskTexts = [
-    "Lets make some adjustments to the model. Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum!",
-    "So how about we move the driver seat a bit back? To give the driver some more space.",
-    "Alright, the driver seat is now better. But i think theres not enough leg-room for the backseat now. Lets change that",
-    "Well done! I think thats good. If theres any changes you want to make, feel free to adjust the buck as you please"
+    "Hey, some people came in to test out your designed car! Lets make some adjustments to the model. It feels a bit cramped here in the driver seat, could you move it back a bit?",
+    "The driver seat is way better now! But I think there's not enough leg - room for the backseat now. Lets change that!",
+    "Alright, that's way better. I would like to have the dashboard a bit higher though. Can you raise it a little? Not too much though.",
+    "Well done! People love your car! If you want to continue adjusting DigiPHY, feel free to do so."
 ]
 
 export const tasks = [
-    { brief: "Move the driver seat back to 0.6m", status: "open", condition: `objects["chair-1"].position.x < 3` },
-    { brief: "Move the right-side backseat forward to 0.8m", status: "locked", condition: `objects["chair-3"].position.x > 3.5` },
-    { brief: "Raise dashboard a little bit", status: "locked", condition: "objects['dashboard'][0].position.y > 0.5" }
+    { brief: "Move the driver seat back", status: "open", condition: `objects["chair-1"].position.x < 3` },
+    { brief: "Move the left-side backseat back", status: "locked", condition: `objects["chair-3"].position.x < 3` },
+    { brief: "Raise dashboard a little bit", status: "locked", condition: "objects['dashboard'][0].position.y > 0.3 && objects['dashboard'][0].position.y < 0.8" }
 ];
 
 export const atFloor4 = {
@@ -119,6 +121,9 @@ export function createFloor(scene) {
     const $qrWrapper = document.querySelector(".qr-wrapper")
 
     function showQR() {
+
+        console.log("111111starting to show QR")
+
         $qrWrapper.classList.remove("visually-hidden");
         gsap.fromTo($qrWrapper,
             { opacity: 0, scale: 0.8, y: 20 },
@@ -126,22 +131,33 @@ export function createFloor(scene) {
                 opacity: 1,
                 scale: 1,
                 y: 0,
-                duration: 0.4,
-                ease: "power2.out"
+                duration: 0.5,
+                // delay: 2,
+                ease: "power2.out",
+                onComplete: () => {
+                    console.log("111111qr should be visible")
+                    $qrWrapper.classList.remove("visually-hidden");
+
+                }
             }
         );
     }
 
     function hideQR() {
+        console.log("111111starting to hide QR")
+
         gsap.to($qrWrapper, {
             opacity: 0,
             scale: 0.8,
             y: 20,
-            duration: 0.3,
+            duration: 0.2,
             stagger: 0.06,
             ease: "power2.in",
             onComplete: () => {
                 $qrWrapper.classList.add("visually-hidden");
+
+                console.log("111111qr should be hidden")
+
             }
         });
     }
@@ -267,6 +283,8 @@ export function setupTasks() {
 }
 
 
+let allCompleteSoundPlayed = false
+
 
 export function checkTasks(objects) {
 
@@ -278,7 +296,6 @@ export function checkTasks(objects) {
         try {
 
             if (task.status === "locked") {
-                console.log("#################")
                 allComplete = false;
                 return;
             }
@@ -321,7 +338,7 @@ export function checkTasks(objects) {
 
                     if (tasks[i + 1] && tasks[i + 1].status === "locked") {
                         tasks[i + 1].status = "open";
-                        // console.log("+ New task unlocked:", tasks[i + 1].brief);
+
                         gsap.from(`#ui-task-${i + 1}`, {
                             opacity: 0,
                             x: 100,
@@ -331,14 +348,12 @@ export function checkTasks(objects) {
                     }
                 } else {
                     allComplete = false;
-                    console.log("Current task:", task.brief)
                 }
 
 
 
             } else if (task.status === "complete") {
-                console.log("✓ Completed:", task.brief)
-                // document.querySelector(`#ui-task-${i}`).classList.add("ui-task-complete")
+
             }
 
             document.querySelector(".task-counter").textContent = completeTasks
@@ -352,6 +367,42 @@ export function checkTasks(objects) {
 
     if (allComplete) {
         console.log("all tasks complete");
+        const allTasks = document.querySelectorAll(".ui-task")
+
+        if (allCompleteSoundPlayed) return
+
+        allCompleteSoundPlayed = true
+        
+        setTimeout(() => {
+
+
+            gsap.to(allTasks, {
+                scale: 1.06,
+                duration: 0.2,
+                ease: "power2.out",
+                stagger: 0.2,
+                // delay: 1,
+                backgroundColor: "#74b6efff",
+                onStart: () => {
+
+                }
+            })
+
+            gsap.to(allTasks, {
+                scale: 1,
+                duration: 0.5,
+                delay: 0.2,
+                ease: "back.out(1.7)",
+                stagger: 0.2,
+                // delay: 1,
+                backgroundColor: "#4f4f4f54",
+            })
+
+            allTasksCompleteSound.currentTime = 0;
+            allTasksCompleteSound.play();
+
+        }, 1000);
+
     }
 
 }
@@ -376,7 +427,11 @@ export function showTasks() {
             duration: 0.5,
             scale: 1,
             y: 0,
-            ease: "power2.out"
+            ease: "power2.out",
+            onComplete: () => {
+                el.classList.remove('visually-hidden');
+
+            }
         }
     );
 }

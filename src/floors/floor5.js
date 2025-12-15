@@ -66,7 +66,7 @@ export function createFloor(scene) {
 
             floorGroup.add(model)
 
-            
+
         });
     }
     scene.add(floorGroup);
@@ -95,12 +95,15 @@ export function createFloor(scene) {
         currentStation = currentStationIndex
         if (55 <= cameraHeight && cameraHeight < 63 && uiVisible === false) {
             showUI()
+
         }
         if (55 > cameraHeight || cameraHeight > 63 && uiVisible === true) {
             hideUI()
+
         }
     }
 
+   
 
     function showUI() {
         const activeStation = document.querySelector(`#ui-panel-5-${currentStation}`);
@@ -120,6 +123,7 @@ export function createFloor(scene) {
                 ease: "power2.out"
             }
         );
+
 
         uiVisible = true;
     }
@@ -145,6 +149,8 @@ export function createFloor(scene) {
                     activeStation.classList.add("visually-hidden");
                 }
             });
+
+
 
             uiVisible = false;
         }
@@ -173,4 +179,38 @@ export function createFloor(scene) {
 
 
     return { group, checkHeight, rotateFloor };
+}
+
+
+const tip = document.querySelector(".floor5-ui-container > .ui-tip")
+
+export function showFloor5Tip() {
+    tip.classList.remove("visually-hidden");
+
+    gsap.fromTo(tip,
+        { opacity: 0, scale: 0.8, y: 20 },
+        {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: 0.4,
+            stagger: 0.08,
+            ease: "power2.out"
+        }
+    );
+}
+
+export function hideFloor5Tip() {
+
+    gsap.to(tip, {
+        opacity: 0,
+        scale: 0.8,
+        y: 20,
+        duration: 0.3,
+        stagger: 0.06,
+        ease: "power2.in",
+        onComplete: () => {
+            tip.classList.add("visually-hidden");
+        }
+    });
 }

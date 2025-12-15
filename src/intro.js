@@ -21,7 +21,7 @@ function showButton() {
         y: 300,
         duration: 1,
         ease: "power4.out",
-        delay: 6,
+        delay: 4,
     })
 }
 

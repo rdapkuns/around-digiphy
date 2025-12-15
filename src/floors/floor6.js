@@ -195,3 +195,8 @@ document.querySelector("#ui-panel-6-2 > button").addEventListener("click", () =>
         }
     });
 })
+
+document.querySelector("#form-submit").addEventListener("click", (e) => {
+    console.log("form submitted")
+    e.preventDefault();
+})

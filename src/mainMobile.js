@@ -57,7 +57,7 @@ function setupControls() {
 
         chairSlider.addEventListener('input', (e) => {
             seatVal = parseFloat(e.target.value);
-            valueDisplay.textContent = Math.trunc(seatVal * 100);
+            valueDisplay.textContent = `${Math.trunc(seatVal * 100)}%`;
             sendMessage(chair, "x", seatVal * 0.7);
         });
 
@@ -135,9 +135,6 @@ function updateSeatIndex() {
             chair.dispatchEvent(new Event("input"));
         }
     })
-    // seatButtons.forEach(btn => {
-    //     btn.classList.remove("side-active")
-    // })
 }
 
 
@@ -147,8 +144,8 @@ let value = 0
 
 dashboardSlider.addEventListener('input', (e) => {
     const valueDisplay = document.querySelector(`.dashboard-group span`)
-    value = parseFloat(e.target.value) // 0 to 1
-    valueDisplay.textContent = Math.trunc(value * 100)
+    value = parseFloat(e.target.value)
+    valueDisplay.textContent = `${Math.trunc(value * 100)}%`;
     sendMessage("dashboard", "y", value * 1)
 })
 
@@ -306,12 +303,6 @@ navLocked.forEach(nav => {
         });
 
         featureUnavailable.forEach(c => {
-            // gsap.to(c, {
-            //     opacity: 0,
-            //     duration: 0.2,
-            //     onComplete: () => c.classList.add("visually-hidden")
-            // });
-
             gsap.to(c, {
                 opacity: 1,
                 duration: 0.25,
