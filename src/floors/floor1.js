@@ -177,18 +177,12 @@ export function createFloor(scene) {
     document.querySelectorAll("[data-target]").forEach(btn => {
         const target = btn.dataset.target;
 
-        // btn.addEventListener("mouseover", () => physical(target));
         btn.addEventListener("click", (event) => {
-            console.log(componentsOpen)
+            btn.classList.remove("pulsing")
             event.stopPropagation()
             physical(target)
         });
-        // btn.addEventListener("mouseout", () => physicalHide(target));
-
-        // btn.addEventListener("mouseover", () => animateUI(target, true));
-        // btn.addEventListener("mouseout", () => animateUI(target, false));
     });
-    // document.querySelector(".floor1-ui-station1").addEventListener("click", () => {fvergbvg
     window.addEventListener("click", () => {
         physicalHide(activeComponent)
         console.log("activeComponent: ", activeComponent)
@@ -232,8 +226,6 @@ export function createFloor(scene) {
 
         }
     }
-
-    // const station1Tip = document.querySelector(".floor1-ui-station1 > .ui-tip")
 
     function physical(target) {
         if (currentStation !== 1 || cameraY > 8) {

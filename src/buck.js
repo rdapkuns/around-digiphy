@@ -11,7 +11,9 @@ import ScrollTrigger from 'gsap/ScrollTrigger'
 gsap.registerPlugin(ScrollTrigger);
 
 let stopFlashingFn = null;
-// let currentIndex = currentIndex
+
+const snap = new Audio("./audio/accessory-snap.mp3");
+
 
 export function setupBuck(scene) {
     return new Promise((resolve) => {
@@ -314,7 +316,8 @@ export function setupBuck(scene) {
                                 if (i === group.defaultVariantIndex) {
                                     mesh.visible = true;
                                 }
-                            }
+                            },
+
                         },
                         "<"
                     );
@@ -325,7 +328,17 @@ export function setupBuck(scene) {
                                 accessoriesTimeline.fromTo(
                                     mat,
                                     { opacity: 0 },
-                                    { opacity: 1, duration: 1, ease: "power2.out" },
+                                    {
+                                        opacity: 1,
+                                        duration: 1,
+                                        ease: "power2.out",
+                                        onComplete: () => {
+                                            console.log("we should play a sound here buddy")
+                                            // snap.currentTime = 0;
+                                            // snap.volume = 0.2;
+                                            // snap.play();
+                                        },
+                                    },
                                     "<"
                                 );
                             });
@@ -452,14 +465,11 @@ export function setupBuck(scene) {
         let lastSignalTime = Date.now();
         let taskCheckTimer = null;
 
-        // Call this whenever a signal is received
         function updateLastSignalTime() {
             lastSignalTime = Date.now();
 
-            // Reset timer
             if (taskCheckTimer) clearTimeout(taskCheckTimer);
 
-            // Set a new timer to run checkTasks after 1 second of no signals
             taskCheckTimer = setTimeout(() => {
                 console.log("No signal for 1 second → running task check...");
                 checkTasks(objects);
@@ -469,7 +479,6 @@ export function setupBuck(scene) {
         channel.on('broadcast', { event: 'command' }, ({ payload }) => {
             console.log("Received command:", payload);
 
-            // Update idle-timer because we received a signal
             updateLastSignalTime();
 
             switch (payload.object) {
@@ -570,7 +579,7 @@ export function setupBuck(scene) {
             group.defaultVariantIndex = variantIndex;
         }
 
-     
+
 
 
 

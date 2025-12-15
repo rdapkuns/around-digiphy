@@ -653,6 +653,7 @@ function stopCameraOrbit() {
 
 
 function moveCameraToPoint(camera, targetVec3, currentCameraHeight, cameraTargetOffset, fl1, fl5) {
+  currentIndex = 0
   gsap.to(camera.position, {
     x: targetVec3.x,
     z: targetVec3.z,

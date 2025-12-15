@@ -31,7 +31,6 @@ btn.addEventListener("click", () => {
 
     gsap.to(btn, {
         scaleY: 0,
-        // opacity: 0,
         duration: 0.3,
         ease: "power4.out",
     })
