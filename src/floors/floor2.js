@@ -13,7 +13,6 @@ let customTableVisible = true;
 const clickSound = new Audio("./audio/clink-1.mp3");
 const colorSound = new Audio("./audio/clink-2.mp3");
 
-const ui1 = new Audio("./audio/ui-1.mp3");
 const snap = new Audio("./audio/accessory-snap.mp3");
 
 
@@ -351,10 +350,6 @@ export function toggleAccessoryMenu() {
             }
         );
 
-        ui1.currentTime = 0;
-        // ui1.volume = 0.3;
-        ui1.play();
-
     } else {
         uiHidden = true
 
@@ -393,10 +388,6 @@ export function toggleTextPanel() {
                 ease: "power2.out"
             }
         );
-
-        ui1.currentTime = 0;
-        // ui1.volume = 0.3;
-        ui1.play();
     } else {
         textHidden = true
 

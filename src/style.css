@@ -504,7 +504,7 @@ canvas {
 #rotate-warning {
   position: fixed;
   inset: 0;
-  background: rgb(18, 19, 25);
+  background-color: #0E0F14;
   color: white;
   display: flex;
   flex-direction: column;
@@ -516,7 +516,19 @@ canvas {
 
 #rotate-warning>p {
   padding: 0rem 2rem;
+  margin: 0;
+  font-size: 1.5rem;
   text-align: center;
+  margin: 0.2rem 0rem;
+}
+
+#rotate-warning>p:last-child {
+  font-size: 1rem;
+  color: #B1BDCE;
+}
+
+#rotate-warning>img {
+  margin-bottom: 1rem;
 }
 
 .hidden {
@@ -692,6 +704,7 @@ canvas {
 .controls-menu .button-active {
   background: -webkit-linear-gradient(60deg, #345DFD,
       #EB148B);
+  background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   color: #ff57d8;
@@ -747,7 +760,6 @@ nav {
   gap: .5rem;
 }
 
-/* Base button */
 .nav-button {
   position: relative;
   overflow: hidden;
@@ -782,7 +794,6 @@ nav {
   transition: width 0.2s ease;
 }
 
-/* Hover state */
 .nav-button:hover::before {
   width: 100%;
 }
@@ -806,7 +817,6 @@ nav {
   position: fixed;
   z-index: 999;
   inset: 0;
-  /* background-color: pink; */
   background-color: rgba(33, 36, 41, 0.68);
   backdrop-filter: blur(12px);
   display: grid;
@@ -816,7 +826,6 @@ nav {
 .instruction-container {
   display: flex;
   flex-direction: column;
-  /* gap: 2rem; */
   max-width: 35rem;
   align-items: center;
 }
@@ -836,7 +845,6 @@ nav {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* justify-content: center; */
   gap: 1rem;
   padding: 1rem 2rem;
   margin: 1rem 0rem;
@@ -872,7 +880,6 @@ nav {
 
 .corner-button {
   position: fixed;
-  /* left: 1rem; */
   bottom: 1rem;
   z-index: 50;
   background-color: rgba(132, 132, 132, 0.33);
@@ -972,15 +979,12 @@ nav {
   background-color: rgba(218, 218, 218, 0.448);
   backdrop-filter: blur(5px);
   border: none;
-  /* padding: 0.8rem 1.5rem; */
-  /* border-radius: 11px; */
   padding: 0;
   cursor: pointer;
   outline: 0px var(--primary-blue) solid;
   color: rgb(8, 8, 169);
   outline-offset: 2px;
   height: 45px;
-
   display: flex;
   align-items: center;
 
@@ -1037,7 +1041,7 @@ nav {
   left: 21rem;
   top: 1rem;
   z-index: 99;
-  /* display: none; */
+  display: none;
 }
 
 
@@ -1144,7 +1148,6 @@ nav {
 }
 
 .accessory-variant-button {
-  /* padding: 1rem; */
   border: none;
   width: 7rem;
   height: 4.5rem;
@@ -1236,11 +1239,9 @@ nav {
 
 .primary-header:first-of-type {
   padding-top: 1rem;
-  /* border-top: 2px solid rgba(255, 255, 255, 0.639); */
 }
 
 .primary-active {
-  /* border: 2px solid white; */
   outline: 2px solid rgba(41, 41, 53, 0.729);
   outline: 2px solid white;
   outline-offset: -2px;
@@ -1405,7 +1406,6 @@ nav {
 .h-controls-arrow {
   background-color: var(--primary-blue);
   color: white;
-  /* width: 3rem; */
   height: 31px;
   padding: 0rem 1rem;
   display: grid;
@@ -1423,7 +1423,6 @@ nav {
 
 .ui-container {
   position: fixed;
-  /* background-color: rgba(255, 192, 203, 0.444); */
   right: 0rem;
   left: 0rem;
   top: 0rem;
@@ -1438,17 +1437,9 @@ nav {
   padding: 2rem;
   max-width: 25rem;
   margin: 1rem;
-  pointer-events: all;
-
   font-family: "Montserrat", sans-serif;
-
-  /* border-radius: 0.68rem; */
   pointer-events: none;
-  /* border: 2px solid rgba(255, 255, 255, 0.195); */
-
-  background: rgba(238, 240, 243, 0.7);
   box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.05);
-  backdrop-filter: blur(7.5px);
 
 
   background-color: rgba(79, 79, 79, 0.33);
@@ -1466,12 +1457,9 @@ nav {
 }
 
 .ui-tip {
-
-  /* border-radius: 0.6875rem; */
   border-radius: 0rem;
   border-radius: 2px;
   border: none;
-  /* background: radial-gradient(204.69% 244.14% at 30.87% -49.17%, rgba(0, 106, 255, 0.67) 0%, rgba(232, 6, 130, 0.67) 100%); */
   background: linear-gradient(100deg, #345DFD -6.56%, #931E73 142.42%);
   backdrop-filter: blur(13px);
   color: white;
@@ -1497,7 +1485,6 @@ nav {
   scale: 3;
   bottom: -1.5rem;
   left: -0.6rem;
-  /* rotate: 10deg; */
 }
 
 
@@ -1758,7 +1745,7 @@ height: 100%; */
 #ui-panel-4-7 {
   position: absolute;
   right: 6%;
-  top: 37%;
+  top: 42%;
   height: 40%;
 }
 
@@ -1781,14 +1768,14 @@ height: 100%; */
 #ui-panel-4-10 {
   position: absolute;
   left: 13%;
-  top: 56%;
+  top: 53%;
   height: 25%;
 }
 
 #ui-panel-4-11 {
   position: absolute;
-  left: 47%;
-  top: 10%;
+  left: 50%;
+  top: 7%;
   height: 25%;
 }
 
@@ -1796,18 +1783,16 @@ height: 100%; */
 
 #ui-panel-4-12 {
   position: absolute;
-  /* right: 3rem; */
-  /* bottom: 5rem; */
   pointer-events: none;
 
-  right: 8rem;
+  right: 3rem;
   top: 48%;
 }
 
 #ui-panel-4-13 {
   position: absolute;
-  right: 60rem;
-  top: 2%;
+  right: 50rem;
+  top: 10%;
   height: 18rem;
   pointer-events: none;
 }
@@ -1822,12 +1807,12 @@ height: 100%; */
 
 #ui-panel-4-15 {
   position: absolute;
-  right: 4rem;
+  right: 2rem;
   /* bottom: 23rem; */
   height: 20rem;
   pointer-events: none;
 
-  right: 8rem;
+  right: 4rem;
   top: 2%;
   height: 45%;
 }
@@ -1891,38 +1876,137 @@ height: 100%; */
 
 
 
-  /* pedals */
-  /* 
+
+
+
+  /* for seats */
+  #ui-panel-4 {
+    position: absolute;
+    left: 9%;
+    top: 47%;
+  }
+
+  #ui-panel-4-1 {
+    position: absolute;
+    right: 3rem;
+    bottom: 10%;
+    height: 40%;
+  }
+
+  #ui-panel-4-2 {
+    position: absolute;
+    left: 10%;
+    top: 10%;
+    height: 35%;
+  }
+
+  #ui-panel-4-3 {
+    position: absolute;
+    right: 3rem;
+    bottom: 53%;
+    height: 30%;
+  }
+
+
+  /* FOR STEERING WHEEL */
+
+  #ui-panel-4-4 {
+    position: absolute;
+    right: 5%;
+    top: 5%;
+  }
+
+  #ui-panel-4-5 {
+    position: absolute;
+    left: 12rem;
+    bottom: 53%;
+    height: 25%;
+  }
+
+  #ui-panel-4-6 {
+    position: absolute;
+    left: 10rem;
+    bottom: 15%;
+    height: 35%;
+  }
+
+  #ui-panel-4-7 {
+    position: absolute;
+    right: 6%;
+    top: 37%;
+    height: 40%;
+  }
+
+
+  /* FOR CAMERAS */
+
+  #ui-panel-4-8 {
+    position: absolute;
+    right: 5%;
+    bottom: 10%;
+  }
+
+  #ui-panel-4-9 {
+    position: absolute;
+    left: 8%;
+    top: 10%;
+    height: 40%;
+  }
+
+  #ui-panel-4-10 {
+    position: absolute;
+    left: 13%;
+    top: 56%;
+    height: 25%;
+  }
+
+  #ui-panel-4-11 {
+    position: absolute;
+    left: 47%;
+    top: 10%;
+    height: 25%;
+  }
+
+  /* FOR PEDALS */
+
   #ui-panel-4-12 {
     position: absolute;
-    right: 8rem;
-    top: 52%;
+    /* right: 3rem; */
+    /* bottom: 5rem; */
     pointer-events: none;
+
+    right: 8rem;
+    top: 48%;
   }
 
   #ui-panel-4-13 {
     position: absolute;
-    left: 10rem;
-    bottom: 25rem;
-    height: 15rem;
+    right: 60rem;
+    top: 2%;
+    height: 18rem;
     pointer-events: none;
   }
 
   #ui-panel-4-14 {
     position: absolute;
     left: 10rem;
-    bottom: 5rem;
-    height: 18rem;
+    bottom: 8%;
+    height: 35%;
     pointer-events: none;
   }
 
   #ui-panel-4-15 {
     position: absolute;
+    right: 4rem;
+    /* bottom: 23rem; */
+    height: 20rem;
+    pointer-events: none;
+
     right: 8rem;
     top: 2%;
-    height: 50%;
-    pointer-events: none;
-  } */
+    height: 45%;
+  }
+
 }
 
 /* ////////////////////////////////////////////////////

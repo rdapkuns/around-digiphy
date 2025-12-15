@@ -4,6 +4,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import gsap from 'gsap'
 
 let uiVisible = false
+const ui1 = new Audio("./audio/ui-1.mp3");
 
 
 
@@ -169,7 +170,8 @@ export function hideForm() {
 }
 
 document.querySelector("#ui-panel-6-2 > button").addEventListener("click", () => {
-    console.log("button works")
+    
+   
 
     gsap.to("#ui-panel-6-2", {
         opacity: 0,
@@ -191,6 +193,8 @@ document.querySelector("#ui-panel-6-2 > button").addEventListener("click", () =>
         delay: 0.3,
         ease: "power2.in",
         onStart: () => {
+            ui1.currentTime = 0;
+            ui1.play
             document.querySelector("#ui-panel-6-1").classList.remove("visually-hidden");
         }
     });
