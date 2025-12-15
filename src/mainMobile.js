@@ -1,9 +1,6 @@
-
 import './style.css'
 import gsap from 'gsap'
 import { supabase } from './supabase';
-
-
 
 const channel = supabase.channel('room1', {
     config: { broadcast: { ack: true } }
@@ -11,12 +8,10 @@ const channel = supabase.channel('room1', {
 
 // Listen for messages
 channel.on('broadcast', { event: 'msg' }, ({ payload }) => {
-    console.log('received:', payload);
 });
 
 // Subscribe
 channel.subscribe((status) => {
-    console.log("channel status:", status);
     setupControls()
     sendMessage("connected", "x", 0)
 });
@@ -35,15 +30,9 @@ function sendMessage(object, direction, amount) {
     });
 }
 
-// Click sends message
-// const button = document.querySelector(".mobile-button")
-// button.addEventListener("click", () => {
-//     sendMessage("dashboard", "y", "2");
-// });
 
 const sliderStep = 0.1;
 
-// chairs setup
 function setupControls() {
     for (let i = 1; i <= 4; i++) {
 
@@ -108,8 +97,6 @@ seatButtons.forEach(btn => {
 
 function updateSeatIndex() {
     activeSeat = activeSide + activeForth
-    console.log("activeseat: ", activeSeat)
-
 
     const allSeats = document.querySelectorAll(".controls-chairs")
     allSeats.forEach((chair) => {
@@ -184,7 +171,6 @@ navSeats.addEventListener("click", () => {
 
     allChairs.forEach(chair => {
         if (chair.id === `chair-slider-${activeSeat}`) {
-
             chair.dispatchEvent(new Event("input"));
         }
     })
@@ -323,17 +309,14 @@ const startButton = document.querySelector(".mobile-start button")
 const warning = document.getElementById("rotate-warning");
 
 function isPortrait() {
-    // 1. Modern API
     if (screen.orientation && screen.orientation.type) {
         return screen.orientation.type.startsWith("portrait");
     }
 
-    // 2. iOS Safari fallback
     if (window.orientation !== undefined) {
         return Math.abs(window.orientation) !== 90;
     }
 
-    // 3. Last-resort geometry fallback
     return window.innerHeight > window.innerWidth;
 }
 
@@ -385,10 +368,10 @@ startButton.addEventListener("click", async () => {
             await docEl.requestFullscreen();
             showControls()
         } else if (docEl.webkitRequestFullscreen) {
-            await docEl.webkitRequestFullscreen();  // iOS Safari
+            await docEl.webkitRequestFullscreen();  
             showControls()
         } else if (docEl.msRequestFullscreen) {
-            await docEl.msRequestFullscreen();      // Legacy
+            await docEl.msRequestFullscreen();      
             showControls()
         } else {
             alert("Fullscreen API not supported.");

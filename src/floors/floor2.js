@@ -1,21 +1,15 @@
 import * as THREE from 'three';
-
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
-gsap.registerPlugin(ScrollTrigger);
 
+gsap.registerPlugin(ScrollTrigger);
 
 const customTableChildren = [];
 let customTableVisible = true;
 
 const clickSound = new Audio("./audio/clink-1.mp3");
 const colorSound = new Audio("./audio/clink-2.mp3");
-
-const snap = new Audio("./audio/accessory-snap.mp3");
-
-
 
 export function createFloor(scene) {
     const loader = new GLTFLoader()
@@ -90,7 +84,6 @@ export function createFloor(scene) {
                 customTableChildren.push(customTable);
                 customTable.traverse(obj => {
                     customTableChildren.push(obj);
-                    console.log(obj.name)
                 });
 
             }
@@ -99,10 +92,7 @@ export function createFloor(scene) {
     }
 
     function rotateFloor(deg = 30) {
-        if (!floorGroup) {
-            console.warn("Floor model not loaded yet.");
-            return;
-        }
+        if (!floorGroup) return;
 
         const radians = THREE.MathUtils.degToRad(deg);
 
@@ -158,9 +148,9 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
                 const btn = document.createElement("button");
                 btn.classList.add("accessory-variant-button");
                 btn.classList.add(`${groupName}-button`);
-                if (index === 0){
+                if (index === 0) {
                     btn.classList.add("primary-active");
-                } 
+                }
 
 
                 const thumbnail = document.createElement("img");
@@ -212,7 +202,6 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
 
     primaryColors.forEach((colorObj, index) => {
         const btn = document.createElement("button");
-        // btn.textContent = colorObj.name;
         btn.classList.add("color-button");
         btn.classList.add("primary-color-button");
         btn.classList.add(`primary-${index}`);
@@ -366,7 +355,6 @@ export function toggleAccessoryMenu() {
                 })
             }
         });
-        console.log("ui hidden: ", uiHidden)
     }
 }
 

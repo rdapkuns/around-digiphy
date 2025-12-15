@@ -1,17 +1,13 @@
 import * as THREE from 'three';
-
-// import { moveCameraTo } from '../main.js';
-
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import QRCode from "qrcode";
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
-import { cdl } from 'three/src/nodes/TSL.js';
+
 gsap.registerPlugin(ScrollTrigger);
 
 const taskCompleteSound = new Audio("./audio/task-complete.mp3");
 const allTasksCompleteSound = new Audio("./audio/task-complete-all.mp3");
-
 
 let interactionStarted = false
 let completeTasks = 0
@@ -33,24 +29,17 @@ export const atFloor4 = {
     flag: false
 };
 
-
 export function createFloor(scene) {
     const loader = new GLTFLoader()
     const group = new THREE.Group();
     scene.add(group);
-
-
-
 
     const mobileUrl = `${window.location.origin}/around-digiphy/mobile.html`;
     QRCode.toCanvas(document.getElementById("qrcode"), mobileUrl, function (error) {
         if (error) console.error(error)
     });
 
-
-
     function createGeometry() {
-
         const texture = new THREE.TextureLoader().load("baked/floor-4-a.jpg")
         texture.flipY = false
         texture.colorSpace = THREE.SRGBColorSpace;
@@ -82,10 +71,6 @@ export function createFloor(scene) {
         });
 
 
-
-
-
-
         loader.load("floors/floor-4-c.glb", (gltf) => {
 
             const model = gltf.scene;
@@ -98,31 +83,11 @@ export function createFloor(scene) {
         });
     }
 
-
-    function createLights() {
-    }
-
-    // --- animations
-    function initAnimations() {
-    }
-
-    // --- update loop
-    function update() {
-    }
-
-    // initialize floor
     createGeometry();
-    createLights();
-    initAnimations();
-
-
-    initAnimations();
 
     const $qrWrapper = document.querySelector(".qr-wrapper")
 
     function showQR() {
-
-        console.log("111111starting to show QR")
 
         $qrWrapper.classList.remove("visually-hidden");
         gsap.fromTo($qrWrapper,
@@ -131,39 +96,32 @@ export function createFloor(scene) {
                 opacity: 1,
                 scale: 1,
                 y: 0,
-                duration: 0.5,
-                // delay: 2,
+                duration: 0.3,
                 ease: "power2.out",
                 onComplete: () => {
-                    console.log("111111qr should be visible")
                     $qrWrapper.classList.remove("visually-hidden");
-
                 }
             }
         );
     }
 
     function hideQR() {
-        console.log("111111starting to hide QR")
 
         gsap.to($qrWrapper, {
             opacity: 0,
             scale: 0.8,
             y: 20,
-            duration: 0.2,
+            duration: 0.3,
             stagger: 0.06,
             ease: "power2.in",
             onComplete: () => {
                 $qrWrapper.classList.add("visually-hidden");
-
-                console.log("111111qr should be hidden")
-
             }
         });
     }
 
 
-    return { group, update, showQR, hideQR };
+    return { group, showQR, hideQR };
 }
 
 const qrContainer = document.querySelector(".qr-wrapper")
@@ -176,8 +134,6 @@ let qrBig = true
 export function smallQR() {
     if (qrBig) {
         qrBig = false
-
-        console.log(qrBig)
         let tl = gsap.timeline();
         tl.to(qrContents, {
             opacity: 0,
@@ -185,8 +141,6 @@ export function smallQR() {
         },
             0)
             .to(qrContainer, {
-                // top: "7rem",
-                // left: "2.5rem",
                 top: "unset",
                 bottom: "-0.6rem",
                 left: "9.7rem",
@@ -228,9 +182,6 @@ export function bigQR() {
     }
     qrBig = true
     qrContainer.classList.remove("qr-small")
-    console.log(qrBig)
-
-
 
     let tl = gsap.timeline();
     tl.to(qrSVG, {
@@ -271,8 +222,6 @@ export function bigQR() {
 
 }
 
-let tasksSetUp = false
-
 export function setupTasks() {
     tasks.forEach((task, i) => {
         const taskBrief = document.querySelector(`#ui-task-${i}`)
@@ -282,30 +231,22 @@ export function setupTasks() {
     interactionStarted = true
 }
 
-
 let allCompleteSoundPlayed = false
-
 
 export function checkTasks(objects) {
 
     if (!interactionStarted) return
-
     let allComplete = true;
-
     tasks.forEach((task, i) => {
         try {
-
             if (task.status === "locked") {
                 allComplete = false;
                 return;
             }
-
-            // check condition
             const fn = new Function("objects", "return " + task.condition);
             const conditionMet = fn(objects);
 
             const currentTask = document.querySelector(`#ui-task-${i}`)
-            // if (task.status === "open" || task.status === "complete") {
             if (task.status === "open") {
                 currentTask.classList.remove("visually-hidden")
                 currentTask.classList.add("ui-task-open")
@@ -313,7 +254,6 @@ export function checkTasks(objects) {
 
                 if (conditionMet) {
                     task.status = "complete";
-                    console.log("✓ Completed:", task.brief);
                     currentTask.classList.remove("ui-task-open")
                     currentTask.classList.add("ui-task-complete")
                     completeTasks += 1
@@ -366,22 +306,17 @@ export function checkTasks(objects) {
     });
 
     if (allComplete) {
-        console.log("all tasks complete");
         const allTasks = document.querySelectorAll(".ui-task")
 
         if (allCompleteSoundPlayed) return
 
         allCompleteSoundPlayed = true
-        
         setTimeout(() => {
-
-
             gsap.to(allTasks, {
                 scale: 1.06,
                 duration: 0.2,
                 ease: "power2.out",
                 stagger: 0.2,
-                // delay: 1,
                 backgroundColor: "#74b6efff",
                 onStart: () => {
 
@@ -394,7 +329,6 @@ export function checkTasks(objects) {
                 delay: 0.2,
                 ease: "back.out(1.7)",
                 stagger: 0.2,
-                // delay: 1,
                 backgroundColor: "#4f4f4f54",
             })
 
@@ -409,7 +343,6 @@ export function checkTasks(objects) {
 
 
 export function showTasks() {
-    console.log(atFloor4.flag)
     if (!interactionStarted || atFloor4.flag === false) return
 
     const el = document.querySelector(".floor4-ui-container");

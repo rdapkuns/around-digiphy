@@ -1,22 +1,17 @@
 import * as THREE from 'three';
-
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
+
 gsap.registerPlugin(ScrollTrigger);
-
-
-
 
 export function createFloor(scene) {
     const loader = new GLTFLoader()
     const group = new THREE.Group();
     let floorGroup = new THREE.Group();
     scene.add(group);
-    let box;
 
     function createGeometry() {
-
 
         const texture = new THREE.TextureLoader().load("baked/floor-5-a.jpg")
         texture.flipY = false
@@ -24,8 +19,6 @@ export function createFloor(scene) {
         const material = new THREE.MeshBasicMaterial({ map: texture })
 
         loader.load("floors/floor-5-a.glb", (gltf) => {
-            // loader.load("models/floor5cars.glb", (gltf) => {
-
             const model = gltf.scene;
 
             model.position.set(0, 0, 0);
@@ -37,7 +30,6 @@ export function createFloor(scene) {
                     child.castShadow = true;
                     child.receiveShadow = true;
                 }
-                // console.log(child.name)
             });
 
             const glass = model.getObjectByName("glass001");
@@ -49,33 +41,18 @@ export function createFloor(scene) {
             }
 
             floorGroup.add(model)
-            // scene.add(model);
         });
 
-
-
-
-
-
         loader.load("floors/floor-5-c.glb", (gltf) => {
-
             const model = gltf.scene;
-
             model.position.set(0, 0, 0);
             model.rotateY(Math.PI);
-
             floorGroup.add(model)
-
-
         });
     }
     scene.add(floorGroup);
 
     createGeometry();
-
-
-
-
 
 
     let uiVisible = false
@@ -103,7 +80,7 @@ export function createFloor(scene) {
         }
     }
 
-   
+
 
     function showUI() {
         const activeStation = document.querySelector(`#ui-panel-5-${currentStation}`);
@@ -129,14 +106,11 @@ export function createFloor(scene) {
     }
 
 
-
     function hideUI() {
         const activeStation = document.querySelector(`#ui-panel-5-${currentStation}`);
         if (!activeStation) return;
 
         if (uiVisible) {
-
-
 
             gsap.to(activeStation, {
                 opacity: 0,
@@ -150,8 +124,6 @@ export function createFloor(scene) {
                 }
             });
 
-
-
             uiVisible = false;
         }
     }
@@ -159,21 +131,14 @@ export function createFloor(scene) {
 
 
     function rotateFloor(deg) {
-        if (!floorGroup) {
-            console.warn("Floor model not loaded yet.");
-            return;
-        }
+        if (!floorGroup) return;
 
         const radians = THREE.MathUtils.degToRad(deg);
-        console.log(radians)
 
         gsap.to(floorGroup.rotation, {
             y: radians,
             duration: 0,
             ease: "power2.inOut",
-            onUpdate: () => {
-                console.log(floorGroup.rotation.y)
-            }
         });
     }
 

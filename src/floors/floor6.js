@@ -1,11 +1,9 @@
 import * as THREE from 'three';
-
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import gsap from 'gsap'
 
 let uiVisible = false
 const ui1 = new Audio("./audio/ui-1.mp3");
-
 
 
 export function createFloor(scene) {
@@ -58,8 +56,6 @@ export function createFloor(scene) {
                         mat.transparent = true;
                         mat.opacity = 0.2;
                         mat.roughness = 0.1;
-
-                        // mat.color.setHex(0xbb00ff);
                     });
                 }
             });
@@ -100,7 +96,6 @@ export function createFloor(scene) {
 
 
                 if (child.name && child.name.toLowerCase().startsWith("core")) {
-                    console.log(child.name)
                     const delay = Math.random() * 5;
                     gsap.fromTo(child.rotation, {
                         z: 1.5,
@@ -151,8 +146,6 @@ export function hideForm() {
 
     if (uiVisible) {
 
-
-
         gsap.to($form, {
             opacity: 0,
             scale: 0.8,
@@ -171,8 +164,6 @@ export function hideForm() {
 
 document.querySelector("#ui-panel-6-2 > button").addEventListener("click", () => {
     
-   
-
     gsap.to("#ui-panel-6-2", {
         opacity: 0,
         scale: 0.8,
@@ -201,6 +192,5 @@ document.querySelector("#ui-panel-6-2 > button").addEventListener("click", () =>
 })
 
 document.querySelector("#form-submit").addEventListener("click", (e) => {
-    console.log("form submitted")
     e.preventDefault();
 })

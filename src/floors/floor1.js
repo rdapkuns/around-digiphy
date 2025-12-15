@@ -24,11 +24,9 @@ export function createFloor(scene) {
     const loader = new GLTFLoader()
     const group = new THREE.Group();
     scene.add(group);
-    let box;
     let cameraY
 
 
-    // --- build floor
     function createGeometry() {
 
         const texture = new THREE.TextureLoader().load("baked/floor-1-aa.jpg")
@@ -55,8 +53,6 @@ export function createFloor(scene) {
                 glass.material = glass.material.clone();
                 glass.material.transparent = true;
                 glass.material.opacity = 0.6;
-                // glass.material.roughness = 0;
-                // glass.material.metalness = 1;
                 glass.material.color.setHex(0xf2f9ff);
             }
 
@@ -88,7 +84,6 @@ export function createFloor(scene) {
 
         });
 
-        // loader.load("floors/floor-1-nb.glb", (gltf) => {
         loader.load("floors/floor-1-c.glb", (gltf) => {
 
             const model = gltf.scene;
@@ -103,35 +98,18 @@ export function createFloor(scene) {
         loader.load("floors/enviorment.glb", (gltf) => {
             const model = gltf.scene;
 
-            // Common transforms
             model.position.set(0, 0, 0);
             model.rotateY(Math.PI);
 
-            // Enable shadows only once
             model.traverse(child => {
                 if (child.isMesh) {
                     child.castShadow = true;
                     child.receiveShadow = true;
                 }
             });
-
-            // Add to scene
-            // scene.add(model);
-
         });
-
     }
 
-    function createLights() {
-    }
-
-    // --- animations
-    function initAnimations() {
-    }
-
-    // --- update loop
-    function update() {
-    }
 
     let activeComponent = null
     let uiVisible = false
@@ -142,7 +120,6 @@ export function createFloor(scene) {
     function checkHeight(cameraHeight, currentStationIndex) {
         cameraY = cameraHeight
 
-        //SHOW HIDE THE PHYSICAL BUTTONS
         if (currentStationIndex === 1 && cameraY < 7) {
             physicalButtons.forEach(element => {
                 element.classList.remove("visually-hidden")
@@ -185,47 +162,8 @@ export function createFloor(scene) {
     });
     window.addEventListener("click", () => {
         physicalHide(activeComponent)
-        console.log("activeComponent: ", activeComponent)
     })
 
-    const gsapDefaults = {
-        hidden: { opacity: 0, scale: 0.8, y: 20 },
-        show: {
-            opacity: 1,
-            scale: 1,
-            y: 0,
-            duration: 0.4,
-            stagger: 0.08,
-            ease: "power2.out"
-        },
-        hide: {
-            opacity: 0,
-            scale: 0.8,
-            y: 20,
-            duration: 0.3,
-            stagger: 0.06,
-            ease: "power2.in"
-        }
-    };
-
-    function animateUI(target, show = true) {
-        const el = document.querySelector(target);
-        if (!el) return;
-
-        const children = [...el.children];
-
-        if (show) {
-            el.classList.toggle("visually-hidden", !show);
-            gsap.fromTo(children, gsapDefaults.hidden, gsapDefaults.show);
-        } else {
-            // gsap.to(children, {
-            //     ...gsapDefaults.hide,
-            //     // onComplete: () => el.classList.add("visually-hidden")
-            // });
-            gsap.fromTo(children, gsapDefaults.show, gsapDefaults.hide);
-
-        }
-    }
 
     function physical(target) {
         if (currentStation !== 1 || cameraY > 8) {
@@ -294,7 +232,6 @@ export function createFloor(scene) {
     }
 
 
-    // SHOW THE UI
     function showUI() {
         const activeStation = document.querySelector(`.floor1-ui-station${currentStation}`);
 
@@ -302,7 +239,6 @@ export function createFloor(scene) {
 
 
         const children = [...activeStation.children];
-        // console.log("active children: ", children)
 
         activeStation.classList.remove("visually-hidden");
 
@@ -322,10 +258,8 @@ export function createFloor(scene) {
     }
 
 
-
     function hideUI() {
         const activeStation = document.querySelector(`.floor1-ui-station${currentStation}`);
-        console.log(activeStation)
         if (!activeStation) return;
 
         const children = [...activeStation.children];
@@ -345,22 +279,10 @@ export function createFloor(scene) {
         uiVisible = false;
     }
 
-
-
-    // initialize floor
     createGeometry();
-    createLights();
-    initAnimations();
-
-
-    initAnimations();
-
 
     function rotateFloor(deg = 30) {
-        if (!floorGroup) {
-            console.warn("Floor model not loaded yet.");
-            return;
-        }
+        if (!floorGroup) return;
 
         const radians = THREE.MathUtils.degToRad(deg);
 
@@ -387,5 +309,5 @@ export function createFloor(scene) {
     }
 
 
-    return { group, update, checkHeight, rotateFloor };
+    return { group, checkHeight, rotateFloor };
 }

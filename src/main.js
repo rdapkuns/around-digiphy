@@ -1,7 +1,3 @@
-
-
-
-
 import * as THREE from 'three';
 import { createFloor as Floor1 } from './floors/floor1.js';
 import { createFloor as Floor2, createAccessoryMenu, toggleAccessoryMenu, toggleTextPanel, toggleFloor2Desk } from './floors/floor2.js';
@@ -11,7 +7,6 @@ import { createFloor as Floor5, showFloor5Tip, hideFloor5Tip } from './floors/fl
 import { createFloor as Floor6, showForm, hideForm } from './floors/floor6.js';
 import { setupBuck, stopFlashingAccessory } from './buck.js';
 import { initNavigation } from './navigation.js';
-import { initIntro } from './intro.js';
 
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { HDRLoader } from 'three/examples/jsm/loaders/HDRLoader.js'
@@ -24,7 +19,6 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 let scene, camera, renderer;
 let floors = [];
-// let currentFloor = 0;
 const canvas = document.querySelector(".three-canvas")
 let currentCameraHeight = 6
 let prevFloor = 1
@@ -33,7 +27,6 @@ let cameraTargetOffset = { value: 4 }
 let atRoof = false
 
 let cameraScrollTrigger;
-let scrollLocked = false
 
 let orbitTween = null;
 const orbitState = { angle: 0 };
@@ -59,35 +52,8 @@ async function init() {
   renderer.setSize(canvas.clientWidth, canvas.clientHeight)
   renderer.setPixelRatio(window.devicePixelRatio)
 
-  // Lights
   scene.add(new THREE.AmbientLight(0xffffff, 0.5))
-  const dirLight = new THREE.DirectionalLight(0xffffff, 1)
-  dirLight.position.set(15, 7, 17.5)
-  dirLight.castShadow = true
-  dirLight.shadow.mapSize.set(2048, 2048)
-  // scene.add(dirLight)
 
-
-  const light = new THREE.DirectionalLight(0xFFFFFF, .5);
-  light.position.set(25, 7, 27.5);
-
-  light.castShadow = true;
-  light.shadow.mapSize.set(4096, 4096);
-
-  const cam = light.shadow.camera;
-  cam.near = 0.5;
-  cam.far = 200;
-
-  cam.left = -30;
-  cam.right = 30;
-  cam.top = 30;
-  cam.bottom = -30;
-
-  cam.updateProjectionMatrix();
-
-  // scene.add(light);
-
-  // setupCameraScroll();
 
   const pmrem = new THREE.PMREMGenerator(renderer)
 
@@ -100,25 +66,11 @@ async function init() {
     hdrTexture.dispose()
     pmrem.dispose()
 
-    // Now intensity works
     scene.backgroundBlurriness = 0.05
     scene.backgroundIntensity = 0.2
     scene.environmentIntensity = 0.5
   })
 
-
-
-
-  // Load chapters
-  const fl1 = Floor1(scene);
-
-
-  floors.push(fl1);
-
-
-  scene.add(fl1.group);
-
-  // const { accessoryGroups } = await setupBuck(scene);
   const { accessoryGroups, setAccessoryVariant, animateSelected, objects } = await setupBuck(scene);
   const primaryMaterialState = { value: 0xbfbdb4, roughness: 0.1, metalness: 0.1 };
   const secondaryMaterialState = { value: 0xbfbdb4, roughness: 0.1, metalness: 0.1 };
@@ -129,7 +81,6 @@ async function init() {
 
 function render() {
   renderer.outputColorSpace = THREE.SRGBColorSpace
-  // renderer.toneMapping = THREE.ACESFilmicToneMapping
   renderer.toneMapping = THREE.NoToneMapping;
   renderer.toneMappingExposure = 1.0
   renderer.shadowMap.enabled = true
@@ -147,7 +98,6 @@ function resize() {
   renderer.setSize(width, height);
 }
 
-//pin the canvas
 gsap.to('.canvas-wrapper', {
   ease: "linear",
   scrollTrigger: {
@@ -159,25 +109,6 @@ gsap.to('.canvas-wrapper', {
 });
 
 
-function setupCameraScroll() {
-  const tween = gsap.to(camera.position, {
-    ease: "linear",
-    y: camera.position.y + 63,
-    scrollTrigger: {
-      trigger: ".three-section",
-      start: "top top",
-      end: "bottom bottom",
-      scrub: true,
-      onUpdate: () => {
-        camera.lookAt(0, camera.position.y - cameraTargetOffset.value, 0);
-        checkCurrentFloor();
-      }
-    }
-  });
-
-  cameraScrollTrigger = tween.scrollTrigger;
-}
-
 document.querySelector(".instructions-button").addEventListener("click", () => {
   document.querySelector(".instruction-wrapper").classList.remove("visually-hidden")
 
@@ -188,10 +119,6 @@ document.querySelector(".instructions-button").addEventListener("click", () => {
   });
 })
 
-
-
-
-// --- configuration
 const holdY = 19;
 const moveUpAmount = 63;
 const ratio = { first: 1, hold: 6, last: 4.2 };
@@ -215,8 +142,6 @@ const cameraTL = gsap.timeline({
       fl1.checkHeight(currentCameraHeight, currentIndex);
       fl5.checkHeight(currentCameraHeight, currentIndex);
 
-      // console.log(currentCameraHeight)
-
     }
   }
 });
@@ -228,9 +153,7 @@ cameraTL.to(camera.position, {
 });
 
 cameraTL.call(() => {
-  console.log("ENTERED HOLD");
   toggleTextPanel()
-
 });
 
 cameraTL.to(camera.position, {
@@ -309,17 +232,7 @@ cameraTL.call(() => {
 
 
 
-
-
-
-// cameraTL.add(holdTL, "+=0");
-
-
-
-
-
 const qr = document.querySelector(".qr-wrapper")
-const overlayButton = document.querySelector(".overlay-button-container")
 const fl1 = Floor1(scene);
 const fl2 = Floor2(scene);
 const fl3 = Floor3(scene);
@@ -327,15 +240,10 @@ const fl4 = Floor4(scene);
 const fl5 = Floor5(scene);
 const fl6 = Floor6(scene)
 
-
-let overlayOn = false
-
 function checkCurrentFloor() {
-  //each is 11
   const currentFloor = Math.floor(currentCameraHeight / 13.3) + 1
   if (currentFloor !== prevFloor) {
-    console.log("new floor: ", currentFloor)
-
+    
     if (currentFloor === 1) {
       gsap.to(camera, {
         fov: 65,
@@ -368,14 +276,9 @@ function checkCurrentFloor() {
         fl2.rotateFloor(-120)
       }
 
-
-
       fl3.hideUI("#ui-panel-3-1")
       fl3.hideUI("#ui-panel-3-2")
-
       fl3.hideUI(".floor3-ui-container .ui-tip")
-
-
     }
     if (currentFloor === 3) {
 
@@ -418,7 +321,6 @@ function checkCurrentFloor() {
 
     }
     if (currentFloor === 4) {
-      //ARRIVE FLOOR 4
       qr.classList.remove("visually-hidden")
 
       fl3.hideUI("#ui-panel-3-1")
@@ -512,9 +414,6 @@ function checkCurrentFloor() {
     }
 
     if (currentFloor === 5 && prevFloor === 6) {
-      // moveCameraTo(cameraPoints[currentIndex])
-
-      // Pick a predefined point, for example the first one
       const targetPoint = new THREE.Vector3(0, currentCameraHeight, 23);
 
       moveCameraToPoint(camera, targetPoint, currentCameraHeight, cameraTargetOffset, fl1, fl5);
@@ -556,7 +455,6 @@ function setupKeyboardCameraControl(camera, model) {
     isAnimating = true
     gsap.to(camera.position, {
       x: targetVec3.x,
-      // y: currentCameraHeight,
       z: targetVec3.z,
       duration: 1.5,
       ease: 'power2.inOut',
@@ -720,6 +618,3 @@ muteBtn.addEventListener("click", () => {
 </svg>
   `
 });
-
-
-document.querySelector(".uni-button")

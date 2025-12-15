@@ -81,8 +81,3 @@ btn.addEventListener("click", () => {
     ambientSound.play();
     ambientSound.volume = 0.3;
 });
-
-export function initIntro() {
-    console.log("VIDEO JS FILE IS HERE")
-
-}

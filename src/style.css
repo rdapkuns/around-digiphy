@@ -44,14 +44,12 @@ p {
 }
 
 canvas {
-
   position: relative;
   width: 100%;
   height: 100%;
   display: block;
   z-index: 0;
   opacity: 1;
-  /* background: linear-gradient(180deg, rgb(249, 255, 255) 0%, rgb(108, 112, 120) 100%); */
   background-color: white;
   transition: all 0.5s linear;
 
@@ -103,7 +101,6 @@ canvas {
   background: #000;
   width: 100vw;
   height: 20000px;
-  /* background-color: pink; */
 }
 
 .canvas-wrapper {
@@ -242,7 +239,6 @@ canvas {
 }
 
 .qr-small {
-  /* position: relative; */
   place-content: center;
   justify-content: center;
   align-items: center;
@@ -293,7 +289,6 @@ canvas {
   z-index: 9999;
   display: flex;
   display: none;
-  /* place-content: center; */
   color: white;
   padding: 2rem;
   align-items: center;
@@ -539,8 +534,6 @@ canvas {
   height: 100dvh;
 }
 
-
-
 .mobile-start {
   position: fixed;
   width: 100vw;
@@ -586,7 +579,6 @@ canvas {
 
 .mobile-start>button {
   background-color: transparent;
-  /* border: none; */
   padding: 0.5rem 2rem;
 }
 
@@ -635,10 +627,8 @@ canvas {
 }
 
 .mobile-header {
-  /* background-color: pink; */
   height: 1.5rem;
   padding: 1rem;
-  /* display: grid; */
   display: flex;
   place-content: center;
 
@@ -670,7 +660,6 @@ canvas {
 
 .controls-menu ul {
   list-style: none;
-  /* background-color: green; */
   margin: 0;
   padding: 0;
   display: flex;
@@ -683,7 +672,6 @@ canvas {
   width: 100%;
   display: flex;
   justify-content: center;
-  /* align-self: center; */
 }
 
 .controls-menu button {
@@ -729,7 +717,6 @@ canvas {
 }
 
 .feature-unavailable>img {
-  /* height: 20%; */
   width: 13rem;
 
 }
@@ -805,8 +792,6 @@ nav {
 .nav-button.nav-active:hover::before {
   width: 100%;
 }
-
-
 
 
 /* //////////////////////////////////////////////////
@@ -1043,9 +1028,6 @@ nav {
   z-index: 99;
   display: none;
 }
-
-
-
 
 .overlay-button {
   display: flex;
@@ -1497,7 +1479,6 @@ nav {
   font-weight: 800;
   font-size: 1.6rem;
   margin-bottom: 1rem;
-  /* margin-top: 2rem; */
   padding-bottom: 1rem;
   border-bottom: 1px solid white;
 
@@ -1519,7 +1500,6 @@ nav {
 }
 
 .ui-swaptext {
-  /* height: max-content; */
   min-height: 8rem;
 }
 
@@ -1604,7 +1584,6 @@ nav {
   background-color: transparent;
   border: none;
   position: fixed;
-  /* background-color: rgba(93, 11, 25, 0.477); */
   pointer-events: none;
   pointer-events: auto;
 }
@@ -1677,14 +1656,11 @@ nav {
 }
 
 .ui-hoverpanels {
-  /* width: 100%;
-height: 100%; */
   position: fixed;
   left: 0;
   right: 0;
   top: 0;
   bottom: 0;
-  /* pointer-events: all; */
 }
 
 .ui-hoverpanels>img {
@@ -1808,7 +1784,6 @@ height: 100%; */
 #ui-panel-4-15 {
   position: absolute;
   right: 2rem;
-  /* bottom: 23rem; */
   height: 20rem;
   pointer-events: none;
 
@@ -1971,8 +1946,6 @@ height: 100%; */
 
   #ui-panel-4-12 {
     position: absolute;
-    /* right: 3rem; */
-    /* bottom: 5rem; */
     pointer-events: none;
 
     right: 8rem;
@@ -1998,7 +1971,6 @@ height: 100%; */
   #ui-panel-4-15 {
     position: absolute;
     right: 4rem;
-    /* bottom: 23rem; */
     height: 20rem;
     pointer-events: none;
 
@@ -2019,8 +1991,6 @@ height: 100%; */
   position: absolute;
   right: 5%;
   top: 10%;
-  /* border-radius: 10px; */
-
 }
 
 
@@ -2033,8 +2003,6 @@ height: 100%; */
   position: absolute;
   right: 2%;
   top: 5%;
-  /* border-radius: 10px; */
-
 }
 
 
@@ -2047,8 +2015,6 @@ height: 100%; */
   position: absolute;
   right: 2%;
   top: 2%;
-  /* border-radius: 10px; */
-
 }
 
 .task-header>div {
@@ -2101,7 +2067,6 @@ height: 100%; */
 }
 
 .ui-task-complete {
-  /* background-color: #34C022; */
   text-decoration: line-through;
   position: relative;
   color: white;
@@ -2133,8 +2098,6 @@ height: 100%; */
   position: absolute;
   right: 2%;
   top: 5%;
-  /* border-radius: 10px; */
-
 }
 
 #ui-panel-5-0 .img-wrapper,
@@ -2290,18 +2253,6 @@ input::placeholder,
 textarea::placeholder {
   color: #7d8287;
 }
-
-/* .form-submit-button {
-  background-color: white;
-  color: black;
-  border: none;
-  border-radius: 0.6875rem;
-  display: inline-flex;
-  padding: 0.625rem 0.9375rem;
-  align-items: center;
-  gap: 0.3125rem;
-} */
-
 
 .form-submit-button {
   position: relative;

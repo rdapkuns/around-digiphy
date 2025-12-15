@@ -1,33 +1,22 @@
 import * as THREE from 'three';
-
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { supabase } from './supabase';
-
 import { smallQR, tasks, checkTasks, showTasks, setupTasks } from './floors/floor4.js';
-// import { currentIndex } from './main.js';
-
 import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
+
 gsap.registerPlugin(ScrollTrigger);
 
 let stopFlashingFn = null;
-
-const snap = new Audio("./audio/accessory-snap.mp3");
-
 
 export function setupBuck(scene) {
     return new Promise((resolve) => {
         const loader = new GLTFLoader()
         const group = new THREE.Group();
         scene.add(group);
-        let box;
         let dashboards = []
         const objects = {};
-
         let modelDigiphy
-
-
-
         let accessoriesTimeline;
         let accessories = [];
         const accessoryGroups = {
@@ -50,12 +39,7 @@ export function setupBuck(scene) {
         };
 
 
-
-
-        // --- build floor
         function createGeometry() {
-
-
             loader.load('models/accessories-w-t.glb', (gltf) => {
                 modelDigiphy = gltf.scene
                 modelDigiphy.position.set(0, 2, 0)
@@ -97,10 +81,7 @@ export function setupBuck(scene) {
                     child.receiveShadow = true;
                 });
 
-                // objects.push(dashboards);
                 objects[`dashboard`] = dashboards;
-
-
 
                 modelDigiphy.traverse(child => {
                     const isAccessoryGroup = child.type === 'Group' && child.name.startsWith("accessory-");
@@ -144,12 +125,8 @@ export function setupBuck(scene) {
                 });
 
 
-
-
-                resolve({ group, update, accessoryGroups, setAccessoryVariant, animateSelected, objects });
+                resolve({ group, accessoryGroups, setAccessoryVariant, animateSelected, objects });
                 createAccessoriesTimeline();
-
-
 
                 for (let i = 1; i <= 4; i++) {
                     const chair = modelDigiphy.getObjectByName(`chair-${i}`);
@@ -170,9 +147,8 @@ export function setupBuck(scene) {
                     });
                 }
 
-                // --- configuration
-                const holdY = 15;                       // Y where camera stops to "hold"
-                const moveUpAmount = 63;                // how far up the camera moves overall
+                const holdY = 15;
+                const moveUpAmount = 63;
                 const ratio = { first: 1, hold: 6, last: 4.2 };
 
                 const startY = 2;
@@ -187,7 +163,6 @@ export function setupBuck(scene) {
                     },
                 });
 
-                // Phase 1: move from startY to holdY
                 modelTl.to(modelDigiphy.position, {
                     y: holdY,
                     ease: 'linear',
@@ -203,17 +178,14 @@ export function setupBuck(scene) {
                     })
                     .addLabel("phase2End");
 
-                // Phase 3: continue to finalY
                 modelTl.to(modelDigiphy.position, {
                     y: finalY,
                     ease: 'linear',
                     duration: ratio.last
                 });
 
-
                 modelTl.add(accessoriesTimeline, "phase2Start+=0.5");
                 accessoriesTimeline.duration(ratio.hold * 0.5);
-
 
                 gsap.to(modelDigiphy.rotation, {
                     ease: "linear",
@@ -225,8 +197,6 @@ export function setupBuck(scene) {
                         scrub: true,
                     }
                 })
-
-
             })
 
 
@@ -253,11 +223,9 @@ export function setupBuck(scene) {
                     }
                 })
 
-                // --- configuration
-                const holdY = 13;                       // 26 because camera starts at 6 and this at 0
-                const moveUpAmount = 63;                // how far up the camera moves overall
+                const holdY = 13;
+                const moveUpAmount = 63;
                 const ratio = { first: 1, hold: 6, last: 4.2 };
-                // first:hold:last = fraction of scroll allocated to phase1/phase2/phase3
 
                 const startY = 0;
                 const finalY = startY + moveUpAmount;
@@ -298,8 +266,6 @@ export function setupBuck(scene) {
 
             Object.values(accessoryGroups).forEach(group => {
                 group.variants.forEach((mesh, i) => {
-
-
                     const offset = accessoryOffsets[mesh.name] || { x: 0, y: 0, z: 0 };
 
                     mesh.visible = false;
@@ -327,7 +293,6 @@ export function setupBuck(scene) {
                                     mesh.visible = true;
                                 }
                             },
-
                         },
                         "<"
                     );
@@ -342,12 +307,6 @@ export function setupBuck(scene) {
                                         opacity: 1,
                                         duration: 1,
                                         ease: "power2.out",
-                                        onComplete: () => {
-                                            console.log("we should play a sound here buddy")
-                                            // snap.currentTime = 0;
-                                            // snap.volume = 0.2;
-                                            // snap.play();
-                                        },
                                     },
                                     "<"
                                 );
@@ -356,19 +315,6 @@ export function setupBuck(scene) {
                     }
                 });
             });
-        }
-
-
-
-        function createLights() {
-        }
-
-        // --- animations
-        function initAnimations() {
-        }
-
-        // --- update loop
-        function update() {
         }
 
         let selectedObj = null
@@ -382,8 +328,6 @@ export function setupBuck(scene) {
                     duration: 0.3,
                     ease: "power2.out",
                 });
-
-                // console.log("name: ", obj.name, "position: ", obj.position, "direction: ", direction,)
 
                 if (obj !== selectedObj) {
                     animateSelected(objOrArray);
@@ -481,13 +425,11 @@ export function setupBuck(scene) {
             if (taskCheckTimer) clearTimeout(taskCheckTimer);
 
             taskCheckTimer = setTimeout(() => {
-                console.log("No signal for 1 second → running task check...");
                 checkTasks(objects);
             }, 1000);
         }
 
         channel.on('broadcast', { event: 'command' }, ({ payload }) => {
-            console.log("Received command:", payload);
 
             updateLastSignalTime();
 
@@ -524,19 +466,11 @@ export function setupBuck(scene) {
         });
 
 
-
-        // Subscribe
         channel.subscribe((status) => {
             console.log("channel status:", status);
         });
 
-        // initialize floor
         createGeometry();
-        createLights();
-        initAnimations();
-
-
-        initAnimations();
 
         function setAccessoryVariant(groupName, variantIndex) {
             const group = accessoryGroups[groupName];
@@ -589,22 +523,17 @@ export function setupBuck(scene) {
             group.defaultVariantIndex = variantIndex;
         }
 
-
-
-
-
         document.querySelector('.qr-wrapper-close').addEventListener('click', () => {
             setupTasks()
             checkTasks(objects)
 
             setTimeout(() => {
-
                 showTasks()
             }, 1000);
         });
 
         stopFlashingFn = animateSelected;
-        return { group, update, animateSelected };
+        return { group, animateSelected };
     })
 }
 

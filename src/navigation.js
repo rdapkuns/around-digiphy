@@ -19,28 +19,13 @@ export function initNavigation(camera) {
     const startCameraY = 6;
     const endCameraY = 71;
 
-    console.log('Floor navigation initialized:', {
-        floors: Object.keys(floorHeights).length,
-        scrollRange: `0 - ${maxScroll}px`,
-        cameraRange: `${startCameraY} - ${endCameraY}`
-    });
-
     function navigateToFloor(floorName) {
         const targetCameraY = floorHeights[floorName];
 
-        if (targetCameraY === undefined) {
-            console.error(`Floor ${floorName} not found`);
-            return;
-        }
+        if (targetCameraY === undefined) return;
 
         const cameraProgress = (targetCameraY - startCameraY) / (endCameraY - startCameraY);
         const targetScroll = maxScroll * cameraProgress;
-
-        console.log(`Navigating to ${floorName}:`, {
-            targetCameraY,
-            targetScroll: Math.round(targetScroll),
-            currentCameraY: camera.position.y.toFixed(1)
-        });
 
         const startScroll = document.body.scrollTop;
         const distance = targetScroll - startScroll;
@@ -52,11 +37,10 @@ export function initNavigation(camera) {
             onUpdate: function () {
                 const progress = this.targets()[0].val;
                 document.body.scrollTop = startScroll + (distance * progress);
-                ScrollTrigger.update(); // Force camera to update
+                ScrollTrigger.update();
             },
             onComplete: () => {
                 ScrollTrigger.update();
-                console.log(`Arrived at ${floorName} - Camera Y: ${camera.position.y.toFixed(1)}`);
             }
         });
     }
