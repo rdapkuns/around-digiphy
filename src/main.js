@@ -630,7 +630,3 @@ muteBtn.addEventListener("click", () => {
 </svg>
   `
 });
-
-document.querySelector(".uni-button").addEventListener("click", () => {
-  console.log(currentFloor)
-})
