@@ -316,7 +316,7 @@ export function checkTasks(objects) {
                 scale: 1.06,
                 duration: 0.2,
                 ease: "power2.out",
-                stagger: 0.2,
+                stagger: 0.1,
                 backgroundColor: "#74b6efff",
                 onStart: () => {
 
@@ -328,7 +328,7 @@ export function checkTasks(objects) {
                 duration: 0.5,
                 delay: 0.2,
                 ease: "back.out(1.7)",
-                stagger: 0.2,
+                stagger: 0.1,
                 backgroundColor: "#4f4f4f54",
             })
 
