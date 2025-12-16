@@ -14,15 +14,15 @@ let completeTasks = 0
 
 const taskTexts = [
     "Hey, some people came in to test out your designed car! Lets make some adjustments to the model. It feels a bit cramped here in the driver seat, could you move it back a bit?",
-    "The driver seat is way better now! But I think there's not enough leg - room for the backseat now. Lets change that!",
-    "Alright, that's way better. I would like to have the dashboard a bit higher though. Can you raise it a little? Not too much though.",
+    "The driver seat is way better now! But I think there's not enough leg-room for the backseat now. Lets change that!",
+    "Alright, that's way better. But I would like to have the dashboard a bit higher. Can you raise it a little? Not too much though.",
     "Well done! People love your car! If you want to continue adjusting DigiPHY, feel free to do so."
 ]
 
 export const tasks = [
     { brief: "Move the driver seat back", status: "open", condition: `objects["chair-1"].position.x < 3` },
     { brief: "Move the left-side backseat back", status: "locked", condition: `objects["chair-3"].position.x < 3` },
-    { brief: "Raise dashboard a little bit", status: "locked", condition: "objects['dashboard'][0].position.y > 0.3 && objects['dashboard'][0].position.y < 0.8" }
+    { brief: "Raise the dashboard a little bit", status: "locked", condition: "objects['dashboard'][0].position.y > 0.3 && objects['dashboard'][0].position.y < 0.8" }
 ];
 
 export const atFloor4 = {

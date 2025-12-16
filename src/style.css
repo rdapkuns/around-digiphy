@@ -359,9 +359,7 @@ canvas {
 
   outline: 0px var(--primary-blue) solid;
   outline-offset: 2px;
-
-  /* animation-duration: 0.2s; */
-  /* animation: pulse-outline 3s cubic-bezier(0, 0.55, 0.45, 1) infinite; */
+  color: white;
 }
 
 

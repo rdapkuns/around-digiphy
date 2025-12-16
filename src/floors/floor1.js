@@ -94,20 +94,6 @@ export function createFloor(scene) {
             scene.add(model);
 
         });
-
-        loader.load("floors/enviorment.glb", (gltf) => {
-            const model = gltf.scene;
-
-            model.position.set(0, 0, 0);
-            model.rotateY(Math.PI);
-
-            model.traverse(child => {
-                if (child.isMesh) {
-                    child.castShadow = true;
-                    child.receiveShadow = true;
-                }
-            });
-        });
     }
 
 
