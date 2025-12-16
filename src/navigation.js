@@ -57,4 +57,6 @@ export function initNavigation(camera) {
         navigateToFloor("floor1");
     })
 
+    return (navigateToFloor)
+
 }

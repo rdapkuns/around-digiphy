@@ -30,6 +30,7 @@ let atRoof = false
 
 let cameraScrollTrigger;
 
+
 let orbitTween = null;
 const orbitState = { angle: 0 };
 
@@ -243,8 +244,10 @@ const fl4 = Floor4(scene);
 const fl5 = Floor5(scene);
 const fl6 = Floor6(scene)
 
+let currentFloor = 1
+
 function checkCurrentFloor() {
-  const currentFloor = Math.floor(currentCameraHeight / 13.3) + 1
+  currentFloor = Math.floor(currentCameraHeight / 13.3) + 1
   if (currentFloor !== prevFloor) {
 
     if (currentFloor === 1) {
@@ -493,13 +496,17 @@ function setupKeyboardCameraControl(camera, model) {
   camera.lookAt(0, currentCameraHeight - cameraTargetOffset.value, 0)
 
   window.addEventListener('keydown', (e) => {
-    if (isAnimating || atRoof) return
-    if (e.key === 'ArrowRight') {
+    if (isAnimating) return
+    if (e.key === 'ArrowRight' && !atRoof) {
       currentIndex = (currentIndex + 1) % cameraPoints.length
       moveCameraTo(cameraPoints[currentIndex])
-    } else if (e.key === 'ArrowLeft') {
+    } else if (e.key === 'ArrowLeft' && !atRoof) {
       currentIndex = (currentIndex - 1 + cameraPoints.length) % cameraPoints.length
       moveCameraTo(cameraPoints[currentIndex])
+    } else if (e.key === 'ArrowUp') {
+      sideNav(`floor${currentFloor + 1}`)
+    } else if (e.key === 'ArrowDown') {
+      sideNav(`floor${currentFloor - 1}`)
     }
   })
 
@@ -590,10 +597,12 @@ function animate() {
 }
 
 
+let sideNav
 
 window.addEventListener('load', () => {
   ScrollTrigger.refresh();
-  initNavigation(camera);
+  sideNav = initNavigation(camera);
+  console.log(sideNav)
 });
 
 const muteBtn = document.getElementById("muteBtn");
@@ -621,3 +630,7 @@ muteBtn.addEventListener("click", () => {
 </svg>
   `
 });
+
+document.querySelector(".uni-button").addEventListener("click", () => {
+  console.log(currentFloor)
+})

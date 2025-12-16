@@ -327,6 +327,10 @@ export function setupBuck(scene) {
                     [axis]: obj.defaultPos[axis] + direction * 1,
                     duration: 0.3,
                     ease: "power2.out",
+
+                    onComplete: () => {
+                        console.log("complete movement")
+                    }
                 });
 
                 if (obj !== selectedObj) {
@@ -335,11 +339,12 @@ export function setupBuck(scene) {
             });
         }
 
+
         function animateSelected(objOrArray) {
             if (selectedObj) {
-                const objs = Array.isArray(selectedObj) ? selectedObj : [selectedObj];
+                const prevObjs = Array.isArray(selectedObj) ? selectedObj : [selectedObj];
 
-                objs.forEach(o => {
+                prevObjs.forEach(o => {
                     o.traverse(child => {
                         if (!child.isMesh) return;
 
@@ -348,15 +353,13 @@ export function setupBuck(scene) {
                             const original = mat.userData.originalColor;
                             if (!original) return;
 
-                            gsap.killTweensOf(mat.color);
+                            if (mat.userData.flashTL) {
+                                mat.userData.flashTL.kill();
+                                mat.userData.flashTL = null;
+                            }
 
-                            gsap.to(mat.color, {
-                                r: original.r,
-                                g: original.g,
-                                b: original.b,
-                                duration: 0.3,
-                                ease: "power2.out"
-                            });
+                            gsap.killTweensOf(mat.color);
+                            mat.color.copy(original);
                         });
                     });
                 });
@@ -381,15 +384,18 @@ export function setupBuck(scene) {
                         if (!mat.userData.originalColor) {
                             mat.userData.originalColor = mat.color.clone();
                         }
+
                         const original = mat.userData.originalColor;
 
-                        gsap.killTweensOf(mat.color);
+                        if (mat.userData.flashTL) {
+                            mat.userData.flashTL.kill();
+                        }
 
-                        const tl = gsap.timeline({ repeat: -1 });
-                        tl.to(mat.color, {
-                            r: 1, g: 1, b: 1,
-                            duration: 1
-                        })
+                        mat.userData.flashTL = gsap.timeline({ repeat: -1 })
+                            .to(mat.color, {
+                                r: 1, g: 1, b: 1,
+                                duration: 1
+                            })
                             .to(mat.color, {
                                 r: original.r,
                                 g: original.g,
@@ -403,6 +409,7 @@ export function setupBuck(scene) {
 
             selectedObj = objOrArray;
         }
+
 
 
         const channel = supabase.channel('room1', {

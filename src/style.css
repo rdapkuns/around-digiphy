@@ -1026,7 +1026,7 @@ nav {
   left: 21rem;
   top: 1rem;
   z-index: 99;
-  display: none;
+  /* display: none; */
 }
 
 .overlay-button {
@@ -1447,7 +1447,7 @@ nav {
   color: white;
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 2rem;
+  gap: 1rem;
   align-items: center;
   padding: 1rem;
   max-width: 25rem;
@@ -1457,16 +1457,13 @@ nav {
   right: 0%;
   bottom: 0%;
 
-  font-weight: 400;
+  font-weight: 500;
   color: rgba(255, 255, 255, 0.808);
   overflow: hidden;
 }
 
 .ui-tip svg {
   position: relative;
-  scale: 3;
-  bottom: -1.5rem;
-  left: -0.6rem;
 }
 
 
