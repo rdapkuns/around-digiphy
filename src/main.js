@@ -387,12 +387,17 @@ function checkCurrentFloor() {
 
       hideForm()
       atRoof = false
+
+      document.querySelector(".horizontal-controls-container").classList.remove("visually-hidden")
+
     }
 
     if (currentFloor === 6) {
       hideFloor5Tip()
       showForm()
       atRoof = true
+
+      document.querySelector(".horizontal-controls-container").classList.add("visually-hidden")
     }
 
     if (currentFloor === 2 || currentFloor === 4) {
@@ -602,7 +607,6 @@ let sideNav
 window.addEventListener('load', () => {
   ScrollTrigger.refresh();
   sideNav = initNavigation(camera);
-  console.log(sideNav)
 });
 
 const muteBtn = document.getElementById("muteBtn");

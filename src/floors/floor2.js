@@ -192,12 +192,13 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
     const primaryColors = [
         { name: "Carbon", value: 0x17181a, roughness: 0.1, metalness: 0.9 },
         { name: "Pearl", value: 0xf7edf4, roughness: 0.3, metalness: 0.2 },
-        { name: "Matte grey", value: 0x595959, roughness: 0.8, metalness: 0.3 },
-        { name: "Sage", value: 0xA9B689, roughness: 0.7, metalness: 0.9 },
-        { name: "Desert", value: 0xBFA48F, roughness: 0.9, metalness: 0.2 },
+        { name: "Matte grey", value: 0x595959, roughness: 0.2, metalness: 0.3 },
+        { name: "Sage", value: 0xA9B689, roughness: 0.3, metalness: 0.9 },
+        { name: "Desert", value: 0xBFA48F, roughness: 0.5, metalness: 0.2 },
         { name: "Ultramarine", value: 0x9AADF6, roughness: 0.01, metalness: 0.99 },
-        { name: "Arina", value: 0x660407, roughness: 0.1, metalness: 0.9 },
+        { name: "Arina", value: 0x660407, roughness: 0.2, metalness: 0.9 },
         { name: "Tom Green", value: 0x004d24, roughness: 0.1, metalness: 0.2 },
+        { name: "Cotton candy", value: 0xffbae5, roughness: 0.1, metalness: 0.2 },
     ];
 
     primaryColors.forEach((colorObj, index) => {
@@ -243,12 +244,15 @@ export function createAccessoryMenu(containerSelector, accessoryGroups, setAcces
 
     const secondaryColors = [
         { name: "Charcoal", value: 0x696b6e, roughness: 0.3, metalness: 0.9 },
-        { name: "Pink", value: 0xd9bfd1, roughness: 0.7, metalness: 0.3 },
+        { name: "Lavender", value: 0xfad4ea, roughness: 0.7, metalness: 0.3 },
         { name: "Light grey", value: 0xc1c5c7, roughness: 0.1, metalness: 0.7 },
         { name: "Teal", value: 0xB0D4D2, roughness: 0.8, metalness: 0.9 },
         { name: "Coral", value: 0xFF6E5A, roughness: 0.7, metalness: 0.3 },
         { name: "Alpine", value: 0x576856, roughness: 0.1, metalness: 0.7 },
-        { name: "Copper", value: 0x99280c, roughness: 0.3, metalness: 0.7 }
+        { name: "Copper", value: 0x99280c, roughness: 0.3, metalness: 0.7 },
+        { name: "Huney", value: 0xebae34, roughness: 0.5, metalness: 0.7 },
+        { name: "Baby blue", value: 0x5bbad4, roughness: 0.5, metalness: 0.7 }
+
     ];
 
     secondaryColors.forEach((colorObj, index) => {

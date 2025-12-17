@@ -72,7 +72,7 @@ canvas {
   position: fixed;
   left: 1rem;
   top: 1rem;
-  z-index: 999;
+  z-index: 9998;
   width: 11rem;
 }
 
@@ -87,9 +87,9 @@ canvas {
   z-index: -1;
   pointer-events: none;
 
-  background: radial-gradient(at center,
+  /* background: radial-gradient(at center,
       rgba(0, 0, 0, 0.12) 0%,
-      rgba(0, 0, 0, 0) 70%);
+      rgba(0, 0, 0, 0) 70%); */
 }
 
 
@@ -288,7 +288,6 @@ canvas {
   background: #0E0F14;
   z-index: 9999;
   display: flex;
-  display: none;
   color: white;
   padding: 2rem;
   align-items: center;
@@ -330,7 +329,7 @@ canvas {
   position: fixed;
   inset: 0;
   background: white;
-  z-index: 9998;
+  z-index: 9997;
 }
 
 .intro-container>video {
@@ -1282,6 +1281,10 @@ nav {
   background-color: #004d24;
 }
 
+.primary-8 {
+  background-color: #ffa6dd;
+}
+
 
 .secondary-0 {
   background-color: #696b6e;
@@ -1309,6 +1312,14 @@ nav {
 
 .secondary-6 {
   background-color: #99280c;
+}
+
+.secondary-7 {
+  background-color: #ebae34;
+}
+
+.secondary-8 {
+  background-color: #5bbad4;
 }
 
 /* ////////////////////////////////////////////////////
@@ -1817,10 +1828,6 @@ nav {
 
 
 @media (min-width: 1920px) {
-
-  .intro-container>video {
-    object-fit: fill;
-  }
 
 
   .physical-pedals {

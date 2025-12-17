@@ -327,10 +327,6 @@ export function setupBuck(scene) {
                     [axis]: obj.defaultPos[axis] + direction * 1,
                     duration: 0.3,
                     ease: "power2.out",
-
-                    onComplete: () => {
-                        console.log("complete movement")
-                    }
                 });
 
                 if (obj !== selectedObj) {
